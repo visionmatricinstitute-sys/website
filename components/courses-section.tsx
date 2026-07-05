@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { FadeIn } from "@/components/motion/fade-in"
+import { CourseThumbnail } from "@/components/course-thumbnail"
 import {
   Clock,
   Users,
@@ -34,7 +35,6 @@ const popularCourses = [
     students: "500+",
     level: "Beginner to Advanced",
     features: ["Basic Computer", "MS Office", "Internet Tools", "Digital Literacy"],
-    image: "/computer-skills-training.png",
     isUpcoming: false,
   },
   {
@@ -47,7 +47,6 @@ const popularCourses = [
     students: "300+",
     level: "Intermediate to Advanced",
     features: ["AutoCAD 2D", "AutoCAD 3D", "Technical Drawing", "Design Principles"],
-    image: "/autocad-training.png",
     isUpcoming: false,
   },
   {
@@ -60,7 +59,6 @@ const popularCourses = [
     students: "200+",
     level: "Advanced",
     features: ["Revit MEP", "3D Modeling", "Project Coordination", "BIM Standards"],
-    image: "/bim-training.png",
     isUpcoming: false,
   },
   {
@@ -73,7 +71,6 @@ const popularCourses = [
     students: "New",
     level: "Intermediate to Advanced",
     features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
-    image: "/electrical-design-data-center.svg",
     isUpcoming: false,
   },
 ]
@@ -89,7 +86,6 @@ const upcomingCourses = [
     students: "Coming Soon",
     level: "Beginner to Intermediate",
     features: ["Adobe Photoshop", "Adobe Illustrator", "Logo Design", "Brand Identity"],
-    image: "/graphic-design-training.png",
     isUpcoming: true,
   },
   {
@@ -102,7 +98,6 @@ const upcomingCourses = [
     students: "Coming Soon",
     level: "Intermediate to Advanced",
     features: ["HTML/CSS", "JavaScript", "React", "Node.js"],
-    image: "/web-development-training.png",
     isUpcoming: true,
   },
   {
@@ -115,7 +110,6 @@ const upcomingCourses = [
     students: "Coming Soon",
     level: "Beginner to Intermediate",
     features: ["SEO", "Social Media Marketing", "Google Ads", "Content Strategy"],
-    image: "/digital-marketing-training.png",
     isUpcoming: true,
   },
   {
@@ -228,7 +222,7 @@ const upcomingCourses = [
   },
 ]
 
-const CourseCard = ({ course }: { course: any }) => {
+const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
   const IconComponent = course.icon
   return (
     <Card
@@ -239,13 +233,9 @@ const CourseCard = ({ course }: { course: any }) => {
       }`}
     >
       <div className="relative overflow-hidden rounded-t-lg">
-        <img
-          src={course.image || "/placeholder.svg"}
-          alt={course.title}
-          className={`w-full h-48 object-cover transition-transform duration-300 ${
-            course.isUpcoming ? "grayscale-[40%]" : "group-hover:scale-105"
-          }`}
-        />
+        <div className="transition-transform duration-300 group-hover:scale-105">
+          <CourseThumbnail icon={IconComponent} index={index} muted={course.isUpcoming} />
+        </div>
         <div className="absolute top-4 left-4">
           <Badge className="bg-accent text-accent-foreground">{course.level}</Badge>
         </div>
@@ -333,7 +323,7 @@ export function CoursesSection() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {popularCourses.map((course, index) => (
               <FadeIn key={course.id} delay={(index % 3) * 0.1}>
-                <CourseCard course={course} />
+                <CourseCard course={course} index={index} />
               </FadeIn>
             ))}
           </div>
@@ -351,7 +341,7 @@ export function CoursesSection() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {upcomingCourses.map((course, index) => (
               <FadeIn key={course.id} delay={(index % 3) * 0.1}>
-                <CourseCard course={course} />
+                <CourseCard course={course} index={index} />
               </FadeIn>
             ))}
           </div>
