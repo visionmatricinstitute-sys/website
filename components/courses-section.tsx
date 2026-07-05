@@ -26,20 +26,21 @@ import {
 
 const popularCourses = [
   {
-    id: 1,
-    title: "Computer Skills & Applications",
+    id: 4,
+    title: "Electrical Design – Data Center Specialist",
     description:
-      "Master essential computer skills including basic operations, MS Office suite, internet tools, and digital literacy for modern workplace requirements.",
-    icon: Monitor,
-    duration: "2-4 months",
-    students: "500+",
-    level: "Beginner to Advanced",
-    features: ["Basic Computer", "MS Office", "Internet Tools", "Digital Literacy"],
+      "Specialized training in electrical design for data centers — single line diagrams, panel GADs, cable and equipment sizing, and short-circuit studies aligned with IEC and data center standards.",
+    icon: Zap,
+    duration: "4-6 months",
+    students: "New",
+    level: "Intermediate to Advanced",
+    features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
+    image: "/electrical-design-data-center.jpg",
     isUpcoming: false,
   },
   {
     id: 2,
-    title: "Drafting & Design (CAD)",
+    title: "AutoCAD",
     description:
       "Professional AutoCAD training covering 2D drafting and 3D modeling for engineering, architecture, and design applications.",
     icon: Drafting,
@@ -47,6 +48,7 @@ const popularCourses = [
     students: "300+",
     level: "Intermediate to Advanced",
     features: ["AutoCAD 2D", "AutoCAD 3D", "Technical Drawing", "Design Principles"],
+    image: "/autocad-training.png",
     isUpcoming: false,
   },
   {
@@ -63,21 +65,34 @@ const popularCourses = [
     isUpcoming: false,
   },
   {
-    id: 4,
-    title: "Electrical Design – Data Center Specialist",
+    id: 1,
+    title: "Computer Skills & Applications",
     description:
-      "Specialized training in electrical design for data centers — single line diagrams, panel GADs, cable and equipment sizing, and short-circuit studies aligned with IEC and data center standards.",
-    icon: Zap,
-    duration: "4-6 months",
-    students: "New",
-    level: "Intermediate to Advanced",
-    features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
-    image: "/electrical-design-data-center.jpg",
+      "Master essential computer skills including basic operations, MS Office suite, internet tools, and digital literacy for modern workplace requirements.",
+    icon: Monitor,
+    duration: "2-4 months",
+    students: "500+",
+    level: "Beginner to Advanced",
+    features: ["Basic Computer", "MS Office", "Internet Tools", "Digital Literacy"],
+    image: "/computer-training-ms-office.png",
     isUpcoming: false,
   },
 ]
 
 const upcomingCourses = [
+  {
+    id: 11,
+    title: "Solar Design Expert",
+    description:
+      "End-to-end solar PV system design — load assessment, panel/inverter sizing, and grid-tie/off-grid configurations.",
+    icon: Sun,
+    duration: "3-5 months",
+    students: "Coming Soon",
+    level: "Intermediate to Advanced",
+    features: ["PV System Design", "Inverter Sizing", "Grid-Tie Systems", "Solar Standards"],
+    image: "/solar-design-expert.jpg",
+    isUpcoming: true,
+  },
   {
     id: 16,
     title: "Graphic Design",
@@ -88,6 +103,7 @@ const upcomingCourses = [
     students: "Coming Soon",
     level: "Beginner to Intermediate",
     features: ["Adobe Photoshop", "Adobe Illustrator", "Logo Design", "Brand Identity"],
+    image: "/adobe-graphic-design-training.png",
     isUpcoming: true,
   },
   {
@@ -100,6 +116,7 @@ const upcomingCourses = [
     students: "Coming Soon",
     level: "Intermediate to Advanced",
     features: ["HTML/CSS", "JavaScript", "React", "Node.js"],
+    image: "/web-dev-training-multi-screen.png",
     isUpcoming: true,
   },
   {
@@ -112,6 +129,7 @@ const upcomingCourses = [
     students: "Coming Soon",
     level: "Beginner to Intermediate",
     features: ["SEO", "Social Media Marketing", "Google Ads", "Content Strategy"],
+    image: "/digital-marketing-training.png",
     isUpcoming: true,
   },
   {
@@ -160,19 +178,6 @@ const upcomingCourses = [
     students: "Coming Soon",
     level: "Advanced",
     features: ["PLC Programming", "SCADA Systems", "HMI Design", "Process Control"],
-    isUpcoming: true,
-  },
-  {
-    id: 11,
-    title: "Solar Design Expert",
-    description:
-      "End-to-end solar PV system design — load assessment, panel/inverter sizing, and grid-tie/off-grid configurations.",
-    icon: Sun,
-    duration: "3-5 months",
-    students: "Coming Soon",
-    level: "Intermediate to Advanced",
-    features: ["PV System Design", "Inverter Sizing", "Grid-Tie Systems", "Solar Standards"],
-    image: "/solar-design-expert.jpg",
     isUpcoming: true,
   },
   {
