@@ -26,6 +26,27 @@ const MATERIAL_FACTOR: Record<"cu" | "al", number> = { cu: 1.0, al: 0.78 }
 const RESISTIVITY: Record<"cu" | "al", number> = { cu: 22.5, al: 36 } // ohm.mm^2/km
 const BREAKERS = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630]
 
+/* Standard equipment ratings and constants used by the sizing calculators below */
+const TRANSFORMER_KVA = [25, 50, 75, 100, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3150]
+const UPS_KVA = [10, 20, 30, 40, 60, 80, 100, 120, 160, 200, 250, 300, 400, 500, 600, 800, 1000, 1200, 1600, 2000]
+const DG_KVA = [20, 30, 40, 62.5, 82.5, 100, 125, 160, 200, 250, 320, 380, 400, 500, 625, 750, 1000, 1250, 1500, 2000, 2500]
+
+const MOTOR_START_MULTIPLIER: Record<string, number> = {
+  dol: 6,
+  "star-delta": 2.5,
+  soft: 3.5,
+  vfd: 1.2,
+}
+
+const SC_K_FACTOR: Record<"cu" | "al", Record<"pvc" | "xlpe", number>> = {
+  cu: { pvc: 115, xlpe: 143 },
+  al: { pvc: 76, xlpe: 94 },
+}
+
+function roundUpToStandard(value: number, table: number[]) {
+  return table.find((v) => v >= value) ?? null
+}
+
 function groupingFactor(n: number) {
   if (n <= 1) return 1.0
   if (n === 2) return 0.8
@@ -313,6 +334,580 @@ function QuickFormulasCalculator() {
   )
 }
 
+function TransformerSizingCalculator() {
+  const [kw, setKw] = useState(500)
+  const [pf, setPf] = useState(0.9)
+  const [spare, setSpare] = useState(20)
+  const [primaryV, setPrimaryV] = useState(11000)
+  const [secondaryV, setSecondaryV] = useState(415)
+
+  const result = useMemo(() => {
+    const connectedKva = kw / pf
+    const designKva = connectedKva * (1 + spare / 100)
+    const selected = roundUpToStandard(designKva, TRANSFORMER_KVA)
+    const base = selected ?? TRANSFORMER_KVA[TRANSFORMER_KVA.length - 1]
+    const primaryFlc = (base * 1000) / (1.732 * primaryV)
+    const secondaryFlc = (base * 1000) / (1.732 * secondaryV)
+    return { connectedKva, designKva, selected, base, primaryFlc, secondaryFlc, outOfRange: selected === null }
+  }, [kw, pf, spare, primaryV, secondaryV])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Connected Load (kW)</Label>
+              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Load Power Factor</Label>
+              <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Spare Capacity / Growth (%)</Label>
+              <Input type="number" value={spare} onChange={(e) => setSpare(Number(e.target.value))} />
+            </div>
+            <div />
+            <div className="space-y-1.5">
+              <Label>Primary Voltage (V)</Label>
+              <Input type="number" value={primaryV} onChange={(e) => setPrimaryV(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Secondary Voltage (V)</Label>
+              <Input type="number" value={secondaryV} onChange={(e) => setSecondaryV(Number(e.target.value))} />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Design Load</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.designKva)} kVA</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Recommended Transformer</div>
+              <div className="text-xl font-bold text-foreground mt-1">
+                {result.outOfRange ? "> " : ""}
+                {result.base} kVA
+              </div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Primary FLC</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.primaryFlc)} A</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Secondary FLC</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.secondaryFlc)} A</div>
+            </div>
+          </div>
+
+          <div className="text-sm space-y-2 font-serif">
+            <div className="flex justify-between border-b border-border pb-2">
+              <span className="text-muted-foreground">Connected load (kVA, before spare capacity)</span>
+              <span className="font-medium">{fmt(result.connectedKva)} kVA</span>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Nearest standard rating per IEC 60076. Confirm impedance (%Z), vector group and cooling class
+              (ONAN/ONAF) with the manufacturer before ordering.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function UpsSizingCalculator() {
+  const [kw, setKw] = useState(200)
+  const [pf, setPf] = useState(0.9)
+  const [growth, setGrowth] = useState(20)
+  const [redundancy, setRedundancy] = useState<"n" | "n+1" | "2n">("n+1")
+  const [autonomy, setAutonomy] = useState(10)
+
+  const REDUNDANCY_MULTIPLIER: Record<string, number> = { n: 1, "n+1": 1, "2n": 2 }
+  const REDUNDANCY_LABEL: Record<string, string> = {
+    n: "N — no redundancy, size modules to the required capacity.",
+    "n+1": "N+1 — same total capacity, but split across one extra module for redundancy.",
+    "2n": "2N — two fully independent UPS systems, each sized for the full load.",
+  }
+
+  const result = useMemo(() => {
+    const requiredKva = (kw / pf) * (1 + growth / 100)
+    const provisionKva = requiredKva * REDUNDANCY_MULTIPLIER[redundancy]
+    const selected = roundUpToStandard(provisionKva, UPS_KVA)
+    const base = selected ?? UPS_KVA[UPS_KVA.length - 1]
+    const batteryKwh = (kw * (autonomy / 60)) / 0.9
+    return { requiredKva, provisionKva, selected, base, batteryKwh, outOfRange: selected === null }
+  }, [kw, pf, growth, redundancy, autonomy])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Critical IT Load (kW)</Label>
+              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Load Power Factor</Label>
+              <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Future Growth (%)</Label>
+              <Input type="number" value={growth} onChange={(e) => setGrowth(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Battery Autonomy (minutes)</Label>
+              <Input type="number" value={autonomy} onChange={(e) => setAutonomy(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5 col-span-2">
+              <Label>Redundancy Configuration</Label>
+              <Select value={redundancy} onValueChange={(v) => setRedundancy(v as "n" | "n+1" | "2n")}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="n">N</SelectItem>
+                  <SelectItem value="n+1">N+1</SelectItem>
+                  <SelectItem value="2n">2N</SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="hint text-xs text-muted-foreground">{REDUNDANCY_LABEL[redundancy]}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Required Capacity</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.requiredKva)} kVA</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Capacity to Provision</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.provisionKva)} kVA</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Recommended UPS Module</div>
+              <div className="text-xl font-bold text-foreground mt-1">
+                {result.outOfRange ? "> " : ""}
+                {result.base} kVA
+              </div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Est. Battery Energy</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.batteryKwh)} kWh</div>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Per IEC 62040. Battery energy is a rough estimate (assumes 90% discharge efficiency) — final battery
+              string sizing must use the manufacturer's discharge curves at the design end-of-life capacity.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function GeneratorSizingCalculator() {
+  const [kw, setKw] = useState(800)
+  const [pf, setPf] = useState(0.8)
+  const [diversity, setDiversity] = useState(0.8)
+  const [largestMotorKw, setLargestMotorKw] = useState(75)
+  const [startMethod, setStartMethod] = useState<"dol" | "star-delta" | "soft" | "vfd">("star-delta")
+
+  const result = useMemo(() => {
+    const runningKva = (kw * diversity) / pf
+    const motorRunningKva = largestMotorKw / pf
+    const motorStartingKva = motorRunningKva * MOTOR_START_MULTIPLIER[startMethod]
+    const startingRequirementKva = runningKva - motorRunningKva + motorStartingKva
+    const requiredKva = Math.max(runningKva, startingRequirementKva)
+    const selected = roundUpToStandard(requiredKva, DG_KVA)
+    const base = selected ?? DG_KVA[DG_KVA.length - 1]
+    return { runningKva, motorStartingKva, startingRequirementKva, requiredKva, selected, base, outOfRange: selected === null }
+  }, [kw, pf, diversity, largestMotorKw, startMethod])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Total Connected Load (kW)</Label>
+              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Load Power Factor</Label>
+              <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Load Diversity Factor</Label>
+              <Input type="number" step="0.05" value={diversity} onChange={(e) => setDiversity(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Largest Motor (kW)</Label>
+              <Input type="number" value={largestMotorKw} onChange={(e) => setLargestMotorKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5 col-span-2">
+              <Label>Motor Starting Method</Label>
+              <Select value={startMethod} onValueChange={(v) => setStartMethod(v as typeof startMethod)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="dol">Direct-On-Line (~6×)</SelectItem>
+                  <SelectItem value="star-delta">Star-Delta (~2.5×)</SelectItem>
+                  <SelectItem value="soft">Soft Starter (~3.5×)</SelectItem>
+                  <SelectItem value="vfd">VFD (~1.2×)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Running Load</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.runningKva)} kVA</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Starting Requirement</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.startingRequirementKva)} kVA</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4 col-span-2">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Recommended Generator Set</div>
+              <div className="text-xl font-bold text-foreground mt-1">
+                {result.outOfRange ? "> " : ""}
+                {result.base} kVA
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Per ISO 8528. Sized on the larger of steady-state running load and the voltage-dip-limited starting
+              requirement of the largest motor. Verify against the alternator's transient reactance and site
+              altitude/temperature derating with the manufacturer.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function BreakerSizingCalculator() {
+  const [system, setSystem] = useState<"1" | "3">("3")
+  const [kw, setKw] = useState(75)
+  const [voltage, setVoltage] = useState(415)
+  const [pf, setPf] = useState(0.85)
+  const [loadType, setLoadType] = useState<"general" | "motor">("motor")
+  const [startMethod, setStartMethod] = useState<"dol" | "star-delta" | "soft" | "vfd">("dol")
+
+  const result = useMemo(() => {
+    const Ib = system === "1" ? (kw * 1000) / (voltage * pf) : (kw * 1000) / (1.732 * voltage * pf)
+    const In = BREAKERS.find((b) => b >= Ib) ?? null
+    const startingMultiplier = loadType === "motor" ? MOTOR_START_MULTIPLIER[startMethod] : 1
+    const startingCurrent = Ib * startingMultiplier
+    const instantaneousMin = startingCurrent * 1.2
+    const instantaneousMax = startingCurrent * 1.6
+    return { Ib, In, startingCurrent, instantaneousMin, instantaneousMax }
+  }, [system, kw, voltage, pf, loadType, startMethod])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>System</Label>
+              <Select value={system} onValueChange={(v) => setSystem(v as "1" | "3")}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Single Phase</SelectItem>
+                  <SelectItem value="3">Three Phase</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Load (kW)</Label>
+              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Voltage (V)</Label>
+              <Input type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Power Factor</Label>
+              <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Load Type</Label>
+              <Select value={loadType} onValueChange={(v) => setLoadType(v as "general" | "motor")}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="general">General Distribution</SelectItem>
+                  <SelectItem value="motor">Motor Feeder</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {loadType === "motor" && (
+              <div className="space-y-1.5">
+                <Label>Starting Method</Label>
+                <Select value={startMethod} onValueChange={(v) => setStartMethod(v as typeof startMethod)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="dol">Direct-On-Line (~6×)</SelectItem>
+                    <SelectItem value="star-delta">Star-Delta (~2.5×)</SelectItem>
+                    <SelectItem value="soft">Soft Starter (~3.5×)</SelectItem>
+                    <SelectItem value="vfd">VFD (~1.2×)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Full Load Current</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.Ib)} A</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Recommended Breaker (In)</div>
+              <div className="text-xl font-bold text-foreground mt-1">{result.In ? `${result.In} A` : "> 630 A"}</div>
+            </div>
+            {loadType === "motor" && (
+              <>
+                <div className="bg-muted/50 rounded-lg p-4">
+                  <div className="text-xs font-semibold uppercase text-muted-foreground">Starting Current</div>
+                  <div className="text-xl font-bold text-foreground mt-1">{fmt(result.startingCurrent)} A</div>
+                </div>
+                <div className="bg-muted/50 rounded-lg p-4">
+                  <div className="text-xs font-semibold uppercase text-muted-foreground">Instantaneous Trip Range</div>
+                  <div className="text-xl font-bold text-foreground mt-1">
+                    {fmt(result.instantaneousMin, 0)}–{fmt(result.instantaneousMax, 0)} A
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              The breaker's breaking capacity (Icu) must also exceed the prospective short-circuit current at its
+              location — use the Short-Circuit Calculator tab to check that separately.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function ShortCircuitCalculator() {
+  const [kva, setKva] = useState(1000)
+  const [impedance, setImpedance] = useState(6)
+  const [voltage, setVoltage] = useState(415)
+  const [includeCable, setIncludeCable] = useState(false)
+  const [length, setLength] = useState(30)
+  const [size, setSize] = useState(120)
+  const [material, setMaterial] = useState<"cu" | "al">("cu")
+  const [insulation, setInsulation] = useState<"pvc" | "xlpe">("xlpe")
+  const [faultTime, setFaultTime] = useState(0.2)
+
+  const result = useMemo(() => {
+    const transformerFlc = (kva * 1000) / (1.732 * voltage)
+    const iscTransformer = transformerFlc / (impedance / 100)
+
+    const zTransformer = ((impedance / 100) * (voltage * voltage)) / (kva * 1000)
+    const rCable = (RESISTIVITY[material] / 1000 / size) * length
+    const xCable = (0.08 / 1000) * length
+    const zCable = Math.sqrt(rCable * rCable + xCable * xCable)
+    const zTotal = includeCable ? zTransformer + zCable : zTransformer
+    const iscAtPoint = voltage / (1.732 * zTotal)
+
+    const k = SC_K_FACTOR[material][insulation]
+    const minCsa = (iscAtPoint * Math.sqrt(faultTime)) / k
+
+    return { transformerFlc, iscTransformer, iscAtPoint, minCsa, csaOk: minCsa <= size }
+  }, [kva, impedance, voltage, includeCable, length, size, material, insulation, faultTime])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Transformer Rating (kVA)</Label>
+              <Input type="number" value={kva} onChange={(e) => setKva(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Transformer Impedance (%Z)</Label>
+              <Input type="number" step="0.1" value={impedance} onChange={(e) => setImpedance(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Secondary Voltage (V)</Label>
+              <Input type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Fault Clearance Time (s)</Label>
+              <Input type="number" step="0.01" value={faultTime} onChange={(e) => setFaultTime(Number(e.target.value))} />
+            </div>
+          </div>
+
+          <label className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <input type="checkbox" checked={includeCable} onChange={(e) => setIncludeCable(e.target.checked)} className="h-4 w-4" />
+            Calculate fault level at the end of a downstream cable
+          </label>
+
+          {includeCable && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label>Cable Length (m)</Label>
+                <Input type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Cable Size (mm²)</Label>
+                <Input type="number" value={size} onChange={(e) => setSize(Number(e.target.value))} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Conductor</Label>
+                <Select value={material} onValueChange={(v) => setMaterial(v as "cu" | "al")}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cu">Copper</SelectItem>
+                    <SelectItem value="al">Aluminium</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1.5">
+                <Label>Insulation</Label>
+                <Select value={insulation} onValueChange={(v) => setInsulation(v as "pvc" | "xlpe")}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pvc">PVC (70°C)</SelectItem>
+                    <SelectItem value="xlpe">XLPE (90°C)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Transformer FLC</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.transformerFlc)} A</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Isc at Transformer Terminals</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.iscTransformer / 1000)} kA</div>
+            </div>
+            {includeCable && (
+              <div className="bg-muted/50 rounded-lg p-4 col-span-2">
+                <div className="text-xs font-semibold uppercase text-muted-foreground">Isc at End of Cable</div>
+                <div className="text-xl font-bold text-foreground mt-1">{fmt(result.iscAtPoint / 1000)} kA</div>
+              </div>
+            )}
+          </div>
+
+          <div className="text-sm space-y-2 font-serif">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Min. cable CSA for this fault level &amp; clearance time</span>
+              <span className="font-medium">{fmt(result.minCsa, 1)} mm²</span>
+            </div>
+          </div>
+
+          {includeCable && (
+            <div
+              className={`flex items-start gap-2 rounded-lg p-3 text-sm ${
+                result.csaOk ? "bg-green-500/10 text-green-700" : "bg-destructive/10 text-destructive"
+              }`}
+            >
+              {result.csaOk ? <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" /> : <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />}
+              <span>
+                {result.csaOk
+                  ? `The ${size} mm² cable meets the short-circuit withstand requirement.`
+                  : `The ${size} mm² cable is below the required minimum — increase the cable size.`}
+              </span>
+            </div>
+          )}
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Simplified per IEC 60909 (transformer-limited, radial LV network). Ignores upstream network and motor
+              contribution — treat as a conservative preliminary estimate, not a substitute for a full study.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 export function ToolkitCalculatorsSection() {
   return (
     <section id="toolkit-calculators" className="py-20">
@@ -326,12 +921,32 @@ export function ToolkitCalculatorsSection() {
         </div>
 
         <Tabs defaultValue="sizing" className="items-center">
-          <TabsList>
+          <TabsList className="flex-wrap h-auto gap-1">
             <TabsTrigger value="sizing">Cable &amp; Load Sizing</TabsTrigger>
+            <TabsTrigger value="transformer">Transformer</TabsTrigger>
+            <TabsTrigger value="ups">UPS</TabsTrigger>
+            <TabsTrigger value="generator">Generator (DG)</TabsTrigger>
+            <TabsTrigger value="breaker">Breaker</TabsTrigger>
+            <TabsTrigger value="short-circuit">Short-Circuit</TabsTrigger>
             <TabsTrigger value="formulas">Quick Formulas</TabsTrigger>
           </TabsList>
           <TabsContent value="sizing" className="w-full mt-8">
             <CableSizingCalculator />
+          </TabsContent>
+          <TabsContent value="transformer" className="w-full mt-8">
+            <TransformerSizingCalculator />
+          </TabsContent>
+          <TabsContent value="ups" className="w-full mt-8">
+            <UpsSizingCalculator />
+          </TabsContent>
+          <TabsContent value="generator" className="w-full mt-8">
+            <GeneratorSizingCalculator />
+          </TabsContent>
+          <TabsContent value="breaker" className="w-full mt-8">
+            <BreakerSizingCalculator />
+          </TabsContent>
+          <TabsContent value="short-circuit" className="w-full mt-8">
+            <ShortCircuitCalculator />
           </TabsContent>
           <TabsContent value="formulas" className="w-full mt-8">
             <QuickFormulasCalculator />
@@ -340,8 +955,9 @@ export function ToolkitCalculatorsSection() {
 
         <div className="mt-10 max-w-3xl mx-auto text-center text-sm text-muted-foreground font-serif bg-muted/40 rounded-lg p-4">
           Values shown are indicative, simplified reference figures for preliminary/learning purposes and are
-          aligned in principle with the IEC 60364 series. Always verify against a manufacturer's datasheet and
-          the applicable standard before using these figures on a real project.
+          aligned in principle with the IEC 60364, IEC 60076, IEC 62040, ISO 8528 and IEC 60909 standards. Always
+          verify against a manufacturer's datasheet and the applicable standard before using these figures on a
+          real project.
         </div>
       </div>
     </section>

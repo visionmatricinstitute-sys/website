@@ -85,6 +85,82 @@ export const RESOURCE_ITEMS: ResourceItem[] = [
   },
 ]
 
+export interface StandardItem {
+  code: string
+  title: string
+  scope: string
+}
+
+export interface StandardCategory {
+  key: string
+  title: string
+  items: StandardItem[]
+}
+
+export const STANDARDS: StandardCategory[] = [
+  {
+    key: "installation",
+    title: "General Electrical Installation",
+    items: [
+      { code: "IEC 60364", title: "Low-Voltage Electrical Installations", scope: "Design, verification and safety of LV wiring installations" },
+      { code: "NFPA 70 (NEC)", title: "National Electrical Code", scope: "US wiring and installation code" },
+      { code: "IEC 61439", title: "LV Switchgear and Controlgear Assemblies", scope: "Design and testing of panels, SMDBs and switchboards" },
+      { code: "IEC 60947", title: "Low-Voltage Switchgear and Controlgear", scope: "Breakers, contactors and switching devices" },
+    ],
+  },
+  {
+    key: "protection",
+    title: "Protection, Short-Circuit & Safety",
+    items: [
+      { code: "IEC 60909", title: "Short-Circuit Currents in Three-Phase AC Systems", scope: "Fault level calculation methodology" },
+      { code: "IEEE 242", title: "Protection and Coordination of Industrial Power Systems (Buff Book)", scope: "Protective device coordination" },
+      { code: "IEEE 1584", title: "Guide for Arc-Flash Hazard Calculations", scope: "Incident energy and PPE category determination" },
+      { code: "NFPA 70E", title: "Electrical Safety in the Workplace", scope: "Safe work practices around energized equipment" },
+    ],
+  },
+  {
+    key: "equipment",
+    title: "Transformers, Generators & UPS",
+    items: [
+      { code: "IEC 60076", title: "Power Transformers", scope: "Ratings, testing and impedance" },
+      { code: "IEEE C57 series", title: "Transformers", scope: "US transformer standards" },
+      { code: "ISO 8528", title: "Reciprocating IC Engine Driven Generating Sets", scope: "Diesel generator ratings and performance" },
+      { code: "IEC 60034", title: "Rotating Electrical Machines", scope: "Motors and alternators" },
+      { code: "IEC 62040", title: "Uninterruptible Power Systems (UPS)", scope: "UPS performance and testing requirements" },
+    ],
+  },
+  {
+    key: "cables",
+    title: "Cables & Conductors",
+    items: [
+      { code: "IEC 60228", title: "Conductors of Insulated Cables", scope: "Conductor construction and sizing" },
+      { code: "IEC 60502", title: "Power Cables with Extruded Insulation", scope: "PVC/XLPE cable ratings 1kV–30kV" },
+    ],
+  },
+  {
+    key: "earthing",
+    title: "Earthing & Lightning Protection",
+    items: [
+      { code: "IEC 60364-5-54", title: "Earthing Arrangements and Protective Conductors", scope: "Grounding system design" },
+      { code: "IEEE 80", title: "Guide for Safety in AC Substation Grounding", scope: "Substation earth grid design" },
+      { code: "IEC 62305", title: "Protection Against Lightning", scope: "Lightning risk assessment and protection systems" },
+    ],
+  },
+  {
+    key: "datacenter",
+    title: "Data Center Specific",
+    items: [
+      { code: "TIA-942", title: "Telecommunications Infrastructure Standard for Data Centers", scope: "Data center tiering and infrastructure design" },
+      { code: "ANSI/BICSI 002", title: "Data Center Design and Implementation Best Practices", scope: "Comprehensive data center design guide" },
+      { code: "Uptime Institute Tier Standard", title: "Tier Classification (Tier I–IV)", scope: "Data center topology and reliability classification" },
+      { code: "EN 50600", title: "Data Centre Facilities and Infrastructures", scope: "European data center facility standard" },
+      { code: "NFPA 75 / 76", title: "Fire Protection for IT Equipment / Telecom Facilities", scope: "Fire protection for critical facilities" },
+      { code: "ISO/IEC 30134", title: "Data Centre Key Performance Indicators", scope: "PUE and other efficiency metrics" },
+      { code: "ASHRAE TC9.9", title: "Thermal Guidelines for Data Processing Environments", scope: "Environmental design guidelines" },
+    ],
+  },
+]
+
 export interface ExternalLink {
   id: string
   title: string
