@@ -71,6 +71,7 @@ const popularCourses = [
     students: "New",
     level: "Intermediate to Advanced",
     features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
+    image: "/electrical-design-data-center.jpg",
     isUpcoming: false,
   },
 ]
@@ -234,7 +235,11 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
     >
       <div className="relative overflow-hidden rounded-t-lg">
         <div className="transition-transform duration-300 group-hover:scale-105">
-          <CourseThumbnail icon={IconComponent} index={index} muted={course.isUpcoming} />
+          {course.image ? (
+            <img src={course.image} alt={course.title} className="w-full h-48 object-cover" />
+          ) : (
+            <CourseThumbnail icon={IconComponent} index={index} muted={course.isUpcoming} />
+          )}
         </div>
         <div className="absolute top-4 left-4">
           <Badge className="bg-accent text-accent-foreground">{course.level}</Badge>
