@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrical Power System &amp; Lighting Design Reference | Vision Matrix Institute</title>
+<style>
+  :root{
+    --navy:#0d2745; --accent:#00a8ff; --secondary:#d32f2f; --muted:#5b6b7a; --line:#dde4ec; --bg:#f4f7fb;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:"Segoe UI",Arial,Helvetica,sans-serif;
+    max-width:920px; margin:24px auto; padding:0 18px 60px; color:#101820; line-height:1.6;
+  }
+  .band{
+    background:linear-gradient(135deg,var(--navy),#123a63);
+    color:#fff; padding:28px 30px; border-radius:12px; text-align:center; margin-bottom:8px;
+  }
+  .band h1{margin:0 0 8px; font-size:26px}
+  .band p{margin:0; color:#cfe1f4; font-size:14px}
+  .toc{
+    background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:18px 22px; margin:24px 0 32px;
+  }
+  .toc h2{margin:0 0 10px; font-size:15px; color:var(--navy)}
+  .toc ol{margin:0; padding-left:20px; columns:2; column-gap:24px; font-size:13.5px}
+  .toc li{margin-bottom:4px}
+  h2.section{
+    color:var(--navy); font-size:20px; border-bottom:2px solid var(--accent);
+    padding-bottom:8px; margin:40px 0 16px;
+  }
+  h3{color:var(--navy); font-size:15.5px; margin:22px 0 8px}
+  p{margin:10px 0}
+  .formula{
+    background:var(--bg); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:6px;
+    padding:12px 16px; margin:12px 0; font-size:15px;
+  }
+  .formula small{display:block; color:var(--muted); font-size:12.5px; margin-top:4px; font-style:italic}
+  table{width:100%; border-collapse:collapse; margin:12px 0 18px; font-size:13px}
+  th,td{border:1px solid var(--line); padding:7px 9px; text-align:left}
+  th{background:var(--bg); color:var(--navy)}
+  .note{
+    background:#fff8ea; border:1px solid #f1dca6; color:#7a5a12;
+    padding:10px 14px; border-radius:8px; font-size:13px; margin:12px 0;
+  }
+  .example{
+    background:#eefaf0; border:1px solid #bfe6cd; border-radius:8px; padding:12px 16px; margin:10px 0; font-size:13.5px;
+  }
+  .example b{color:#1f9d55}
+  .diagram{
+    background:#fff; border:1px solid var(--line); border-radius:10px; padding:18px; margin:14px 0;
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px; font-size:12.5px;
+  }
+  .diagram .box{
+    background:var(--bg); border:1.5px solid var(--navy); border-radius:6px; padding:8px 12px; text-align:center; min-width:90px;
+  }
+  .diagram .arrow{color:var(--muted); font-size:16px}
+  .diagram figcaption{width:100%; text-align:center; color:var(--muted); font-size:12px; font-style:italic; margin-top:8px}
+  .std-tag{
+    display:inline-block; background:var(--bg); border:1px solid var(--line); border-radius:12px;
+    padding:2px 9px; font-size:11.5px; color:var(--navy); font-weight:600; margin:2px 3px 2px 0;
+  }
+  footer{
+    margin-top:36px; padding-top:16px; border-top:1px solid var(--line);
+    color:var(--muted); font-size:12px; font-style:italic; text-align:center;
+  }
+  @media print{ body{margin:0} .band{-webkit-print-color-adjust:exact; print-color-adjust:exact} }
+</style>
+</head>
+<body>
+
+<div class="band">
+  <h1>Electrical Power System &amp; Lighting Design Reference</h1>
+  <p>Vision Matrix Institute &nbsp;|&nbsp; Engineer's Toolkit &nbsp;|&nbsp; Formulas, Tables &amp; Standards</p>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li>Power Distribution (AC/DC)</li>
+    <li>Load Calculations</li>
+    <li>Conductor &amp; Cable Sizing</li>
+    <li>Voltage Drop Calculations</li>
+    <li>Short-Circuit Current Calculations</li>
+    <li>Protective Device Coordination</li>
+    <li>Grounding (Earthing)</li>
+    <li>Lightning Protection</li>
+    <li>Motor Starting &amp; Protection</li>
+    <li>Transformer Sizing &amp; Impedance</li>
+    <li>Harmonics &amp; Power Quality</li>
+    <li>Power Factor Correction</li>
+    <li>Lighting Design (Illuminance)</li>
+    <li>Energy Efficiency</li>
+    <li>Thermal &amp; Insulation Ratings</li>
+    <li>Switchgear &amp; Breaker Ratings</li>
+    <li>Instrumentation &amp; Measurement</li>
+    <li>Standards Comparison &amp; Worked Examples</li>
+  </ol>
+</div>
+
+<h2 class="section" id="power-distribution">1. Power Distribution (AC/DC)</h2>
+<p><span class="std-tag">Fundamentals</span></p>
+<div class="formula">
+  DC: P = V &times; I<br>
+  Three-phase active power: P = &radic;3 &times; V<sub>LL</sub> &times; I &times; cos&phi; (kW)<br>
+  Three-phase reactive power: Q = &radic;3 &times; V<sub>LL</sub> &times; I &times; sin&phi;<br>
+  Three-phase line current: I = P / (&radic;3 &times; V<sub>LL</sub> &times; cos&phi;)<br>
+  Single-phase: P = V &times; I &times; cos&phi;<br>
+  Apparent power: S = &radic;(P&sup2; + Q&sup2;) = &radic;3 &times; V<sub>LL</sub> &times; I
+  <small>Assumes balanced, sinusoidal waveforms. DC distribution uses the same power law without reactance or phase angle.</small>
+</div>
+
+<div class="diagram">
+  <div class="box">Generator</div><div class="arrow">&rarr;</div>
+  <div class="box">Transformer<br><small>(step-down)</small></div><div class="arrow">&rarr;</div>
+  <div class="box">Main Bus</div><div class="arrow">&rarr;</div>
+  <div class="box">CB1 &rarr; Load A</div>
+  <figcaption>Figure 1: Generic single-line distribution &mdash; generator, transformer, main bus, and protected feeders (CB2 &rarr; Motor, CB3 &rarr; Panel follow the same bus).</figcaption>
+</div>
+
+<h2 class="section" id="load-calculations">2. Load Calculations</h2>
+<p>Aggregate loads by type (lighting, receptacles, HVAC, motors), then apply <b>demand factors</b> and <b>diversity factors</b> per the governing code (NEC 220, IEC 60364-6, or BS 7671 Appendix 4).</p>
+<div class="formula">
+  Motor full-load current (3-phase): I<sub>FL</sub> = P<sub>rated</sub> / (&radic;3 &times; V &times; cos&phi; &times; &eta;)
+  <small>&eta; = motor efficiency. Typical unit loads: lighting 10&ndash;50 W/m&sup2;, outlets 50&ndash;100 W/point.</small>
+</div>
+<div class="note">Always verify total demand does not exceed supply capacity or breaker ratings after applying diversity.</div>
+
+<h2 class="section" id="cable-sizing">3. Conductor &amp; Cable Sizing</h2>
+<p><span class="std-tag">IEC 60364-5-52</span> <span class="std-tag">NEC 310.15</span> <span class="std-tag">BS 7671</span></p>
+<p>Select conductor size so the design current I<sub>b</sub> &le; the cable's tabulated rating I<sub>z</sub>, then derate for ambient temperature, grouping, and installation method.</p>
+
+<h3>Reference ampacity table &mdash; PVC/Cu, IEC 60364-5-52 Table B.52.2 (amps)</h3>
+<table>
+  <tr><th>Size (mm&sup2;)</th><th>A1</th><th>A2</th><th>B1</th><th>B2</th><th>C</th><th>E</th><th>F</th></tr>
+  <tr><td>1.5</td><td>14.5</td><td>14.0</td><td>17.5</td><td>16.5</td><td>19.5</td><td>22</td><td>24</td></tr>
+  <tr><td>4</td><td>26</td><td>25</td><td>32</td><td>30</td><td>36</td><td>40</td><td>45</td></tr>
+  <tr><td>16</td><td>61</td><td>57</td><td>76</td><td>69</td><td>85</td><td>94</td><td>101</td></tr>
+  <tr><td>50</td><td>119</td><td>110</td><td>151</td><td>133</td><td>168</td><td>180</td><td>196</td></tr>
+  <tr><td>150</td><td>240</td><td>219</td><td>300</td><td>258</td><td>344</td><td>379</td><td>406</td></tr>
+</table>
+<p style="font-size:12px;color:var(--muted)">A1&ndash;F = installation methods (insulated conduit in wall &rarr; spaced in free air). XLPE (90&deg;C) insulation gives roughly 20&ndash;25% higher ampacity than PVC (70&deg;C) at the same size.</p>
+
+<h3>Standard conductor sizes</h3>
+<p>Copper (mm&sup2;): 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240<br>
+Aluminium (mm&sup2;): 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300</p>
+
+<div class="formula">
+  Short-circuit withstand check: S&sup2; &ge; I&sup2;t &times; k&sup2;
+  <small>The conductor's I&sup2;t withstand must not be exceeded by the prospective fault energy let-through for the clearance time t (IEC 60364-4-43). See the Short-Circuit Calculator in the Engineer's Toolkit for the k-factor version of this check.</small>
+</div>
+
+<h2 class="section" id="voltage-drop">4. Voltage Drop Calculations</h2>
+<p><span class="std-tag">IEC 60364-5-52 Annex G</span> Limits are typically 3% for lighting circuits and 5% total (feeder + branch).</p>
+<div class="formula">
+  Single-phase: &Delta;V = 2 &times; I &times; L &times; (R cos&phi; + X sin&phi;) / 1000<br>
+  Three-phase: &Delta;V = &radic;3 &times; I &times; L &times; (R cos&phi; + X sin&phi;) / 1000<br>
+  DC: &Delta;V = 2 &times; I &times; L &times; R / 1000
+  <small>R, X in &Omega;/km; L in metres (one-way route length). Valid for PF &gt; 0.8; for lower PF, use full phasor summation.</small>
+</div>
+<div class="example">
+  <b>Example:</b> 16 mm&sup2; Cu, single-phase, 40 m, 32 A, PF 0.95 (R=1.15, X=0.10 &Omega;/km):<br>
+  &Delta;V = 2 &times; 32 &times; 0.040 &times; (1.15 &times; 0.95 + 0.10 &times; 0.312) &asymp; 2.9 V (&asymp; 1.25% of 230 V) &mdash; within limit.
+</div>
+
+<h2 class="section" id="short-circuit">5. Short-Circuit Current Calculations</h2>
+<p><span class="std-tag">IEC 60909</span> <span class="std-tag">IEEE 142</span> Uses Thevenin equivalents and symmetrical components.</p>
+<div class="formula">
+  Peak current: I<sub>p</sub> = &kappa; &times; &radic;2 &times; I''<sub>k</sub>, &nbsp; &kappa; = 1.02 + 0.98e<sup>-3(R/X)</sup>
+  <small>For faults far from generators, &kappa; &asymp; 1.53, giving I<sub>p</sub> &asymp; 2.1 &times; I''<sub>k</sub>.</small>
+</div>
+<div class="formula">
+  Transformer-limited fault current: I''<sub>k</sub> &asymp; I<sub>rated</sub> / (Z% / 100)
+  <small>E.g. a transformer with 5% impedance contributes 20 &times; its rated current at its terminals (before decay to steady-state I<sub>k</sub>).</small>
+</div>
+
+<div class="diagram">
+  <div class="box">I''<sub>k</sub><br><small>subtransient</small></div><div class="arrow">&rarr; decays &rarr;</div>
+  <div class="box">I<sub>k</sub><br><small>steady-state</small></div>
+  <figcaption>Figure 2: Fault current evolution &mdash; the subtransient current decays toward steady-state; peak I<sub>p</sub> occurs on the first half-cycle.</figcaption>
+</div>
+
+<h2 class="section" id="coordination">6. Protective Device Coordination</h2>
+<p><span class="std-tag">IEC 60947-2</span> <span class="std-tag">IEC 60269</span> <span class="std-tag">IEEE C37.102</span></p>
+<p>Selectivity is achieved when the downstream device clears a fault before the upstream device would operate, across the full range of prospective fault currents. Coordination studies compare manufacturer time-current characteristic (TCC) curves and I&sup2;t let-through energy &mdash; typically done with dedicated software (e.g. ETAP, SKM) rather than a single formula.</p>
+<div class="diagram">
+  <div class="box">Fault</div><div class="arrow">&rarr;</div>
+  <div class="box">Fuse #1<br><small>(downstream, clears first)</small></div>
+  <div class="arrow">|</div>
+  <div class="box">Breaker #2<br><small>(upstream, backup)</small></div>
+  <figcaption>Figure 3: Simplified coordination &mdash; the downstream device clears a fault before the upstream device needs to act.</figcaption>
+</div>
+
+<h2 class="section" id="grounding">7. Grounding (Earthing)</h2>
+<p><span class="std-tag">IEEE 80</span> <span class="std-tag">IEC 60364-5-54</span></p>
+<div class="formula">
+  Vertical rod: R = &rho; / (2&pi;L) &times; ln(4L/d)<br>
+  Horizontal strip/plate: R = &rho; / (&pi;L) &times; ln(2L&sup2; / (w&middot;h))<br>
+  Ring electrode: R = &rho; / (2&pi;&sup2;r) &times; ln(8r/d)
+  <small>&rho; = soil resistivity (&Omega;&middot;m), L = electrode length, d = diameter, w = strip width, h = burial depth, r = ring radius. A ground grid (mesh) uses the more complex IEEE 80 area-based formula.</small>
+</div>
+<div class="example">
+  <b>Example:</b> 3 m copper rod, 16 mm diameter, &rho; = 100 &Omega;&middot;m &rarr; R = 100/(2&pi;&times;3) &times; ln(4&times;3/0.016) &asymp; 35 &Omega;.
+</div>
+<div class="note">Multiple rods or deeper burial reduce resistance. Soil resistivity ranges from ~10 &Omega;&middot;m (wet clay) to several thousand &Omega;&middot;m (dry rock). Verify touch/step voltages against IEC 60479 / IEEE 80 limits.</div>
+
+<h2 class="section" id="lightning">8. Lightning Protection</h2>
+<p><span class="std-tag">IEC 62305</span> <span class="std-tag">NFPA 780</span></p>
+<div class="formula">
+  Striking distance: D &asymp; 10 &times; I<sup>0.65</sup> (I in kA, D in m)
+  <small>Used with the rolling-sphere or protective-angle method to position air terminals. Surge arresters (SPDs) at transformers/switchgear should be coordinated per IEC 61643 and IEC 62305-4.</small>
+</div>
+
+<h2 class="section" id="motor-starting">9. Motor Starting &amp; Protection</h2>
+<p><span class="std-tag">IEC 60034</span> <span class="std-tag">IEC 60947-4-1</span> <span class="std-tag">NEMA MG1</span></p>
+<div class="formula">
+  Full-load current: I<sub>FL</sub> = P<sub>rated</sub> / (&radic;3 &times; V &times; cos&phi; &times; &eta;)
+  <small>Locked-rotor (starting) current is typically 5&ndash;8&times; I<sub>FL</sub> for direct-on-line starting. Star-delta starting reduces line starting current to roughly 1/3 of the DOL value.</small>
+</div>
+<div class="note">Overload relays (thermal/magnetic) protect against sustained overcurrent; instantaneous elements handle short-circuit/locked-rotor conditions. See the Breaker Calculator in the Engineer's Toolkit for instantaneous trip range guidance by starting method.</div>
+
+<h2 class="section" id="transformer">10. Transformer Sizing &amp; Impedance</h2>
+<p><span class="std-tag">IEC 60076</span></p>
+<div class="formula">
+  Rated current: S = &radic;3 &times; V<sub>LL</sub> &times; I<sub>rated</sub> / 1000 (kVA)<br>
+  Short-circuit current: I<sub>sc</sub> = I<sub>full</sub> / (Z% / 100)
+  <small>Typical transformer impedance is 5&ndash;12% (IEC 60076-5). Short-circuit withstand duration is usually 2 s per IEC, or limited by winding temperature rise per IEEE C57.12.</small>
+</div>
+<div class="example">
+  <b>Example:</b> 250 kVA, 11 kV/400 V, Z=5% &rarr; LV full-load current &asymp; 360 A; maximum LV fault current &asymp; 360/0.05 = 7200 A.
+</div>
+<p style="font-size:12px;color:var(--muted)">Common LV ratings (kVA): 15, 25, 45, 75, 112.5, 150, 225, 300&hellip; and up to MV sizes in 1 MVA+ increments.</p>
+
+<h2 class="section" id="harmonics">11. Harmonics &amp; Power Quality</h2>
+<p><span class="std-tag">IEEE 519</span> <span class="std-tag">IEC 61000</span></p>
+<div class="formula">
+  THD<sub>I</sub> = &radic;(I<sub>2</sub>&sup2; + I<sub>3</sub>&sup2; + &hellip;) / I<sub>1</sub> &times; 100%
+  <small>I<sub>n</sub> = RMS amplitude of harmonic order n; I<sub>1</sub> = fundamental RMS. IEEE 519 typically limits THD to 5&ndash;8% at the point of common coupling.</small>
+</div>
+<div class="note">Nonlinear loads (VFDs, rectifiers, IT equipment) inject harmonics. Third-harmonic currents are zero-sequence and add arithmetically in neutrals &mdash; oversize neutrals or use delta transformers where high triplen-harmonic loads are expected.</div>
+
+<h2 class="section" id="pf-correction">12. Power Factor Correction</h2>
+<p><span class="std-tag">IEEE 141</span></p>
+<div class="formula">
+  Required reactive compensation: Q<sub>kvar</sub> = P &times; (tan&phi;<sub>1</sub> &minus; tan&phi;<sub>2</sub>)
+  <small>&phi; = arccos(PF). Capacitor current (3-phase): I<sub>c</sub> = Q<sub>kvar</sub> &times; 1000 / (&radic;3 &times; V).</small>
+</div>
+<div class="example">
+  <b>Example:</b> 100 kW load, PF 0.8 &rarr; 0.95: tan&phi;<sub>1</sub>=0.75, tan&phi;<sub>2</sub>=0.33 &rarr; Q = 100 &times; (0.75&minus;0.33) = 42 kVAR.
+</div>
+<p>See the Power Factor Correction Calculator in the Engineer's Toolkit to compute this directly for your load.</p>
+
+<h2 class="section" id="lighting-design">13. Lighting Design (Illuminance)</h2>
+<p><span class="std-tag">EN 12464-1</span> <span class="std-tag">IESNA RP-20</span></p>
+<div class="formula">
+  Point source: E = I &times; cos&theta; / d&sup2;<br>
+  Lumen method (room lighting): N = (E &times; A) / (F &times; UF &times; MF)
+  <small>E = target illuminance (lux), A = room area (m&sup2;), F = lumens per luminaire, UF = utilization factor, MF = maintenance factor, N = number of luminaires needed.</small>
+</div>
+<table>
+  <tr><th>Space</th><th>Typical illuminance (lux)</th></tr>
+  <tr><td>Offices</td><td>300&ndash;500</td></tr>
+  <tr><td>Classrooms</td><td>~300</td></tr>
+  <tr><td>Warehouses</td><td>~200</td></tr>
+  <tr><td>Roads</td><td>5&ndash;50</td></tr>
+</table>
+<p>See the Lighting Calculator in the Engineer's Toolkit to size luminaires for a room directly.</p>
+
+<h2 class="section" id="energy-efficiency">14. Energy Efficiency</h2>
+<p><span class="std-tag">IEC 60034-30</span> <span class="std-tag">IEC 60076-20</span></p>
+<p>Efficiency &eta; = P<sub>out</sub> / P<sub>in</sub>. Motor efficiency classes IE1&ndash;IE5 per IEC 60034-30; transformer losses per IEC 60076-20. LED lighting typically exceeds 100 lm/W versus 50&ndash;80 lm/W for fluorescent.</p>
+
+<h2 class="section" id="thermal">15. Thermal &amp; Insulation Ratings</h2>
+<p><span class="std-tag">IEC 60071</span> <span class="std-tag">IEC 60664</span></p>
+<p>Insulation thermal classes: B (130&deg;C), F (155&deg;C), H (180&deg;C). Basic Insulation Level (BIL) and clearance/creepage distances are set per IEC 60071 and IEC 60664 based on system voltage and pollution degree (approx. 0.8 mm/kV clearance in air, 1.5&ndash;2 mm/kV creepage under pollution).</p>
+
+<h2 class="section" id="switchgear">16. Switchgear &amp; Circuit-Breaker Ratings</h2>
+<p><span class="std-tag">IEC 62271</span> <span class="std-tag">IEC 60947</span> <span class="std-tag">UL 489</span></p>
+<p>Key ratings: nominal voltage U<sub>n</sub>, rated current I<sub>n</sub>, breaking capacity I<sub>cu</sub>, short-time withstand I<sub>cw</sub> (1 s), and service breaking capacity I<sub>cs</sub> (typically 75% of I<sub>cu</sub>). Rule of thumb: fuses sized 125&ndash;135% of continuous current; motor protection relays set to 110&ndash;125% of motor FLA.</p>
+
+<h2 class="section" id="instrumentation">17. Instrumentation &amp; Measurement</h2>
+<p><span class="std-tag">IEC 61869</span></p>
+<div class="formula">
+  Current Transformer: I<sub>s</sub> = I<sub>p</sub> &times; (N<sub>p</sub> / N<sub>s</sub>)<br>
+  Voltage Transformer: V<sub>s</sub> = V<sub>p</sub> &times; (N<sub>s</sub> / N<sub>p</sub>)
+  <small>E.g. a 100/5 A CT gives I<sub>s</sub> = I<sub>p</sub>/20. Never open-circuit a CT secondary under load.</small>
+</div>
+
+<h2 class="section" id="standards-comparison">18. Standards Comparison &amp; Worked Examples</h2>
+<table>
+  <tr><th>Code/Standard</th><th>Branch max drop</th><th>Total max drop</th></tr>
+  <tr><td>NEC (informational)</td><td>3%</td><td>5%</td></tr>
+  <tr><td>IEC 60364/BS 7671 (lighting)</td><td>3%</td><td>&ndash;</td></tr>
+  <tr><td>IEC 60364/BS 7671 (other)</td><td>5%</td><td>&ndash;</td></tr>
+  <tr><td>AS/NZS 3000</td><td>5%</td><td>5%</td></tr>
+</table>
+
+<h3>Worked examples</h3>
+<div class="example"><b>1. Conductor sizing:</b> 50 kW, PF 0.9, 400 V, 60 m, 3% drop limit &rarr; I &asymp; 80.1 A &rarr; 25 mm&sup2; Cu (119 A) satisfies both ampacity and &Delta;V &asymp; 1.55%.</div>
+<div class="example"><b>2. Short-circuit:</b> 50 kVA, 400 V, Z=5% &rarr; I<sub>full</sub>=72.2 A &rarr; I<sub>sc</sub> &asymp; 1.44 kA rms, I<sub>p</sub> &asymp; 3.0 kA peak.</div>
+<div class="example"><b>3. Ground rod:</b> 3 m rod, 16 mm dia., &rho;=100 &Omega;&middot;m &rarr; R &asymp; 35 &Omega;.</div>
+<div class="example"><b>4. Motor starting:</b> 37.3 kW, 480 V, &eta;=90%, PF=0.85 &rarr; FLA &asymp; 63 A, DOL locked-rotor &asymp; 380 A.</div>
+<div class="example"><b>5. Transformer selection:</b> 200 kW, PF 0.9, +50% future growth &rarr; required &asymp; 333 kVA &rarr; select standard 400 kVA.</div>
+
+<footer>
+  Indicative reference values and simplified methods for learning purposes. Always verify against the current edition
+  of the cited standard and manufacturer data before use on a real project. &mdash; Vision Matrix Institute
+</footer>
+
+</body>
+</html>

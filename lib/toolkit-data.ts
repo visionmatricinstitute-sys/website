@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react"
-import { FileText, Ruler, LayoutTemplate, BookMarked, Compass, ClipboardList } from "lucide-react"
+import { FileText, Ruler, LayoutTemplate, BookMarked, Compass, ClipboardList, Library } from "lucide-react"
 
 export type ResourceCategory = "standards" | "templates"
 
@@ -28,6 +28,17 @@ export const RESOURCE_CATEGORIES: { key: ResourceCategory; title: string; blurb:
 ]
 
 export const RESOURCE_ITEMS: ResourceItem[] = [
+  {
+    id: "electrical-design-reference-guide",
+    category: "standards",
+    title: "Electrical Power System & Lighting Design Reference",
+    description:
+      "An 18-section reference covering power distribution, load calculations, cable sizing, voltage drop, short-circuit, grounding, lightning protection, motor starting, transformers, harmonics, power factor correction, lighting design and more, with worked examples and standards comparisons.",
+    tag: "Reference Guide",
+    status: "available",
+    href: "/toolkit/electrical-design-reference-guide.html",
+    icon: Library,
+  },
   {
     id: "electrical-formula-sheet",
     category: "standards",

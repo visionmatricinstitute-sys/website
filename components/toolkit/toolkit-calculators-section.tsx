@@ -7,7 +7,20 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { AlertTriangle, CheckCircle2, Cable, Boxes, BatteryCharging, Fuel, Power, Zap, Calculator } from "lucide-react"
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Cable,
+  Boxes,
+  BatteryCharging,
+  Fuel,
+  Power,
+  Zap,
+  Calculator,
+  Gauge,
+  Lightbulb,
+  ArrowDownToLine,
+} from "lucide-react"
 
 /* ---------------- Reference data (indicative, see disclaimer) ---------------- */
 const SIZES = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630]
@@ -908,6 +921,310 @@ function ShortCircuitCalculator() {
   )
 }
 
+function PowerFactorCorrectionCalculator() {
+  const [kw, setKw] = useState(100)
+  const [voltage, setVoltage] = useState(415)
+  const [system, setSystem] = useState<"1" | "3">("3")
+  const [pfExisting, setPfExisting] = useState(0.8)
+  const [pfTarget, setPfTarget] = useState(0.95)
+
+  const result = useMemo(() => {
+    const phi1 = Math.acos(pfExisting)
+    const phi2 = Math.acos(pfTarget)
+    const qKvar = kw * (Math.tan(phi1) - Math.tan(phi2))
+    const capacitorCurrent =
+      system === "1" ? (qKvar * 1000) / voltage : (qKvar * 1000) / (1.732 * voltage)
+    const sBefore = kw / pfExisting
+    const sAfter = kw / pfTarget
+    return { qKvar, capacitorCurrent, sBefore, sAfter, sReduction: sBefore - sAfter }
+  }, [kw, voltage, system, pfExisting, pfTarget])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Real Power (kW)</Label>
+              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>System</Label>
+              <Select value={system} onValueChange={(v) => setSystem(v as "1" | "3")}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Single Phase</SelectItem>
+                  <SelectItem value="3">Three Phase</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Voltage (V)</Label>
+              <Input type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
+            </div>
+            <div />
+            <div className="space-y-1.5">
+              <Label>Existing Power Factor</Label>
+              <Input type="number" step="0.01" min={0.1} max={1} value={pfExisting} onChange={(e) => setPfExisting(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Target Power Factor</Label>
+              <Input type="number" step="0.01" min={0.1} max={1} value={pfTarget} onChange={(e) => setPfTarget(Number(e.target.value))} />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4 col-span-2">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Required Capacitor Bank</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.qKvar)} kVAR</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Capacitor Current</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.capacitorCurrent)} A</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Apparent Power Reduction</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.sReduction)} kVA</div>
+            </div>
+          </div>
+
+          <div className="text-sm space-y-2 font-serif">
+            <div className="flex justify-between border-b border-border pb-2">
+              <span className="text-muted-foreground">Apparent power before correction</span>
+              <span className="font-medium">{fmt(result.sBefore)} kVA</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Apparent power after correction</span>
+              <span className="font-medium">{fmt(result.sAfter)} kVA</span>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Per IEEE 141. Verify the capacitor bank's rated voltage and confirm no harmonic resonance risk with the
+              site's load profile (IEC 61000-3-6) before installation.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function LightingCalculator() {
+  const [length, setLength] = useState(6)
+  const [width, setWidth] = useState(4)
+  const [illuminance, setIlluminance] = useState(400)
+  const [lumensPerLuminaire, setLumensPerLuminaire] = useState(3300)
+  const [utilizationFactor, setUtilizationFactor] = useState(0.6)
+  const [maintenanceFactor, setMaintenanceFactor] = useState(0.8)
+
+  const result = useMemo(() => {
+    const area = length * width
+    const totalLumensNeeded = illuminance * area
+    const effectiveLumens = lumensPerLuminaire * utilizationFactor * maintenanceFactor
+    const luminaireCount = effectiveLumens > 0 ? Math.ceil(totalLumensNeeded / effectiveLumens) : 0
+    return { area, totalLumensNeeded, luminaireCount }
+  }, [length, width, illuminance, lumensPerLuminaire, utilizationFactor, maintenanceFactor])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Room Length (m)</Label>
+              <Input type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Room Width (m)</Label>
+              <Input type="number" value={width} onChange={(e) => setWidth(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Target Illuminance (lux)</Label>
+              <Input type="number" value={illuminance} onChange={(e) => setIlluminance(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Lumens per Luminaire</Label>
+              <Input type="number" value={lumensPerLuminaire} onChange={(e) => setLumensPerLuminaire(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Utilization Factor</Label>
+              <Input type="number" step="0.05" min={0.1} max={1} value={utilizationFactor} onChange={(e) => setUtilizationFactor(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Maintenance Factor</Label>
+              <Input type="number" step="0.05" min={0.1} max={1} value={maintenanceFactor} onChange={(e) => setMaintenanceFactor(Number(e.target.value))} />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Room Area</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.area)} m²</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Total Lumens Needed</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.totalLumensNeeded, 0)} lm</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4 col-span-2">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Luminaires Required</div>
+              <div className="text-xl font-bold text-foreground mt-1">{result.luminaireCount}</div>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Lumen method per EN 12464-1 / IESNA RP-20. Utilization factor depends on room reflectances and
+              luminaire distribution — confirm with the manufacturer's photometric data for a final layout.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function GroundingResistanceCalculator() {
+  const [electrodeType, setElectrodeType] = useState<"rod" | "strip" | "ring">("rod")
+  const [resistivity, setResistivity] = useState(100)
+  const [length, setLength] = useState(3)
+  const [diameterMm, setDiameterMm] = useState(16)
+  const [widthMm, setWidthMm] = useState(25)
+  const [depth, setDepth] = useState(0.6)
+  const [radius, setRadius] = useState(2)
+
+  const result = useMemo(() => {
+    const d = diameterMm / 1000
+    const w = widthMm / 1000
+    let resistance = Number.NaN
+    if (electrodeType === "rod") {
+      resistance = (resistivity / (2 * Math.PI * length)) * Math.log((4 * length) / d)
+    } else if (electrodeType === "strip") {
+      resistance = (resistivity / (Math.PI * length)) * Math.log((2 * length * length) / (w * depth))
+    } else {
+      resistance = (resistivity / (2 * Math.PI * Math.PI * radius)) * Math.log((8 * radius) / d)
+    }
+    return { resistance }
+  }, [electrodeType, resistivity, length, diameterMm, widthMm, depth, radius])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5 col-span-2">
+              <Label>Electrode Type</Label>
+              <Select value={electrodeType} onValueChange={(v) => setElectrodeType(v as typeof electrodeType)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="rod">Vertical Rod</SelectItem>
+                  <SelectItem value="strip">Horizontal Strip / Plate</SelectItem>
+                  <SelectItem value="ring">Ring Electrode</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Soil Resistivity (Ω·m)</Label>
+              <Input type="number" value={resistivity} onChange={(e) => setResistivity(Number(e.target.value))} />
+            </div>
+
+            {electrodeType === "rod" && (
+              <>
+                <div className="space-y-1.5">
+                  <Label>Rod Length (m)</Label>
+                  <Input type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Rod Diameter (mm)</Label>
+                  <Input type="number" value={diameterMm} onChange={(e) => setDiameterMm(Number(e.target.value))} />
+                </div>
+              </>
+            )}
+
+            {electrodeType === "strip" && (
+              <>
+                <div className="space-y-1.5">
+                  <Label>Strip Length (m)</Label>
+                  <Input type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Strip Width (mm)</Label>
+                  <Input type="number" value={widthMm} onChange={(e) => setWidthMm(Number(e.target.value))} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Burial Depth (m)</Label>
+                  <Input type="number" step="0.1" value={depth} onChange={(e) => setDepth(Number(e.target.value))} />
+                </div>
+              </>
+            )}
+
+            {electrodeType === "ring" && (
+              <>
+                <div className="space-y-1.5">
+                  <Label>Ring Radius (m)</Label>
+                  <Input type="number" value={radius} onChange={(e) => setRadius(Number(e.target.value))} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Conductor Diameter (mm)</Label>
+                  <Input type="number" value={diameterMm} onChange={(e) => setDiameterMm(Number(e.target.value))} />
+                </div>
+              </>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="bg-muted/50 rounded-lg p-4">
+            <div className="text-xs font-semibold uppercase text-muted-foreground">Earth Electrode Resistance</div>
+            <div className="text-xl font-bold text-foreground mt-1">{fmt(result.resistance)} Ω</div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Simplified single-electrode formulas per IEEE 80 / IEC 60364-5-54. Multiple rods, deeper burial, or a
+              full grid (mesh) reduce resistance further — verify touch and step voltages against IEC 60479 / IEEE 80
+              limits for the final design.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 export function ToolkitCalculatorsSection() {
   return (
     <section id="toolkit-calculators" className="py-20">
@@ -929,6 +1246,9 @@ export function ToolkitCalculatorsSection() {
               { value: "generator", label: "Generator (DG)", icon: Fuel },
               { value: "breaker", label: "Breaker", icon: Power },
               { value: "short-circuit", label: "Short-Circuit", icon: Zap },
+              { value: "pf-correction", label: "Power Factor", icon: Gauge },
+              { value: "lighting", label: "Lighting", icon: Lightbulb },
+              { value: "grounding", label: "Grounding", icon: ArrowDownToLine },
               { value: "formulas", label: "Quick Formulas", icon: Calculator },
             ].map(({ value, label, icon: TabIcon }) => (
               <TabsTrigger
@@ -959,6 +1279,15 @@ export function ToolkitCalculatorsSection() {
           <TabsContent value="short-circuit" className="w-full mt-8">
             <ShortCircuitCalculator />
           </TabsContent>
+          <TabsContent value="pf-correction" className="w-full mt-8">
+            <PowerFactorCorrectionCalculator />
+          </TabsContent>
+          <TabsContent value="lighting" className="w-full mt-8">
+            <LightingCalculator />
+          </TabsContent>
+          <TabsContent value="grounding" className="w-full mt-8">
+            <GroundingResistanceCalculator />
+          </TabsContent>
           <TabsContent value="formulas" className="w-full mt-8">
             <QuickFormulasCalculator />
           </TabsContent>
@@ -966,9 +1295,9 @@ export function ToolkitCalculatorsSection() {
 
         <div className="mt-10 max-w-3xl mx-auto text-center text-sm text-muted-foreground font-serif bg-muted/40 rounded-lg p-4">
           Values shown are indicative, simplified reference figures for preliminary/learning purposes and are
-          aligned in principle with the IEC 60364, IEC 60076, IEC 62040, ISO 8528 and IEC 60909 standards. Always
-          verify against a manufacturer's datasheet and the applicable standard before using these figures on a
-          real project.
+          aligned in principle with the IEC 60364, IEC 60076, IEC 62040, ISO 8528, IEC 60909, IEEE 80, IEEE 141
+          and EN 12464-1 standards. Always verify against a manufacturer's datasheet and the applicable standard
+          before using these figures on a real project.
         </div>
       </div>
     </section>
