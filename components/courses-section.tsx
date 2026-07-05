@@ -59,6 +59,7 @@ const popularCourses = [
     students: "200+",
     level: "Advanced",
     features: ["Revit MEP", "3D Modeling", "Project Coordination", "BIM Standards"],
+    image: "/bim-training.jpg",
     isUpcoming: false,
   },
   {
