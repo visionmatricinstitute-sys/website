@@ -133,11 +133,11 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-navy-foreground/80" />
-                <p className="text-navy-foreground/80">+91 9876543210</p>
+                <p className="text-navy-foreground/80">+91 9930259997</p>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-navy-foreground/80" />
-                <p className="text-navy-foreground/80">info@visionmatrix.edu</p>
+                <p className="text-navy-foreground/80">info.visionmatrix@gmail.com</p>
               </div>
               <div className="flex items-start gap-3">
                 <Clock className="h-5 w-5 text-navy-foreground/80 mt-0.5" />
