@@ -172,6 +172,7 @@ const upcomingCourses = [
     students: "Coming Soon",
     level: "Intermediate to Advanced",
     features: ["PV System Design", "Inverter Sizing", "Grid-Tie Systems", "Solar Standards"],
+    image: "/solar-design-expert.jpg",
     isUpcoming: true,
   },
   {
