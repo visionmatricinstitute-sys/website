@@ -24,7 +24,7 @@ export function Header() {
             </div>
           </div>
           <div className="text-sm">
-            <span>📍 Motihari, Bihar</span>
+            <span>🌐 100% Online Institute</span>
           </div>
         </div>
 

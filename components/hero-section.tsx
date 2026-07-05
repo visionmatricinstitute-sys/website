@@ -13,7 +13,7 @@ export function HeroSection() {
                 <span className="text-accent block">Technical Excellence</span>
               </h1>
               <p className="text-lg text-muted-foreground font-serif leading-relaxed max-w-lg">
-                Join Vision Matrix Institute in Motihari, Bihar - your gateway to industry-relevant technical education.
+                Join Vision Matrix Institute online - your gateway to industry-relevant technical education from anywhere.
               </p>
             </div>
 

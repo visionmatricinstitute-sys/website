@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react"
+import { Globe, Phone, Mail, Clock, MessageCircle, Video, PlayCircle, Users2 } from "lucide-react"
 
 export function ContactSection() {
   return (
@@ -21,15 +21,13 @@ export function ContactSection() {
             <Card>
               <CardHeader>
                 <CardTitle className="font-sans flex items-center gap-3">
-                  <MapPin className="h-6 w-6 text-accent" />
-                  Visit Our Campus
+                  <Globe className="h-6 w-6 text-accent" />
+                  100% Online Institute
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground font-serif">
-                  Main Road, Near Bus Stand
-                  <br />
-                  Motihari, Bihar 845401
+                  We operate fully online — live, instructor-led virtual classes accessible from anywhere, anytime.
                 </p>
               </CardContent>
             </Card>
@@ -96,24 +94,45 @@ export function ContactSection() {
             </Card>
           </div>
 
-          {/* Google Map */}
+          {/* Online Learning Experience */}
           <div className="space-y-6">
             <Card className="h-full">
               <CardHeader>
-                <CardTitle className="font-sans">Find Us on Map</CardTitle>
+                <CardTitle className="font-sans">The Online Learning Experience</CardTitle>
               </CardHeader>
-              <CardContent className="p-0">
-                <div className="w-full h-96 bg-muted rounded-b-lg flex items-center justify-center">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.8944!2d84.9167!3d26.6667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDQwJzAwLjAiTiA4NMKwNTUnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
-                    width="100%"
-                    height="384"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="rounded-b-lg"
-                  ></iframe>
+              <CardContent className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex items-center justify-center w-12 h-12 bg-accent/10 rounded-lg shrink-0">
+                    <Video className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Live Interactive Classes</h4>
+                    <p className="text-sm text-muted-foreground font-serif">
+                      Real-time sessions with instructors, not pre-recorded videos alone.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex items-center justify-center w-12 h-12 bg-accent/10 rounded-lg shrink-0">
+                    <PlayCircle className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Recorded Sessions</h4>
+                    <p className="text-sm text-muted-foreground font-serif">
+                      Every class is recorded so you can revisit lessons anytime.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex items-center justify-center w-12 h-12 bg-accent/10 rounded-lg shrink-0">
+                    <Users2 className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Learn From Anywhere</h4>
+                    <p className="text-sm text-muted-foreground font-serif">
+                      Join from any city or country — all you need is an internet connection.
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>

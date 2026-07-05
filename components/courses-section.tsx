@@ -10,6 +10,16 @@ import {
   Monitor,
   DraftingCompassIcon as Drafting,
   Building,
+  Zap,
+  Brain,
+  Terminal,
+  Wifi,
+  Workflow,
+  Sun,
+  BatteryCharging,
+  Bot,
+  BrainCircuit,
+  CircuitBoard,
 } from "lucide-react"
 
 const popularCourses = [
@@ -52,11 +62,24 @@ const popularCourses = [
     image: "/bim-training.png",
     isUpcoming: false,
   },
+  {
+    id: 4,
+    title: "Electrical Design – Data Center Specialist",
+    description:
+      "Specialized training in electrical design for data centers — single line diagrams, panel GADs, cable and equipment sizing, and short-circuit studies aligned with IEC and data center standards.",
+    icon: Zap,
+    duration: "4-6 months",
+    students: "New",
+    level: "Intermediate to Advanced",
+    features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
+    image: "/electrical-design-data-center.svg",
+    isUpcoming: false,
+  },
 ]
 
 const upcomingCourses = [
   {
-    id: 4,
+    id: 16,
     title: "Graphic Design",
     description:
       "Creative graphic design training covering visual communication, branding, and digital design using industry-standard software.",
@@ -69,7 +92,7 @@ const upcomingCourses = [
     isUpcoming: true,
   },
   {
-    id: 5,
+    id: 17,
     title: "Web Development",
     description:
       "Comprehensive web development training covering front-end and back-end technologies to build modern websites and applications.",
@@ -82,7 +105,7 @@ const upcomingCourses = [
     isUpcoming: true,
   },
   {
-    id: 6,
+    id: 18,
     title: "Digital Marketing",
     description:
       "Master digital marketing strategies including social media marketing, SEO, content marketing, and online advertising.",
@@ -94,39 +117,159 @@ const upcomingCourses = [
     image: "/digital-marketing-training.png",
     isUpcoming: true,
   },
+  {
+    id: 7,
+    title: "Artificial Intelligence for Engineers",
+    description:
+      "Applied AI concepts and tools for engineering workflows — from automation to intelligent design assistance.",
+    icon: Brain,
+    duration: "3-5 months",
+    students: "Coming Soon",
+    level: "Intermediate",
+    features: ["AI Fundamentals", "Engineering Automation", "Prompt Engineering", "AI Tools"],
+    isUpcoming: true,
+  },
+  {
+    id: 8,
+    title: "Python Programming",
+    description:
+      "Learn Python from the ground up, covering scripting, data handling, and automation for engineering and IT tasks.",
+    icon: Terminal,
+    duration: "2-4 months",
+    students: "Coming Soon",
+    level: "Beginner to Intermediate",
+    features: ["Python Basics", "Automation Scripts", "Data Handling", "Libraries"],
+    isUpcoming: true,
+  },
+  {
+    id: 9,
+    title: "Industrial IoT",
+    description:
+      "Design and implement connected industrial systems using IoT sensors, gateways, and monitoring platforms.",
+    icon: Wifi,
+    duration: "3-5 months",
+    students: "Coming Soon",
+    level: "Intermediate to Advanced",
+    features: ["IoT Sensors", "Gateways", "Cloud Monitoring", "Industrial Networks"],
+    isUpcoming: true,
+  },
+  {
+    id: 10,
+    title: "PLC & SCADA Advanced",
+    description:
+      "Advanced programmable logic controller and SCADA system design for industrial automation and process control.",
+    icon: Workflow,
+    duration: "4-6 months",
+    students: "Coming Soon",
+    level: "Advanced",
+    features: ["PLC Programming", "SCADA Systems", "HMI Design", "Process Control"],
+    isUpcoming: true,
+  },
+  {
+    id: 11,
+    title: "Solar Design Expert",
+    description:
+      "End-to-end solar PV system design — load assessment, panel/inverter sizing, and grid-tie/off-grid configurations.",
+    icon: Sun,
+    duration: "3-5 months",
+    students: "Coming Soon",
+    level: "Intermediate to Advanced",
+    features: ["PV System Design", "Inverter Sizing", "Grid-Tie Systems", "Solar Standards"],
+    isUpcoming: true,
+  },
+  {
+    id: 12,
+    title: "EV Charging Infrastructure",
+    description:
+      "Design and deployment of electric vehicle charging stations, covering load planning, standards, and grid integration.",
+    icon: BatteryCharging,
+    duration: "2-4 months",
+    students: "Coming Soon",
+    level: "Intermediate",
+    features: ["Charger Types", "Load Planning", "Grid Integration", "EV Standards"],
+    isUpcoming: true,
+  },
+  {
+    id: 13,
+    title: "Robotics",
+    description:
+      "Fundamentals of robotics design, control systems, and automation for industrial and educational applications.",
+    icon: Bot,
+    duration: "4-6 months",
+    students: "Coming Soon",
+    level: "Intermediate to Advanced",
+    features: ["Robot Kinematics", "Control Systems", "Sensors & Actuators", "Automation"],
+    isUpcoming: true,
+  },
+  {
+    id: 14,
+    title: "Machine Learning",
+    description:
+      "Core machine learning concepts and practical model building for real-world engineering and data problems.",
+    icon: BrainCircuit,
+    duration: "4-6 months",
+    students: "Coming Soon",
+    level: "Advanced",
+    features: ["ML Fundamentals", "Model Training", "Data Preprocessing", "Applied Projects"],
+    isUpcoming: true,
+  },
+  {
+    id: 15,
+    title: "Embedded Systems",
+    description:
+      "Microcontroller-based embedded systems design, covering firmware development and hardware interfacing.",
+    icon: CircuitBoard,
+    duration: "4-6 months",
+    students: "Coming Soon",
+    level: "Intermediate to Advanced",
+    features: ["Microcontrollers", "Firmware Development", "Hardware Interfacing", "RTOS"],
+    isUpcoming: true,
+  },
 ]
 
 const CourseCard = ({ course }: { course: any }) => {
   const IconComponent = course.icon
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <Card
+      className={`group transition-all duration-300 ${
+        course.isUpcoming
+          ? "bg-gray-100 border-gray-300 opacity-75 hover:opacity-100"
+          : "hover:shadow-xl hover:-translate-y-1"
+      }`}
+    >
       <div className="relative overflow-hidden rounded-t-lg">
         <img
           src={course.image || "/placeholder.svg"}
           alt={course.title}
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+          className={`w-full h-48 object-cover transition-transform duration-300 ${
+            course.isUpcoming ? "grayscale-[40%]" : "group-hover:scale-105"
+          }`}
         />
         <div className="absolute top-4 left-4">
           <Badge className="bg-accent text-accent-foreground">{course.level}</Badge>
         </div>
         {course.isUpcoming && (
           <div className="absolute top-4 right-4">
-            <Badge className="bg-orange-500 text-white">Coming Soon</Badge>
+            <Badge className="bg-gray-500 text-white">Coming Soon</Badge>
           </div>
         )}
       </div>
 
       <CardHeader className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-12 h-12 bg-accent/10 rounded-lg">
-            <IconComponent className="h-6 w-6 text-accent" />
+          <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${course.isUpcoming ? "bg-gray-300" : "bg-accent/10"}`}>
+            <IconComponent className={`h-6 w-6 ${course.isUpcoming ? "text-gray-500" : "text-accent"}`} />
           </div>
-          <CardTitle className="text-xl font-bold font-sans text-foreground">{course.title}</CardTitle>
+          <CardTitle className={`text-xl font-bold font-sans ${course.isUpcoming ? "text-gray-500" : "text-foreground"}`}>
+            {course.title}
+          </CardTitle>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <p className="text-muted-foreground font-serif leading-relaxed">{course.description}</p>
+        <p className={`font-serif leading-relaxed ${course.isUpcoming ? "text-gray-500" : "text-muted-foreground"}`}>
+          {course.description}
+        </p>
 
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div className="flex items-center gap-2 text-muted-foreground">
