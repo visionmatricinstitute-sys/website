@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { AlertTriangle, CheckCircle2 } from "lucide-react"
+import { AlertTriangle, CheckCircle2, Cable, Boxes, BatteryCharging, Fuel, Power, Zap, Calculator } from "lucide-react"
 
 /* ---------------- Reference data (indicative, see disclaimer) ---------------- */
 const SIZES = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630]
@@ -921,14 +921,25 @@ export function ToolkitCalculatorsSection() {
         </div>
 
         <Tabs defaultValue="sizing" className="items-center">
-          <TabsList className="flex-wrap h-auto gap-1">
-            <TabsTrigger value="sizing">Cable &amp; Load Sizing</TabsTrigger>
-            <TabsTrigger value="transformer">Transformer</TabsTrigger>
-            <TabsTrigger value="ups">UPS</TabsTrigger>
-            <TabsTrigger value="generator">Generator (DG)</TabsTrigger>
-            <TabsTrigger value="breaker">Breaker</TabsTrigger>
-            <TabsTrigger value="short-circuit">Short-Circuit</TabsTrigger>
-            <TabsTrigger value="formulas">Quick Formulas</TabsTrigger>
+          <TabsList className="flex-wrap h-auto gap-2 bg-muted/60 p-2 rounded-2xl border border-border">
+            {[
+              { value: "sizing", label: "Cable & Load Sizing", icon: Cable },
+              { value: "transformer", label: "Transformer", icon: Boxes },
+              { value: "ups", label: "UPS", icon: BatteryCharging },
+              { value: "generator", label: "Generator (DG)", icon: Fuel },
+              { value: "breaker", label: "Breaker", icon: Power },
+              { value: "short-circuit", label: "Short-Circuit", icon: Zap },
+              { value: "formulas", label: "Quick Formulas", icon: Calculator },
+            ].map(({ value, label, icon: TabIcon }) => (
+              <TabsTrigger
+                key={value}
+                value={value}
+                className="gap-1.5 px-4 py-2 rounded-xl border border-transparent text-muted-foreground data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:border-accent data-[state=active]:shadow-md data-[state=active]:shadow-accent/30"
+              >
+                <TabIcon className="h-4 w-4" />
+                {label}
+              </TabsTrigger>
+            ))}
           </TabsList>
           <TabsContent value="sizing" className="w-full mt-8">
             <CableSizingCalculator />
