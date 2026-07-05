@@ -1,15 +1,27 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Phone, Mail, MessageCircle } from "lucide-react"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50">
+    <header
+      className={`sticky top-0 z-50 backdrop-blur-xl transition-all duration-300 ${
+        scrolled ? "bg-background/85 shadow-lg border-b border-border" : "bg-background/50 border-b border-transparent"
+      }`}
+    >
       <div className="container mx-auto px-4">
         {/* Top bar with contact info */}
         <div className="hidden md:flex justify-between items-center py-2 text-sm text-muted-foreground border-b border-border">

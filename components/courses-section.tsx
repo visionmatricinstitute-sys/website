@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { FadeIn } from "@/components/motion/fade-in"
 import {
   Clock,
   Users,
@@ -313,41 +314,45 @@ export function CoursesSection() {
   return (
     <section id="courses" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <FadeIn className="text-center mb-16">
           <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Our Courses</h2>
           <p className="text-lg text-muted-foreground font-serif max-w-3xl mx-auto leading-relaxed">
             Discover our comprehensive range of industry-relevant courses designed to give you the skills employers are
             looking for. From established programs to exciting new offerings.
           </p>
-        </div>
+        </FadeIn>
 
         <div className="mb-20">
-          <div className="text-center mb-12">
+          <FadeIn className="text-center mb-12">
             <h3 className="text-2xl lg:text-3xl font-bold font-sans text-foreground mb-4">Popular Courses</h3>
             <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
               Our most sought-after programs with proven track records of student success and industry recognition.
             </p>
-          </div>
+          </FadeIn>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {popularCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
+            {popularCourses.map((course, index) => (
+              <FadeIn key={course.id} delay={(index % 3) * 0.1}>
+                <CourseCard course={course} />
+              </FadeIn>
             ))}
           </div>
         </div>
 
         <div className="mb-12">
-          <div className="text-center mb-12">
+          <FadeIn className="text-center mb-12">
             <h3 className="text-2xl lg:text-3xl font-bold font-sans text-foreground mb-4">Upcoming Courses</h3>
             <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
               Exciting new programs launching soon to keep you ahead in the digital age. Get notified when enrollment
               opens!
             </p>
-          </div>
+          </FadeIn>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
+            {upcomingCourses.map((course, index) => (
+              <FadeIn key={course.id} delay={(index % 3) * 0.1}>
+                <CourseCard course={course} />
+              </FadeIn>
             ))}
           </div>
         </div>
