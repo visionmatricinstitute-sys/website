@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrical Formula Cheat Sheet | Vision Matrix Institute</title>
+<style>
+  :root{
+    --navy:#0d2745; --accent:#c9821f; --muted:#5b6b7a; --line:#dde4ec; --bg:#f4f7fb;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:"Segoe UI",Arial,Helvetica,sans-serif;
+    max-width:760px; margin:24px auto; padding:0 16px; color:#101820; line-height:1.55;
+  }
+  .band{
+    background:linear-gradient(135deg,var(--navy),#123a63);
+    color:#fff; padding:22px 26px; border-radius:10px; text-align:center; margin-bottom:24px;
+  }
+  .band h1{margin:0 0 6px; font-size:22px}
+  .band p{margin:0; color:#cfe1f4; font-size:13px}
+  h2{
+    color:var(--navy); font-size:16px; border-bottom:1px solid var(--line);
+    padding-bottom:6px; margin:26px 0 10px;
+  }
+  .formula{
+    background:var(--bg); border:1px solid var(--line); border-radius:8px;
+    padding:10px 14px; margin:8px 0; font-size:15px;
+  }
+  .formula small{display:block; color:var(--muted); font-size:12.5px; margin-top:4px; font-style:italic}
+  table{width:100%; border-collapse:collapse; margin-top:8px; font-size:13.5px}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left}
+  th{background:var(--bg); color:var(--navy)}
+  footer{
+    margin-top:28px; padding-top:14px; border-top:1px solid var(--line);
+    color:var(--muted); font-size:12px; font-style:italic; text-align:center;
+  }
+  @media print{
+    body{margin:0}
+    .band{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<div class="band">
+  <h1>Electrical Formula Cheat Sheet</h1>
+  <p>Vision Matrix Institute &nbsp;|&nbsp; Engineer's Toolkit</p>
+</div>
+
+<h2>1. Ohm's Law</h2>
+<div class="formula">
+  V = I &times; R &nbsp;&nbsp;|&nbsp;&nbsp; I = V / R &nbsp;&nbsp;|&nbsp;&nbsp; R = V / I
+  <small>V = voltage (volts), I = current (amps), R = resistance (ohms)</small>
+</div>
+
+<h2>2. Power (DC / Resistive Circuits)</h2>
+<div class="formula">
+  P = V &times; I &nbsp;&nbsp;|&nbsp;&nbsp; P = I&sup2; &times; R &nbsp;&nbsp;|&nbsp;&nbsp; P = V&sup2; / R
+</div>
+
+<h2>3. Single-Phase AC Power</h2>
+<div class="formula">
+  P = V &times; I &times; cos(&phi;)
+  <small>cos(&phi;) = power factor</small>
+</div>
+
+<h2>4. Three-Phase AC Power</h2>
+<div class="formula">
+  P = &radic;3 &times; V<sub>L</sub> &times; I<sub>L</sub> &times; cos(&phi;)
+  <small>V<sub>L</sub>, I<sub>L</sub> = line voltage and line current; &radic;3 &asymp; 1.732</small>
+</div>
+
+<h2>5. Voltage Drop</h2>
+<div class="formula">
+  Single-phase: V<sub>d</sub> = 2 &times; I &times; R &times; L<br>
+  Three-phase: V<sub>d</sub> = &radic;3 &times; I &times; R &times; L<br>
+  %VD = (V<sub>d</sub> / V) &times; 100
+  <small>R in ohms/metre, L = one-way cable length in metres</small>
+</div>
+
+<h2>6. Cable Short-Circuit Withstand (Adiabatic Equation)</h2>
+<div class="formula">
+  S<sub>min</sub> = (I &times; &radic;t) / k
+  <small>S<sub>min</sub> = minimum conductor CSA (mm&sup2;), I = fault current (A), t = clearance time (s)</small>
+</div>
+
+<table>
+  <tr><th>Conductor / Insulation</th><th>k value</th></tr>
+  <tr><td>Copper + PVC</td><td>115</td></tr>
+  <tr><td>Copper + XLPE</td><td>143</td></tr>
+  <tr><td>Aluminium + PVC</td><td>76</td></tr>
+  <tr><td>Aluminium + XLPE</td><td>94</td></tr>
+</table>
+
+<footer>
+  Indicative reference values for learning purposes. Verify against the IEC 60364 series and manufacturer
+  data before use on real projects. &mdash; Vision Matrix Institute
+</footer>
+
+</body>
+</html>
