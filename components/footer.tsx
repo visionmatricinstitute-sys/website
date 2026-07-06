@@ -10,7 +10,10 @@ export function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-black font-sans">Vision Matrix Institute</h3>
+            <div className="flex items-center gap-2.5">
+              <img src="/logo.png" alt="Vision Matrix Institute logo" className="h-9 w-9" />
+              <h3 className="text-2xl font-black font-sans">Vision Matrix Institute</h3>
+            </div>
             <p className="text-navy-foreground/80 font-serif leading-relaxed">
               Leading online technical education institute, empowering students with industry-relevant skills from
               anywhere.

@@ -47,7 +47,8 @@ export function Header() {
 
         {/* Main navigation */}
         <div className="flex justify-between items-center py-4">
-          <div className="flex items-center">
+          <div className="flex items-center gap-2.5">
+            <img src="/logo.png" alt="Vision Matrix Institute logo" className="h-9 w-9" />
             <span className="text-2xl font-black font-sans text-primary">Vision Matrix Institute</span>
           </div>
 
