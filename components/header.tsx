@@ -48,7 +48,7 @@ export function Header() {
         {/* Main navigation */}
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
-            <h1 className="text-2xl font-black font-sans text-primary">Vision Matrix Institute</h1>
+            <span className="text-2xl font-black font-sans text-primary">Vision Matrix Institute</span>
           </div>
 
           {/* Desktop Navigation */}

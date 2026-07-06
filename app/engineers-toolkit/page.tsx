@@ -8,10 +8,36 @@ import { ToolkitStandardsSection } from "@/components/toolkit/toolkit-standards-
 import { ToolkitLibrarySection } from "@/components/toolkit/toolkit-library-section"
 import { ToolkitLinksSection } from "@/components/toolkit/toolkit-links-section"
 
+const title = "Engineer's Toolkit | Vision Matrix Institute"
+const description =
+  "Free electrical engineering calculators (cable sizing, transformer, UPS, generator, breaker, short-circuit, power factor, lighting, grounding), a standards reference library, and curated resources for engineering students."
+
 export const metadata: Metadata = {
-  title: "Engineer's Toolkit | Vision Matrix Institute",
-  description:
-    "Sizing calculators, reference documents, drawing templates and curated links for Vision Matrix Institute students.",
+  title,
+  description,
+  alternates: {
+    canonical: "/engineers-toolkit",
+  },
+  openGraph: {
+    type: "website",
+    url: "/engineers-toolkit",
+    title,
+    description,
+    images: [
+      {
+        url: "/electrical-design-data-center.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Engineer's Toolkit - electrical engineering calculators and reference library",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/electrical-design-data-center.jpg"],
+  },
 }
 
 export default function EngineersToolkitPage() {
