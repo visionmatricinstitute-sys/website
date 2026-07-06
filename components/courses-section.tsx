@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -39,6 +40,7 @@ const popularCourses = [
     level: "Intermediate to Advanced",
     features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
     image: "/electrical-design-data-center.jpg",
+    href: "/programs/electrical-design-data-center",
     isUpcoming: false,
   },
   {
@@ -303,12 +305,22 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
           <Button className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground" disabled={course.isUpcoming}>
             {course.isUpcoming ? "Notify Me" : "Enroll Now"}
           </Button>
-          <Button
-            variant="outline"
-            className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
-          >
-            Learn More
-          </Button>
+          {course.href ? (
+            <Button
+              asChild
+              variant="outline"
+              className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
+            >
+              <Link href={course.href}>Learn More</Link>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
+            >
+              Learn More
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
