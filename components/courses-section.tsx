@@ -1,9 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FadeIn } from "@/components/motion/fade-in"
 import { CourseThumbnail } from "@/components/course-thumbnail"
 import {
+  GraduationCap,
+  Sparkles,
   Clock,
   Users,
   Palette,
@@ -324,50 +327,66 @@ export function CoursesSection() {
           </p>
         </FadeIn>
 
-        <div className="mb-20">
-          <FadeIn className="text-center mb-12">
-            <h3 className="text-2xl lg:text-3xl font-bold font-sans text-foreground mb-4">Popular Courses</h3>
-            <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
-              Our most sought-after programs with proven track records of student success and industry recognition.
-            </p>
-          </FadeIn>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {popularCourses.map((course, index) => (
-              <FadeIn key={course.id} delay={(index % 3) * 0.1}>
-                <CourseCard course={course} index={index} />
-              </FadeIn>
+        <Tabs defaultValue="courses" className="items-center">
+          <TabsList className="flex-wrap h-auto gap-2 bg-muted/60 p-2 rounded-2xl border border-border">
+            {[
+              { value: "courses", label: "Courses", icon: GraduationCap },
+              { value: "upcoming", label: "Upcoming Courses", icon: Sparkles },
+            ].map(({ value, label, icon: TabIcon }) => (
+              <TabsTrigger
+                key={value}
+                value={value}
+                className="gap-1.5 px-4 py-2 rounded-xl border border-transparent text-muted-foreground data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:border-accent data-[state=active]:shadow-md data-[state=active]:shadow-accent/30"
+              >
+                <TabIcon className="h-4 w-4" />
+                {label}
+              </TabsTrigger>
             ))}
-          </div>
-        </div>
+          </TabsList>
 
-        <div className="mb-12">
-          <FadeIn className="text-center mb-12">
-            <h3 className="text-2xl lg:text-3xl font-bold font-sans text-foreground mb-4">Upcoming Courses</h3>
-            <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
-              Exciting new programs launching soon to keep you ahead in the digital age. Get notified when enrollment
-              opens!
-            </p>
-          </FadeIn>
+          <TabsContent value="courses" className="w-full mt-10">
+            <FadeIn className="text-center mb-12">
+              <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
+                Our most sought-after programs with proven track records of student success and industry recognition.
+              </p>
+            </FadeIn>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingCourses.map((course, index) => (
-              <FadeIn key={course.id} delay={(index % 3) * 0.1}>
-                <CourseCard course={course} index={index} />
-              </FadeIn>
-            ))}
-          </div>
-        </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {popularCourses.map((course, index) => (
+                <FadeIn key={course.id} delay={(index % 3) * 0.1}>
+                  <CourseCard course={course} index={index} />
+                </FadeIn>
+              ))}
+            </div>
+          </TabsContent>
 
-        <div className="text-center">
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
-          >
-            Get Notified When New Courses Launch
-          </Button>
-        </div>
+          <TabsContent value="upcoming" className="w-full mt-10">
+            <FadeIn className="text-center mb-12">
+              <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
+                Exciting new programs launching soon to keep you ahead in the digital age. Get notified when
+                enrollment opens!
+              </p>
+            </FadeIn>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {upcomingCourses.map((course, index) => (
+                <FadeIn key={course.id} delay={(index % 3) * 0.1}>
+                  <CourseCard course={course} index={index} />
+                </FadeIn>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
+              >
+                Get Notified When New Courses Launch
+              </Button>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </section>
   )
