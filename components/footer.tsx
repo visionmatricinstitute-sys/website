@@ -137,7 +137,12 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-navy-foreground/80" />
-                <p className="text-navy-foreground/80">info.visionmatrix@gmail.com</p>
+                <a
+                  href="mailto:info.visionmatrix@gmail.com"
+                  className="text-navy-foreground/80 rounded-sm transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+                >
+                  info.visionmatrix@gmail.com
+                </a>
               </div>
               <div className="flex items-start gap-3">
                 <Clock className="h-5 w-5 text-navy-foreground/80 mt-0.5" />

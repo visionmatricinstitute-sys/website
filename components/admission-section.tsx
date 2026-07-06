@@ -55,7 +55,8 @@ export function AdmissionSection() {
                 <div>
                   <h4 className="font-semibold text-foreground mb-2">3. Fee Payment</h4>
                   <p className="text-muted-foreground font-serif">
-                    Pay the course fee through our secure online payment system or visit our campus.
+                    Pay the course fee through our secure online payment gateway or connect with an online academic
+                    advisor for support.
                   </p>
                 </div>
               </div>
@@ -67,7 +68,7 @@ export function AdmissionSection() {
                 <div>
                   <h4 className="font-semibold text-foreground mb-2">4. Start Learning</h4>
                   <p className="text-muted-foreground font-serif">
-                    Begin your journey with our expert instructors and modern facilities.
+                    Begin your journey with our expert instructors on our modern virtual learning platform.
                   </p>
                 </div>
               </div>

@@ -52,7 +52,12 @@ export function ContactSection() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground font-serif">info.visionmatrix@gmail.com</p>
+                <a
+                  href="mailto:info.visionmatrix@gmail.com"
+                  className="text-muted-foreground font-serif rounded-sm transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                >
+                  info.visionmatrix@gmail.com
+                </a>
               </CardContent>
             </Card>
 
