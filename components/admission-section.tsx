@@ -1,12 +1,64 @@
+"use client"
+
+import { useState, type FormEvent } from "react"
+import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CheckCircle, FileText, CreditCard, GraduationCap } from "lucide-react"
+import { CheckCircle, FileText, CreditCard, GraduationCap, Loader2 } from "lucide-react"
+
+const EMPTY_FORM = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  course: "",
+  education: "",
+  message: "",
+}
 
 export function AdmissionSection() {
+  const [form, setForm] = useState(EMPTY_FORM)
+  const [submitting, setSubmitting] = useState(false)
+
+  function updateField(field: keyof typeof EMPTY_FORM, value: string) {
+    setForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+
+    if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.course || !form.education) {
+      toast.error("Please fill in all required fields.")
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const response = await fetch("/api/admission", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Submission failed")
+      }
+
+      toast.success("Application submitted! Our team will contact you within 24 hours.")
+      setForm(EMPTY_FORM)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <section id="admission" className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -108,72 +160,121 @@ export function AdmissionSection() {
                 Fill out this form and our team will contact you within 24 hours.
               </p>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name *</Label>
-                  <Input id="firstName" placeholder="Enter your first name" />
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name *</Label>
+                    <Input
+                      id="firstName"
+                      placeholder="Enter your first name"
+                      value={form.firstName}
+                      onChange={(e) => updateField("firstName", e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name *</Label>
+                    <Input
+                      id="lastName"
+                      placeholder="Enter your last name"
+                      value={form.lastName}
+                      onChange={(e) => updateField("lastName", e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name *</Label>
-                  <Input id="lastName" placeholder="Enter your last name" />
+                  <Label htmlFor="email">Email Address *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={form.email}
+                    onChange={(e) => updateField("email", e.target.value)}
+                    required
+                  />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address *</Label>
-                <Input id="email" type="email" placeholder="Enter your email" />
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number *</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="Enter your phone number"
+                    value={form.phone}
+                    onChange={(e) => updateField("phone", e.target.value)}
+                    required
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number *</Label>
-                <Input id="phone" type="tel" placeholder="Enter your phone number" />
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="course">Interested Course *</Label>
+                  <Select value={form.course} onValueChange={(v) => updateField("course", v)}>
+                    <SelectTrigger id="course">
+                      <SelectValue placeholder="Select a course" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="electrical-design-data-center">
+                        Electrical Design – Data Center Specialist
+                      </SelectItem>
+                      <SelectItem value="computer-skills">Computer Skills & Applications</SelectItem>
+                      <SelectItem value="cad">AutoCAD</SelectItem>
+                      <SelectItem value="bim">BIM (Building Information Modeling)</SelectItem>
+                      <SelectItem value="graphic-design">Graphic Design</SelectItem>
+                      <SelectItem value="web-development">Web Development</SelectItem>
+                      <SelectItem value="digital-marketing">Digital Marketing</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="course">Interested Course *</Label>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a course" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="computer-skills">Computer Skills & Applications</SelectItem>
-                    <SelectItem value="cad">Drafting & Design (CAD)</SelectItem>
-                    <SelectItem value="bim">BIM (Building Information Modeling)</SelectItem>
-                    <SelectItem value="graphic-design">Graphic Design</SelectItem>
-                    <SelectItem value="web-development">Web Development</SelectItem>
-                    <SelectItem value="digital-marketing">Digital Marketing</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="education">Educational Qualification *</Label>
+                  <Select value={form.education} onValueChange={(v) => updateField("education", v)}>
+                    <SelectTrigger id="education">
+                      <SelectValue placeholder="Select your qualification" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="10th">10th Pass</SelectItem>
+                      <SelectItem value="12th">12th Pass</SelectItem>
+                      <SelectItem value="graduate">Graduate</SelectItem>
+                      <SelectItem value="postgraduate">Post Graduate</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="education">Educational Qualification *</Label>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your qualification" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10th">10th Pass</SelectItem>
-                    <SelectItem value="12th">12th Pass</SelectItem>
-                    <SelectItem value="graduate">Graduate</SelectItem>
-                    <SelectItem value="postgraduate">Post Graduate</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="message">Additional Message</Label>
+                  <Textarea
+                    id="message"
+                    placeholder="Tell us about your goals and expectations..."
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => updateField("message", e.target.value)}
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="message">Additional Message</Label>
-                <Textarea id="message" placeholder="Tell us about your goals and expectations..." rows={4} />
-              </div>
+                <Button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                  size="lg"
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit Application"
+                  )}
+                </Button>
 
-              <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg">
-                Submit Application
-              </Button>
-
-              <p className="text-xs text-muted-foreground text-center font-serif">
-                By submitting this form, you agree to our Terms & Conditions and Privacy Policy.
-              </p>
+                <p className="text-xs text-muted-foreground text-center font-serif">
+                  By submitting this form, you agree to our Terms & Conditions and Privacy Policy.
+                </p>
+              </form>
             </CardContent>
           </Card>
         </div>
