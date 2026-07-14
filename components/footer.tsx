@@ -28,8 +28,10 @@ export function Footer() {
               <Button size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
                 <Linkedin className="h-4 w-4" />
               </Button>
-              <Button size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
-                <Youtube className="h-4 w-4" />
+              <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
+                <a href="https://www.youtube.com/@visionMatrixInstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on YouTube">
+                  <Youtube className="h-4 w-4" />
+                </a>
               </Button>
             </div>
           </div>
