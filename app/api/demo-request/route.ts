@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-const REQUIRED_FIELDS = ["firstName", "lastName", "email", "phone", "course", "education"] as const
+const REQUIRED_FIELDS = ["name", "phone", "course"] as const
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   if (!webhookUrl) {
     console.error("ADMISSION_SHEET_WEBHOOK_URL is not set")
     return NextResponse.json(
-      { error: "The admission form isn't connected yet. Please contact us directly via WhatsApp or email." },
+      { error: "The demo request form isn't connected yet. Please contact us directly via WhatsApp or email." },
       { status: 500 },
     )
   }
@@ -28,7 +28,16 @@ export async function POST(request: Request) {
     const response = await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...body, source: "Admission Form" }),
+      body: JSON.stringify({
+        firstName: body.name,
+        lastName: "",
+        email: "",
+        phone: body.phone,
+        course: body.course,
+        education: "",
+        message: body.preferredTime ? `Preferred time: ${body.preferredTime}` : "",
+        source: "Demo Request",
+      }),
     })
 
     if (!response.ok) {
@@ -37,9 +46,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("Admission form submission failed:", error)
+    console.error("Demo request submission failed:", error)
     return NextResponse.json(
-      { error: "Something went wrong submitting your application. Please try again or contact us directly." },
+      { error: "Something went wrong submitting your request. Please try again or contact us directly." },
       { status: 502 },
     )
   }

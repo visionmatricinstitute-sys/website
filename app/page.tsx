@@ -6,6 +6,7 @@ import { AdmissionSection } from "@/components/admission-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
+import { DemoCta } from "@/components/demo-cta"
 
 export default function HomePage() {
   return (
@@ -20,6 +21,7 @@ export default function HomePage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <DemoCta />
     </div>
   )
 }

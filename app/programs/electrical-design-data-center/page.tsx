@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
+import { DemoCta } from "@/components/demo-cta"
 import { ProgramHero } from "@/components/programs/program-hero"
 import { ProgramHighlights } from "@/components/programs/program-highlights"
 import { ProgramModules } from "@/components/programs/program-modules"
@@ -70,6 +71,7 @@ export default function ElectricalDesignDataCenterPage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <DemoCta />
     </div>
   )
 }
