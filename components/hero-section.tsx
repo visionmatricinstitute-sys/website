@@ -91,8 +91,8 @@ export function HeroSection() {
           <motion.div variants={item} className="relative">
             <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
               <img
-                src="/modern-computer-classroom.png"
-                alt="Students learning technical skills"
+                src="/hero-data-center.jpg"
+                alt="Vision Matrix Institute — data center electrical infrastructure and monitoring systems"
                 className="w-full"
               />
             </div>

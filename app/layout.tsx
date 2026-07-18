@@ -63,10 +63,10 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: "/modern-computer-classroom.png",
-        width: 1200,
-        height: 630,
-        alt: "Students learning technical skills at Vision Matrix Institute",
+        url: "/hero-data-center.jpg",
+        width: 1600,
+        height: 894,
+        alt: "Vision Matrix Institute — data center electrical infrastructure and monitoring systems",
       },
     ],
   },
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/modern-computer-classroom.png"],
+    images: ["/hero-data-center.jpg"],
   },
 }
 
