@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
+import { UpsSelectionCalculator } from "./ups-selection-calculator"
 import {
   AlertTriangle,
   CheckCircle2,
@@ -41,7 +42,6 @@ const BREAKERS = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250
 
 /* Standard equipment ratings and constants used by the sizing calculators below */
 const TRANSFORMER_KVA = [25, 50, 75, 100, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3150]
-const UPS_KVA = [10, 20, 30, 40, 60, 80, 100, 120, 160, 200, 250, 300, 400, 500, 600, 800, 1000, 1200, 1600, 2000]
 const DG_KVA = [20, 30, 40, 62.5, 82.5, 100, 125, 160, 200, 250, 320, 380, 400, 500, 625, 750, 1000, 1250, 1500, 2000, 2500]
 
 const MOTOR_START_MULTIPLIER: Record<string, number> = {
@@ -443,109 +443,6 @@ function TransformerSizingCalculator() {
   )
 }
 
-function UpsSizingCalculator() {
-  const [kw, setKw] = useState(200)
-  const [pf, setPf] = useState(0.9)
-  const [growth, setGrowth] = useState(20)
-  const [redundancy, setRedundancy] = useState<"n" | "n+1" | "2n">("n+1")
-  const [autonomy, setAutonomy] = useState(10)
-
-  const REDUNDANCY_MULTIPLIER: Record<string, number> = { n: 1, "n+1": 1, "2n": 2 }
-  const REDUNDANCY_LABEL: Record<string, string> = {
-    n: "N — no redundancy, size modules to the required capacity.",
-    "n+1": "N+1 — same total capacity, but split across one extra module for redundancy.",
-    "2n": "2N — two fully independent UPS systems, each sized for the full load.",
-  }
-
-  const result = useMemo(() => {
-    const requiredKva = (kw / pf) * (1 + growth / 100)
-    const provisionKva = requiredKva * REDUNDANCY_MULTIPLIER[redundancy]
-    const selected = roundUpToStandard(provisionKva, UPS_KVA)
-    const base = selected ?? UPS_KVA[UPS_KVA.length - 1]
-    const batteryKwh = (kw * (autonomy / 60)) / 0.9
-    return { requiredKva, provisionKva, selected, base, batteryKwh, outOfRange: selected === null }
-  }, [kw, pf, growth, redundancy, autonomy])
-
-  return (
-    <div className="grid lg:grid-cols-2 gap-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="font-sans">Design Inputs</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <Label>Critical IT Load (kW)</Label>
-              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Load Power Factor</Label>
-              <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Future Growth (%)</Label>
-              <Input type="number" value={growth} onChange={(e) => setGrowth(Number(e.target.value))} />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Battery Autonomy (minutes)</Label>
-              <Input type="number" value={autonomy} onChange={(e) => setAutonomy(Number(e.target.value))} />
-            </div>
-            <div className="space-y-1.5 col-span-2">
-              <Label>Redundancy Configuration</Label>
-              <Select value={redundancy} onValueChange={(v) => setRedundancy(v as "n" | "n+1" | "2n")}>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="n">N</SelectItem>
-                  <SelectItem value="n+1">N+1</SelectItem>
-                  <SelectItem value="2n">2N</SelectItem>
-                </SelectContent>
-              </Select>
-              <span className="hint text-xs text-muted-foreground">{REDUNDANCY_LABEL[redundancy]}</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="font-sans">Results</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="text-xs font-semibold uppercase text-muted-foreground">Required Capacity</div>
-              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.requiredKva)} kVA</div>
-            </div>
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="text-xs font-semibold uppercase text-muted-foreground">Capacity to Provision</div>
-              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.provisionKva)} kVA</div>
-            </div>
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="text-xs font-semibold uppercase text-muted-foreground">Recommended UPS Module</div>
-              <div className="text-xl font-bold text-foreground mt-1">
-                {result.outOfRange ? "> " : ""}
-                {result.base} kVA
-              </div>
-            </div>
-            <div className="bg-muted/50 rounded-lg p-4">
-              <div className="text-xs font-semibold uppercase text-muted-foreground">Est. Battery Energy</div>
-              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.batteryKwh)} kWh</div>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
-            <span>
-              Per IEC 62040. Battery energy is a rough estimate (assumes 90% discharge efficiency) — final battery
-              string sizing must use the manufacturer's discharge curves at the design end-of-life capacity.
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
 
 function GeneratorSizingCalculator() {
   const [kw, setKw] = useState(800)
@@ -1242,7 +1139,7 @@ export function ToolkitCalculatorsSection() {
             {[
               { value: "sizing", label: "Cable & Load Sizing", icon: Cable },
               { value: "transformer", label: "Transformer", icon: Boxes },
-              { value: "ups", label: "UPS", icon: BatteryCharging },
+              { value: "ups", label: "UPS Selection", icon: BatteryCharging },
               { value: "generator", label: "Generator (DG)", icon: Fuel },
               { value: "breaker", label: "Breaker", icon: Power },
               { value: "short-circuit", label: "Short-Circuit", icon: Zap },
@@ -1268,7 +1165,7 @@ export function ToolkitCalculatorsSection() {
             <TransformerSizingCalculator />
           </TabsContent>
           <TabsContent value="ups" className="w-full mt-8">
-            <UpsSizingCalculator />
+            <UpsSelectionCalculator />
           </TabsContent>
           <TabsContent value="generator" className="w-full mt-8">
             <GeneratorSizingCalculator />
@@ -1295,9 +1192,9 @@ export function ToolkitCalculatorsSection() {
 
         <div className="mt-10 max-w-3xl mx-auto text-center text-sm text-muted-foreground font-serif bg-muted/40 rounded-lg p-4">
           Values shown are indicative, simplified reference figures for preliminary/learning purposes and are
-          aligned in principle with the IEC 60364, IEC 60076, IEC 62040, ISO 8528, IEC 60909, IEEE 80, IEEE 141
-          and EN 12464-1 standards. Always verify against a manufacturer's datasheet and the applicable standard
-          before using these figures on a real project.
+          aligned in principle with the IEC 60364, IEC 60076, IEC 62040, ISO 8528, IEC 60909, IEEE 80, IEEE 141,
+          EN 12464-1 and TIA-942 standards. Always verify against a manufacturer's datasheet and the applicable
+          standard before using these figures on a real project.
         </div>
       </div>
     </section>
