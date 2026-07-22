@@ -77,7 +77,7 @@ export function ToolkitHero() {
             <div className="relative z-10">
               <img
                 src="/engineers-toolkit-hero.jpg"
-                alt="Engineer's toolkit overview: cable sizing, voltage drop and short circuit calculators, AutoCAD drawings, Revit BIM models, ETAP analysis, arc flash and protection coordination studies, transformer SLDs, UPS and data center layouts, and IEC/IS engineering standards"
+                alt="Engineer working across Revit BIM, AutoCAD electrical schematics, ETAP short-circuit analysis and Excel load schedule and cable sizing sheets"
                 className="rounded-lg shadow-2xl w-full"
               />
             </div>
