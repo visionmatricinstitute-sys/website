@@ -22,8 +22,10 @@ export function Footer() {
               <Button size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
                 <Facebook className="h-4 w-4" />
               </Button>
-              <Button size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
-                <Instagram className="h-4 w-4" />
+              <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
+                <a href="https://www.instagram.com/visionmatrixinstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on Instagram">
+                  <Instagram className="h-4 w-4" />
+                </a>
               </Button>
               <Button size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
                 <Linkedin className="h-4 w-4" />

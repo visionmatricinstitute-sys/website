@@ -92,7 +92,10 @@ const organizationJsonLd = {
     email: "info.visionmatrix@gmail.com",
     contactType: "admissions",
   },
-  sameAs: ["https://www.youtube.com/@visionMatrixInstitute"],
+  sameAs: [
+    "https://www.youtube.com/@visionMatrixInstitute",
+    "https://www.instagram.com/visionmatrixinstitute",
+  ],
 }
 
 export default function RootLayout({
