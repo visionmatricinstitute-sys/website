@@ -106,21 +106,6 @@ export function Footer() {
                   BIM Courses
                 </a>
               </li>
-              <li>
-                <a href="#" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
-                  Graphic Design
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
-                  Web Development
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
-                  Digital Marketing
-                </a>
-              </li>
             </ul>
           </div>
 

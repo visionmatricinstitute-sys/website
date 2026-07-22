@@ -122,9 +122,6 @@ export function DemoCta() {
                 <SelectItem value="computer-skills">Computer Skills & Applications</SelectItem>
                 <SelectItem value="cad">AutoCAD</SelectItem>
                 <SelectItem value="bim">BIM (Building Information Modeling)</SelectItem>
-                <SelectItem value="graphic-design">Graphic Design</SelectItem>
-                <SelectItem value="web-development">Web Development</SelectItem>
-                <SelectItem value="digital-marketing">Digital Marketing</SelectItem>
               </SelectContent>
             </Select>
           </div>
