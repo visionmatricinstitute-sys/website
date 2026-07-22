@@ -19,8 +19,10 @@ export function Footer() {
               anywhere.
             </p>
             <div className="flex space-x-4">
-              <Button size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
-                <Facebook className="h-4 w-4" />
+              <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
+                <a href="https://www.facebook.com/visionmatrixinstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on Facebook">
+                  <Facebook className="h-4 w-4" />
+                </a>
               </Button>
               <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
                 <a href="https://www.instagram.com/visionmatrixinstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on Instagram">
