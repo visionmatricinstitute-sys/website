@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
-import { Target, Eye, Users, Trophy } from "lucide-react"
+import { Target, Eye, Trophy } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 
 export function AboutSection() {
@@ -48,7 +48,7 @@ export function AboutSection() {
         </div>
 
         {/* Mission, Vision, Values */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           <FadeIn delay={0}>
             <Card className="text-center p-6 h-full hover:shadow-lg transition-shadow">
               <CardContent className="space-y-4">
@@ -80,20 +80,6 @@ export function AboutSection() {
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <Card className="text-center p-6 h-full hover:shadow-lg transition-shadow">
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-center w-16 h-16 bg-accent/10 rounded-full mx-auto">
-                  <Users className="h-8 w-8 text-accent" />
-                </div>
-                <h4 className="text-xl font-bold font-sans text-foreground">Expert Faculty</h4>
-                <p className="text-sm text-muted-foreground font-serif">
-                  Learn from industry professionals with years of practical experience and academic excellence.
-                </p>
-              </CardContent>
-            </Card>
-          </FadeIn>
-
-          <FadeIn delay={0.3}>
             <Card className="text-center p-6 h-full hover:shadow-lg transition-shadow">
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-center w-16 h-16 bg-accent/10 rounded-full mx-auto">
