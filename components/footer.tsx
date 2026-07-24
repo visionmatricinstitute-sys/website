@@ -91,6 +91,14 @@ export function Footer() {
                   Blog
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/resources/data-center-design-basics-checklist"
+                  className="text-navy-foreground/80 hover:text-navy-foreground transition-colors"
+                >
+                  Free Design Checklist
+                </Link>
+              </li>
             </ul>
           </div>
 
