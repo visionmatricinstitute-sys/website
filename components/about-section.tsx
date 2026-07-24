@@ -90,9 +90,10 @@ export function AboutSection() {
                 <div className="flex items-center justify-center w-16 h-16 bg-accent/10 rounded-full mx-auto">
                   <Trophy className="h-8 w-8 text-accent" />
                 </div>
-                <h4 className="text-xl font-bold font-sans text-foreground">Proven Results</h4>
+                <h4 className="text-xl font-bold font-sans text-foreground">Placement Support</h4>
                 <p className="text-sm text-muted-foreground font-serif">
-                  95% placement rate with students working in top companies across India and abroad.
+                  Resume guidance, interview preparation, and placement assistance to help job-ready
+                  graduates connect with employers.
                 </p>
               </CardContent>
             </Card>

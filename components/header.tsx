@@ -69,6 +69,9 @@ export function Header() {
             <Link href="/engineers-toolkit" className="text-foreground hover:text-accent transition-colors font-medium">
               Engineer's Toolkit
             </Link>
+            <Link href="/blog" className="text-foreground hover:text-accent transition-colors font-medium">
+              Blog
+            </Link>
             <a href="/#contact" className="text-foreground hover:text-accent transition-colors font-medium">
               Contact Us
             </a>
@@ -108,6 +111,9 @@ export function Header() {
               </a>
               <Link href="/engineers-toolkit" className="text-foreground hover:text-accent transition-colors font-medium">
                 Engineer's Toolkit
+              </Link>
+              <Link href="/blog" className="text-foreground hover:text-accent transition-colors font-medium">
+                Blog
               </Link>
               <a href="/#contact" className="text-foreground hover:text-accent transition-colors font-medium">
                 Contact Us

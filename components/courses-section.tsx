@@ -9,7 +9,7 @@ import {
   GraduationCap,
   Sparkles,
   Clock,
-  Users,
+  Video,
   Monitor,
   DraftingCompassIcon as Drafting,
   Building,
@@ -33,7 +33,7 @@ const popularCourses = [
       "Specialized training in electrical design for data centers — single line diagrams, panel GADs, cable and equipment sizing, and short-circuit studies aligned with IEC and data center standards.",
     icon: Zap,
     duration: "4-6 months",
-    students: "New",
+    format: "Live Online",
     level: "Intermediate to Advanced",
     features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
     image: "/electrical-design-data-center.jpg",
@@ -47,10 +47,11 @@ const popularCourses = [
       "Professional AutoCAD training covering 2D drafting and 3D modeling for engineering, architecture, and design applications.",
     icon: Drafting,
     duration: "3-6 months",
-    students: "300+",
+    format: "Live Online",
     level: "Intermediate to Advanced",
     features: ["AutoCAD 2D", "AutoCAD 3D", "Technical Drawing", "Design Principles"],
     image: "/autocad-training.png",
+    href: "/programs/autocad-training",
     isUpcoming: false,
   },
   {
@@ -60,10 +61,11 @@ const popularCourses = [
       "Advanced BIM training with Revit MEP focusing on building information modeling for construction and engineering projects.",
     icon: Building,
     duration: "4-8 months",
-    students: "200+",
+    format: "Live Online",
     level: "Advanced",
     features: ["Revit MEP", "3D Modeling", "Project Coordination", "BIM Standards"],
     image: "/bim-training.jpg",
+    href: "/programs/bim-revit-training",
     isUpcoming: false,
   },
   {
@@ -73,10 +75,11 @@ const popularCourses = [
       "Master essential computer skills including basic operations, MS Office suite, internet tools, and digital literacy for modern workplace requirements.",
     icon: Monitor,
     duration: "2-4 months",
-    students: "500+",
+    format: "Live Online",
     level: "Beginner to Advanced",
     features: ["Basic Computer", "MS Office", "Internet Tools", "Digital Literacy"],
     image: "/computer-training-ms-office.png",
+    href: "/programs/computer-skills-applications",
     isUpcoming: false,
   },
 ]
@@ -89,7 +92,7 @@ const upcomingCourses = [
       "End-to-end solar PV system design — load assessment, panel/inverter sizing, and grid-tie/off-grid configurations.",
     icon: Sun,
     duration: "3-5 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Intermediate to Advanced",
     features: ["PV System Design", "Inverter Sizing", "Grid-Tie Systems", "Solar Standards"],
     image: "/solar-design-expert.jpg",
@@ -102,7 +105,7 @@ const upcomingCourses = [
       "Applied AI concepts and tools for engineering workflows — from automation to intelligent design assistance.",
     icon: Brain,
     duration: "3-5 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Intermediate",
     features: ["AI Fundamentals", "Engineering Automation", "Prompt Engineering", "AI Tools"],
     isUpcoming: true,
@@ -114,7 +117,7 @@ const upcomingCourses = [
       "Learn Python from the ground up, covering scripting, data handling, and automation for engineering and IT tasks.",
     icon: Terminal,
     duration: "2-4 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Beginner to Intermediate",
     features: ["Python Basics", "Automation Scripts", "Data Handling", "Libraries"],
     isUpcoming: true,
@@ -126,7 +129,7 @@ const upcomingCourses = [
       "Design and implement connected industrial systems using IoT sensors, gateways, and monitoring platforms.",
     icon: Wifi,
     duration: "3-5 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Intermediate to Advanced",
     features: ["IoT Sensors", "Gateways", "Cloud Monitoring", "Industrial Networks"],
     isUpcoming: true,
@@ -138,7 +141,7 @@ const upcomingCourses = [
       "Advanced programmable logic controller and SCADA system design for industrial automation and process control.",
     icon: Workflow,
     duration: "4-6 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Advanced",
     features: ["PLC Programming", "SCADA Systems", "HMI Design", "Process Control"],
     isUpcoming: true,
@@ -150,7 +153,7 @@ const upcomingCourses = [
       "Design and deployment of electric vehicle charging stations, covering load planning, standards, and grid integration.",
     icon: BatteryCharging,
     duration: "2-4 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Intermediate",
     features: ["Charger Types", "Load Planning", "Grid Integration", "EV Standards"],
     isUpcoming: true,
@@ -162,7 +165,7 @@ const upcomingCourses = [
       "Fundamentals of robotics design, control systems, and automation for industrial and educational applications.",
     icon: Bot,
     duration: "4-6 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Intermediate to Advanced",
     features: ["Robot Kinematics", "Control Systems", "Sensors & Actuators", "Automation"],
     isUpcoming: true,
@@ -174,7 +177,7 @@ const upcomingCourses = [
       "Core machine learning concepts and practical model building for real-world engineering and data problems.",
     icon: BrainCircuit,
     duration: "4-6 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Advanced",
     features: ["ML Fundamentals", "Model Training", "Data Preprocessing", "Applied Projects"],
     isUpcoming: true,
@@ -186,7 +189,7 @@ const upcomingCourses = [
       "Microcontroller-based embedded systems design, covering firmware development and hardware interfacing.",
     icon: CircuitBoard,
     duration: "4-6 months",
-    students: "Coming Soon",
+    format: "Coming Soon",
     level: "Intermediate to Advanced",
     features: ["Microcontrollers", "Firmware Development", "Hardware Interfacing", "RTOS"],
     isUpcoming: true,
@@ -243,8 +246,8 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
             <span>{course.duration}</span>
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
-            <Users className="h-4 w-4" />
-            <span>{course.students}</span>
+            <Video className="h-4 w-4" />
+            <span>{course.format}</span>
           </div>
         </div>
 
@@ -260,9 +263,15 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
         </div>
 
         <div className="flex gap-3 pt-4">
-          <Button className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground" disabled={course.isUpcoming}>
-            {course.isUpcoming ? "Notify Me" : "Enroll Now"}
-          </Button>
+          {course.isUpcoming ? (
+            <Button className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground" disabled>
+              Notify Me
+            </Button>
+          ) : (
+            <Button asChild className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Link href="/#admission">Enroll Now</Link>
+            </Button>
+          )}
           {course.href ? (
             <Button
               asChild

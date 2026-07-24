@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/motion/magnetic-button"
-import { ArrowRight, Users, Award, BookOpen, ChevronDown } from "lucide-react"
+import { ArrowRight, Laptop, Wrench, Target, ChevronDown } from "lucide-react"
 
 const container = {
   hidden: {},
@@ -36,11 +36,12 @@ export function HeroSection() {
           <div className="space-y-8">
             <motion.div variants={item} className="space-y-4">
               <h1 className="text-4xl lg:text-6xl font-black font-sans text-white leading-tight text-balance">
-                Build Your Future with
-                <span className="text-accent block">Technical Excellence</span>
+                Online Training for
+                <span className="text-accent block">Data Center Electrical Design & BIM</span>
               </h1>
               <p className="text-lg text-white/70 font-serif leading-relaxed max-w-lg">
-                Join Vision Matrix Institute online - your gateway to industry-relevant technical education from anywhere.
+                Vision Matrix Institute teaches data center electrical design, BIM/Revit modeling, and the
+                industry-standard tools engineers use on the job — 100% online, instructor-led.
               </p>
             </motion.div>
 
@@ -62,28 +63,28 @@ export function HeroSection() {
               </MagneticButton>
             </motion.div>
 
-            {/* Stats */}
+            {/* What you get */}
             <motion.div variants={item} className="grid grid-cols-3 gap-4 pt-8">
-              <div className="text-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-md py-4">
+              <div className="text-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-md py-4 px-2">
                 <div className="flex items-center justify-center w-12 h-12 bg-accent/15 rounded-lg mb-2 mx-auto">
-                  <Users className="h-6 w-6 text-accent" />
+                  <Laptop className="h-6 w-6 text-accent" />
                 </div>
-                <div className="text-2xl font-bold text-white">500+</div>
-                <div className="text-sm text-white/60">Students Trained</div>
+                <div className="text-sm font-bold text-white">100% Online</div>
+                <div className="text-xs text-white/60">Live instructor-led classes</div>
               </div>
-              <div className="text-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-md py-4">
+              <div className="text-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-md py-4 px-2">
                 <div className="flex items-center justify-center w-12 h-12 bg-accent/15 rounded-lg mb-2 mx-auto">
-                  <Award className="h-6 w-6 text-accent" />
+                  <Wrench className="h-6 w-6 text-accent" />
                 </div>
-                <div className="text-2xl font-bold text-white">95%</div>
-                <div className="text-sm text-white/60">Placement Rate</div>
+                <div className="text-sm font-bold text-white">Real Tools</div>
+                <div className="text-xs text-white/60">Revit, AutoCAD, ETAP, Excel</div>
               </div>
-              <div className="text-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-md py-4">
+              <div className="text-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-md py-4 px-2">
                 <div className="flex items-center justify-center w-12 h-12 bg-accent/15 rounded-lg mb-2 mx-auto">
-                  <BookOpen className="h-6 w-6 text-accent" />
+                  <Target className="h-6 w-6 text-accent" />
                 </div>
-                <div className="text-2xl font-bold text-white">15+</div>
-                <div className="text-sm text-white/60">Courses Offered</div>
+                <div className="text-sm font-bold text-white">Career-Focused</div>
+                <div className="text-xs text-white/60">Data center design specialization</div>
               </div>
             </motion.div>
           </div>

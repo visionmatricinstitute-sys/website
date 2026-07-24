@@ -86,6 +86,11 @@ export function Footer() {
                   Engineer's Toolkit
                 </Link>
               </li>
+              <li>
+                <Link href="/blog" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -94,19 +99,36 @@ export function Footer() {
             <h4 className="text-lg font-bold font-sans">Popular Courses</h4>
             <ul className="space-y-2 font-serif">
               <li>
-                <a href="#" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
+                <Link
+                  href="/programs/electrical-design-data-center"
+                  className="text-navy-foreground/80 hover:text-navy-foreground transition-colors"
+                >
+                  Electrical Design – Data Center Specialist
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/programs/computer-skills-applications"
+                  className="text-navy-foreground/80 hover:text-navy-foreground transition-colors"
+                >
                   Computer Skills
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
+                <Link
+                  href="/programs/autocad-training"
+                  className="text-navy-foreground/80 hover:text-navy-foreground transition-colors"
+                >
                   CAD Training
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
+                <Link
+                  href="/programs/bim-revit-training"
+                  className="text-navy-foreground/80 hover:text-navy-foreground transition-colors"
+                >
                   BIM Courses
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
