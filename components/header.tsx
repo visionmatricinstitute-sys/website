@@ -72,6 +72,9 @@ export function Header() {
             <a href="/#contact" className="text-foreground hover:text-accent transition-colors font-medium">
               Contact Us
             </a>
+            <Link href="/login" className="text-foreground hover:text-accent transition-colors font-medium">
+              Student Login
+            </Link>
             <Button
               className="bg-green-500 hover:bg-green-600 text-white"
               onClick={() => window.open("https://wa.me/919930259997", "_blank")}
@@ -109,6 +112,9 @@ export function Header() {
               <a href="/#contact" className="text-foreground hover:text-accent transition-colors font-medium">
                 Contact Us
               </a>
+              <Link href="/login" className="text-foreground hover:text-accent transition-colors font-medium">
+                Student Login
+              </Link>
               <Button
                 className="bg-green-500 hover:bg-green-600 text-white w-fit"
                 onClick={() => window.open("https://wa.me/919930259997", "_blank")}
