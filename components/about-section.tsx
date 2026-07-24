@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Target, Eye, Users, Trophy } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
@@ -35,6 +36,9 @@ export function AboutSection() {
               Information Modeling), and various certification programs that are highly valued in today's competitive
               job market.
             </p>
+            <Link href="/about" className="inline-block text-accent font-semibold hover:underline">
+              Read our full story →
+            </Link>
           </FadeIn>
         </div>
 

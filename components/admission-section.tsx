@@ -31,7 +31,7 @@ export function AdmissionSection() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.course || !form.education) {
+    if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.course) {
       toast.error("Please fill in all required fields.")
       return
     }
@@ -227,7 +227,7 @@ export function AdmissionSection() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="education">Educational Qualification *</Label>
+                  <Label htmlFor="education">Educational Qualification (optional)</Label>
                   <Select value={form.education} onValueChange={(v) => updateField("education", v)}>
                     <SelectTrigger id="education">
                       <SelectValue placeholder="Select your qualification" />

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-const REQUIRED_FIELDS = ["firstName", "lastName", "email", "phone", "course", "education"] as const
+const REQUIRED_FIELDS = ["firstName", "lastName", "email", "phone", "course"] as const
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>
