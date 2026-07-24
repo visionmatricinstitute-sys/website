@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Target, Eye, Users, Trophy } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
@@ -18,11 +19,15 @@ export function AboutSection() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <FadeIn>
-            <img
-              src="/modern-tech-classroom.png"
-              alt="Vision Matrix Institute online learning"
-              className="rounded-lg shadow-lg w-full"
-            />
+            <div className="relative aspect-[4/3] rounded-lg shadow-lg overflow-hidden">
+              <Image
+                src="/modern-tech-classroom.png"
+                alt="Vision Matrix Institute online learning"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
           </FadeIn>
           <FadeIn delay={0.15} className="space-y-6">
             <h3 className="text-2xl font-bold font-sans text-foreground">Empowering Students Since 2025</h3>

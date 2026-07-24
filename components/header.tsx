@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Phone, Mail, MessageCircle } from "lucide-react"
 
@@ -48,7 +49,7 @@ export function Header() {
         {/* Main navigation */}
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center gap-2.5">
-            <img src="/logo.png" alt="Vision Matrix Institute logo" className="h-9 w-9" />
+            <Image src="/logo.png" alt="Vision Matrix Institute logo" width={36} height={36} className="h-9 w-9" />
             <span className="text-2xl font-black font-sans text-primary">Vision Matrix Institute</span>
           </div>
 

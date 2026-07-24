@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/motion/magnetic-button"
 import { ArrowRight, Laptop, Wrench, Target, ChevronDown } from "lucide-react"
@@ -90,11 +91,14 @@ export function HeroSection() {
           </div>
 
           <motion.div variants={item} className="relative">
-            <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-              <img
+            <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl aspect-[16/10]">
+              <Image
                 src="/hero-data-center.jpg"
                 alt="Vision Matrix Institute — data center electrical infrastructure and monitoring systems"
-                className="w-full"
+                fill
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
               />
             </div>
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-accent/30 rounded-full blur-xl" />

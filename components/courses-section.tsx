@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -207,9 +208,15 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
       }`}
     >
       <div className="relative overflow-hidden rounded-t-lg">
-        <div className="transition-transform duration-300 group-hover:scale-105">
+        <div className="relative h-48 transition-transform duration-300 group-hover:scale-105">
           {course.image ? (
-            <img src={course.image} alt={course.title} className="w-full h-48 object-cover" />
+            <Image
+              src={course.image}
+              alt={course.title}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              className="object-cover"
+            />
           ) : (
             <CourseThumbnail icon={IconComponent} index={index} muted={course.isUpcoming} />
           )}

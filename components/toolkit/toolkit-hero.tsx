@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Calculator, Library, Link2, ArrowRight, Wrench } from "lucide-react"
 
@@ -74,11 +75,14 @@ export function ToolkitHero() {
           </div>
 
           <div className="relative">
-            <div className="relative z-10">
-              <img
+            <div className="relative z-10 aspect-[4/3] rounded-lg shadow-2xl overflow-hidden">
+              <Image
                 src="/engineers-toolkit-hero.jpg"
                 alt="Engineer working across Revit BIM, AutoCAD electrical schematics, ETAP short-circuit analysis and Excel load schedule and cable sizing sheets"
-                className="rounded-lg shadow-2xl w-full"
+                fill
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
               />
             </div>
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-accent/20 rounded-full blur-xl" />

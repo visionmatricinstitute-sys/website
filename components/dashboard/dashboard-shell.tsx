@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import type { ReactNode } from "react"
 import { LogOut } from "lucide-react"
 import { signOut } from "@/app/dashboard/actions"
@@ -17,7 +18,7 @@ export function DashboardShell({
       <header className="bg-navy text-navy-foreground">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <img src="/logo.png" alt="Vision Matrix Institute logo" className="h-8 w-8" />
+            <Image src="/logo.png" alt="Vision Matrix Institute logo" width={32} height={32} className="h-8 w-8" />
             <span className="font-black font-sans">VMI Student Dashboard</span>
           </Link>
           <div className="flex items-center gap-4">
