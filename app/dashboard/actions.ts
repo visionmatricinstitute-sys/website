@@ -37,6 +37,18 @@ export async function toggleModuleComplete(moduleId: string, isCompleted: boolea
   revalidatePath("/dashboard")
 }
 
+export async function logAttendance(liveClassId: string) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  await supabase
+    .from("attendance")
+    .upsert({ live_class_id: liveClassId, student_id: user.id }, { onConflict: "live_class_id,student_id" })
+}
+
 export async function signOut() {
   const supabase = await createClient()
   await supabase.auth.signOut()

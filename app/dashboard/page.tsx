@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { BookOpen, Award, Download, ArrowRight, FileText, Video } from "lucide-react"
 import { enrollInCourse } from "./actions"
+import { JoinClassButton } from "@/components/dashboard/join-class-button"
 
 export default async function DashboardHomePage() {
   const supabase = await createClient()
@@ -91,11 +92,7 @@ export default async function DashboardHomePage() {
                       &middot; {c.duration_minutes} min
                     </div>
                   </div>
-                  <Button asChild size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0">
-                    <a href={c.join_url} target="_blank" rel="noopener noreferrer">
-                      Join Class
-                    </a>
-                  </Button>
+                  <JoinClassButton liveClassId={c.id} joinUrl={c.join_url} />
                 </CardContent>
               </Card>
             ))}
