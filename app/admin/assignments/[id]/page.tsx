@@ -20,14 +20,19 @@ export default async function AdminAssignmentDetailPage({ params }: { params: Pr
 
   const { data: submissions } = await supabase
     .from("assignment_submissions")
-    .select("id, student_id, file_path, file_name, submitted_at, grade, feedback, profiles(full_name)")
+    .select("id, student_id, file_path, file_name, submitted_at, grade, feedback")
     .eq("assignment_id", id)
     .order("submitted_at", { ascending: false })
+
+  const studentIds = [...new Set((submissions ?? []).map((s: any) => s.student_id))]
+  const { data: profiles } =
+    studentIds.length > 0 ? await supabase.from("profiles").select("id, full_name").in("id", studentIds) : { data: [] }
+  const nameByStudent = new Map((profiles ?? []).map((p: any) => [p.id, p.full_name]))
 
   const submissionsWithUrls = await Promise.all(
     (submissions ?? []).map(async (s: any) => {
       const { data } = await supabase.storage.from("assignment-submissions").createSignedUrl(s.file_path, 3600)
-      return { ...s, downloadUrl: data?.signedUrl ?? null }
+      return { ...s, studentName: nameByStudent.get(s.student_id), downloadUrl: data?.signedUrl ?? null }
     }),
   )
 
@@ -54,7 +59,7 @@ export default async function AdminAssignmentDetailPage({ params }: { params: Pr
               <CardContent className="py-4 space-y-3">
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div>
-                    <div className="font-semibold text-foreground">{s.profiles?.full_name || "Student"}</div>
+                    <div className="font-semibold text-foreground">{s.studentName || "Student"}</div>
                     <div className="text-xs text-muted-foreground">
                       Submitted {new Date(s.submitted_at).toLocaleString()}
                     </div>

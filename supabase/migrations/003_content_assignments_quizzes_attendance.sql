@@ -6,6 +6,13 @@
 -- ---------------------------------------------------------------------------
 alter table public.course_modules add column if not exists video_url text;
 
+-- The original schema only granted a public SELECT policy on course_modules —
+-- admins had no way to UPDATE it (e.g. to set video_url) until now.
+create policy "Admins manage course modules"
+  on public.course_modules for all
+  using (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'))
+  with check (exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin'));
+
 -- ---------------------------------------------------------------------------
 -- Assignments
 -- ---------------------------------------------------------------------------
