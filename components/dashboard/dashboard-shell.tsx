@@ -3,7 +3,15 @@ import type { ReactNode } from "react"
 import { LogOut } from "lucide-react"
 import { signOut } from "@/app/dashboard/actions"
 
-export function DashboardShell({ studentName, children }: { studentName: string; children: ReactNode }) {
+export function DashboardShell({
+  studentName,
+  isAdmin,
+  children,
+}: {
+  studentName: string
+  isAdmin?: boolean
+  children: ReactNode
+}) {
   return (
     <div className="min-h-screen bg-muted/30">
       <header className="bg-navy text-navy-foreground">
@@ -14,6 +22,14 @@ export function DashboardShell({ studentName, children }: { studentName: string;
           </Link>
           <div className="flex items-center gap-4">
             <span className="text-sm text-navy-foreground/80 font-serif hidden sm:inline">{studentName}</span>
+            {isAdmin && (
+              <Link
+                href="/admin/live-classes"
+                className="text-sm text-navy-foreground/70 hover:text-navy-foreground transition-colors hidden sm:inline"
+              >
+                Schedule Live Class
+              </Link>
+            )}
             <Link href="/" className="text-sm text-navy-foreground/70 hover:text-navy-foreground transition-colors hidden sm:inline">
               Back to website
             </Link>

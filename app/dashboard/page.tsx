@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { BookOpen, Award, Download, ArrowRight, FileText } from "lucide-react"
+import { BookOpen, Award, Download, ArrowRight, FileText, Video } from "lucide-react"
 import { enrollInCourse } from "./actions"
 
 export default async function DashboardHomePage() {
@@ -52,12 +52,56 @@ export default async function DashboardHomePage() {
       ? await supabase.from("resources").select("id, title, file_url, resource_type").in("course_id", enrolledCourseIds)
       : { data: [] }
 
+  const { data: upcomingClasses } =
+    enrolledCourseIds.length > 0
+      ? await supabase
+          .from("live_classes")
+          .select("id, title, scheduled_start, duration_minutes, join_url, courses(title)")
+          .in("course_id", enrolledCourseIds)
+          .gte("scheduled_start", new Date().toISOString())
+          .order("scheduled_start", { ascending: true })
+          .limit(5)
+      : { data: [] }
+
   return (
     <div className="space-y-10">
       <div>
         <h1 className="text-2xl lg:text-3xl font-black font-sans text-foreground">Welcome back</h1>
         <p className="text-muted-foreground font-serif mt-1">Here's where you left off.</p>
       </div>
+
+      {/* Upcoming live classes */}
+      {(upcomingClasses ?? []).length > 0 && (
+        <section className="space-y-4">
+          <h2 className="text-lg font-bold font-sans text-foreground flex items-center gap-2">
+            <Video className="h-5 w-5 text-accent" /> Upcoming Live Classes
+          </h2>
+          <div className="space-y-3">
+            {(upcomingClasses ?? []).map((c: any) => (
+              <Card key={c.id} className="border-accent/30">
+                <CardContent className="py-4 flex items-center justify-between gap-4 flex-wrap">
+                  <div className="min-w-0">
+                    <div className="font-semibold text-foreground">{c.title}</div>
+                    <div className="text-sm text-muted-foreground font-serif">
+                      {c.courses?.title} &middot;{" "}
+                      {new Date(c.scheduled_start).toLocaleString(undefined, {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}{" "}
+                      &middot; {c.duration_minutes} min
+                    </div>
+                  </div>
+                  <Button asChild size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0">
+                    <a href={c.join_url} target="_blank" rel="noopener noreferrer">
+                      Join Class
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Enrolled courses & progress */}
       <section className="space-y-4">

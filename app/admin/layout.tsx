@@ -4,11 +4,11 @@ import { createClient } from "@/lib/supabase/server"
 import { DashboardShell } from "@/components/dashboard/dashboard-shell"
 
 export const metadata = {
-  title: "Student Dashboard | Vision Matrix Institute",
+  title: "Admin | Vision Matrix Institute",
   robots: { index: false, follow: false },
 }
 
-export default async function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({ children }: { children: ReactNode }) {
   const supabase = await createClient()
   const {
     data: { user },
@@ -18,8 +18,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   const { data: profile } = await supabase.from("profiles").select("full_name, role").eq("id", user.id).single()
 
+  if (profile?.role !== "admin") redirect("/dashboard")
+
   return (
-    <DashboardShell studentName={profile?.full_name || user.email || "Student"} isAdmin={profile?.role === "admin"}>
+    <DashboardShell studentName={profile?.full_name || user.email || "Admin"} isAdmin>
       {children}
     </DashboardShell>
   )
