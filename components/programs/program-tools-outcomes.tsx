@@ -71,7 +71,10 @@ export function ProgramToolsOutcomes() {
               <Card className="h-full">
                 <CardContent className="p-6">
                   <h3 className="font-bold font-sans text-foreground mb-1">Indicative Compensation Ranges</h3>
-                  <p className="text-xs text-muted-foreground mb-4">2024–2025, by region</p>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    General industry figures for this specialization, by region — not Vision Matrix Institute
+                    outcomes or a guarantee.
+                  </p>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>

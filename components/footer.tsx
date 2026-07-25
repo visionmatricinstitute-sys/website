@@ -1,8 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Globe, Phone, Mail, Clock, Facebook, Instagram, Linkedin, Youtube } from "lucide-react"
+import { Globe, Phone, Mail, Clock, Facebook, Instagram, Youtube } from "lucide-react"
+import { NewsletterForm } from "@/components/newsletter-form"
 
 export function Footer() {
   return (
@@ -29,9 +29,6 @@ export function Footer() {
                 <a href="https://www.instagram.com/visionmatrixinstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on Instagram">
                   <Instagram className="h-4 w-4" />
                 </a>
-              </Button>
-              <Button size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
-                <Linkedin className="h-4 w-4" />
               </Button>
               <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
                 <a href="https://www.youtube.com/@visionMatrixInstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on YouTube">
@@ -192,13 +189,7 @@ export function Footer() {
                 Subscribe to our newsletter for course updates and career tips.
               </p>
             </div>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Enter your email"
-                className="bg-navy-foreground/10 border-navy-foreground/20 text-navy-foreground placeholder:text-navy-foreground/60"
-              />
-              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">Subscribe</Button>
-            </div>
+            <NewsletterForm />
           </div>
         </div>
 
