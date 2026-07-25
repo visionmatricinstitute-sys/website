@@ -7,6 +7,7 @@ import { ProgramHero } from "@/components/programs/program-hero"
 import { ProgramHighlights } from "@/components/programs/program-highlights"
 import { ProgramModules } from "@/components/programs/program-modules"
 import { ProgramToolsOutcomes } from "@/components/programs/program-tools-outcomes"
+import { ProgramCareerOutcomes } from "@/components/programs/program-career-outcomes"
 import { ProgramEnroll } from "@/components/programs/program-enroll"
 
 const title = "Electrical Design Engineer – Data Center Specialist Program"
@@ -67,6 +68,7 @@ export default function ElectricalDesignDataCenterPage() {
         <ProgramHighlights />
         <ProgramModules />
         <ProgramToolsOutcomes />
+        <ProgramCareerOutcomes />
         <ProgramEnroll />
       </main>
       <Footer />

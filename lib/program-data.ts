@@ -127,6 +127,72 @@ export const PREREQUISITES: string[] = [
   "Willingness to produce every deliverable — this is a practice-first program.",
 ]
 
+export const WHO_SHOULD_JOIN: string[] = [
+  "Fresh graduates in Electrical or Electronics Engineering seeking a career-launching credential.",
+  "Diploma engineers moving from operator or supervisor roles into design engineering.",
+  "Working professionals transitioning from conventional MEP into data-center specialisation.",
+  "MEP engineers expanding into a higher-value, faster-growing sub-domain.",
+  "Electrical design engineers developing expertise in mission-critical facilities.",
+  "BIM engineers adding electrical-specific competence to their software skills.",
+  "Consultants seeking a competitive credential to differentiate in DC-focused RFPs.",
+  "EPC professionals adding design-office fluency to site execution experience.",
+  "Career-changers seeking a decisive entry point into India's fast-growing data center industry.",
+]
+
+export const TARGET_ROLES: string[] = [
+  "Electrical Design Engineer",
+  "BIM Engineer — Electrical",
+  "Electrical BIM Coordinator",
+  "Data Center Electrical Consultant",
+  "Project Engineer at DC Operators",
+  "Commissioning Engineer",
+  "Data Center Facility Engineer",
+  "Design Manager / Lead",
+]
+
+export interface IndustryGroup {
+  category: string
+  companies: string[]
+}
+
+export const INDUSTRIES_HIRING: IndustryGroup[] = [
+  { category: "Design Consultancies", companies: ["AECOM", "Arup", "WSP"] },
+  { category: "EPC Contractors", companies: ["Sterling & Wilson", "L&T", "Shapoorji"] },
+  { category: "Colocation Operators", companies: ["Yotta", "STT GDC", "AdaniConneX", "CtrlS", "Sify", "Nxtra"] },
+  { category: "Hyperscalers", companies: ["Microsoft", "Google", "Meta", "AWS", "Oracle"] },
+  { category: "Equipment Vendors", companies: ["Vertiv", "Schneider", "Cummins", "ABB"] },
+]
+
+export interface CareerStage {
+  years: string
+  title: string
+}
+
+export const CAREER_GROWTH_PATH: CareerStage[] = [
+  { years: "0–2 yrs", title: "Design Engineer" },
+  { years: "2–5 yrs", title: "Senior Engineer" },
+  { years: "5–10 yrs", title: "Lead Engineer" },
+  { years: "10–15 yrs", title: "Principal / Manager" },
+  { years: "15+ yrs", title: "Practice Head" },
+]
+
+export const LEARNING_OUTCOMES: string[] = [
+  "Interpret client briefs and convert them into signed Design Basis documents.",
+  "Perform site studies including utility interface, soil resistivity, and statutory analysis.",
+  "Build load estimates from rack level to facility level with correct diversity allowances.",
+  "Size transformers, DG sets, UPS systems, and battery banks for any DC scale.",
+  "Calculate cable sizes, breaker ratings, and fault levels using ETAP and hand verification.",
+  "Draft single-line diagrams in every redundancy topology with correct IEC 60617 symbols.",
+  "Design physical layouts with clearances, ventilation, and fire compartmentation.",
+  "Compile complete tender packages — drawings, calculations, BOQ, and specifications.",
+  "Prepare weighted Technical Bid Evaluations and witness Factory Acceptance Tests.",
+  "Supervise site installation, commissioning, and integrated systems testing.",
+  "Present portfolio-quality capstone projects at interviews with confidence.",
+  "Answer data center electrical technical interview questions — from load flow to arc flash.",
+  "Use AI copilots productively across the entire design workflow.",
+  "Operate confidently in vendor negotiations, FAT floors, and client reviews.",
+]
+
 export interface InvestmentTier {
   name: string
   subtitle: string

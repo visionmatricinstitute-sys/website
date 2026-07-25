@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { CheckCircle2, MessageCircle, Mail } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 import { MagneticButton } from "@/components/motion/magnetic-button"
-import { COHORTS, PREREQUISITES, INVESTMENT_TIERS, ENROLL_STEPS } from "@/lib/program-data"
+import { COHORTS, PREREQUISITES, INVESTMENT_TIERS, ENROLL_STEPS, WHO_SHOULD_JOIN } from "@/lib/program-data"
 
 export function ProgramEnroll() {
   return (
@@ -35,6 +35,22 @@ export function ProgramEnroll() {
               </FadeIn>
             ))}
           </div>
+
+          <FadeIn className="max-w-3xl mx-auto mb-12">
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="font-bold font-sans text-foreground mb-3">This program is also a strong fit if you're...</h3>
+                <div className="grid sm:grid-cols-2 gap-2">
+                  {WHO_SHOULD_JOIN.map((w) => (
+                    <div key={w} className="flex items-start gap-2 text-sm text-muted-foreground font-serif">
+                      <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                      {w}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </FadeIn>
 
           <FadeIn className="max-w-2xl mx-auto">
             <Card className="bg-muted/40">
