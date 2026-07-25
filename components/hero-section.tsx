@@ -2,9 +2,10 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/motion/magnetic-button"
-import { ArrowRight, Laptop, Wrench, Target, ChevronDown } from "lucide-react"
+import { ArrowRight, Download, Laptop, Wrench, Target, ChevronDown } from "lucide-react"
 
 const container = {
   hidden: {},
@@ -48,18 +49,24 @@ export function HeroSection() {
 
             <motion.div variants={item} className="flex flex-col sm:flex-row gap-4">
               <MagneticButton>
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30">
-                  Explore Courses
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30">
+                  <Link href="/#courses">
+                    Explore Courses
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
                 </Button>
               </MagneticButton>
               <MagneticButton>
                 <Button
+                  asChild
                   size="lg"
                   variant="outline"
                   className="border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent"
                 >
-                  Download Brochure
+                  <a href="/brochures/electrical-design-data-center-brochure.pdf" download>
+                    <Download className="mr-2 h-5 w-5" />
+                    Download Brochure
+                  </a>
                 </Button>
               </MagneticButton>
             </motion.div>
