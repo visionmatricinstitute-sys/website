@@ -8,8 +8,11 @@ import { ProgramHighlights } from "@/components/programs/program-highlights"
 import { ProgramModules } from "@/components/programs/program-modules"
 import { ProgramToolsOutcomes } from "@/components/programs/program-tools-outcomes"
 import { ProgramCareerOutcomes } from "@/components/programs/program-career-outcomes"
+import { ProgramVideoPreviews } from "@/components/programs/program-video-previews"
 import { ProgramEnroll } from "@/components/programs/program-enroll"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { videoObjectJsonLd } from "@/lib/video-schema"
+import { PROGRAM_PREVIEW_VIDEOS } from "@/lib/video-data"
 
 const title = "Electrical Design Engineer – Data Center Specialist Program"
 const description =
@@ -65,16 +68,26 @@ const breadcrumbs = breadcrumbJsonLd([
   { name: "Electrical Design – Data Center Specialist", path: "/programs/electrical-design-data-center" },
 ])
 
+const videoJsonLds = PROGRAM_PREVIEW_VIDEOS.map(videoObjectJsonLd)
+
 export default function ElectricalDesignDataCenterPage() {
   return (
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
+      {videoJsonLds.map((v, i) => (
+        <script
+          key={PROGRAM_PREVIEW_VIDEOS[i].id}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(v) }}
+        />
+      ))}
       <Header />
       <main>
         <ProgramHero />
         <ProgramHighlights />
         <ProgramModules />
+        <ProgramVideoPreviews />
         <ProgramToolsOutcomes />
         <ProgramCareerOutcomes />
         <ProgramEnroll />
