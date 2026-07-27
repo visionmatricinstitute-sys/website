@@ -4,8 +4,9 @@ import { Footer } from "@/components/footer"
 import { LoginForm } from "@/components/auth/login-form"
 
 export const metadata = {
-  title: "Student Login | Vision Matrix Institute",
+  title: "Student Login",
   description: "Sign in to your Vision Matrix Institute student dashboard.",
+  robots: { index: false, follow: true },
 }
 
 export default function LoginPage() {

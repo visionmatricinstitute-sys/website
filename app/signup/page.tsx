@@ -3,8 +3,9 @@ import { Footer } from "@/components/footer"
 import { SignupForm } from "@/components/auth/signup-form"
 
 export const metadata = {
-  title: "Create Student Account | Vision Matrix Institute",
+  title: "Create Student Account",
   description: "Create your Vision Matrix Institute student account.",
+  robots: { index: false, follow: true },
 }
 
 export default function SignupPage() {
