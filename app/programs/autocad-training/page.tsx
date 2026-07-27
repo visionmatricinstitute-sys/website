@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { SimpleProgramPage } from "@/components/programs/simple-program-page"
+import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "AutoCAD Training – 2D Drafting & 3D Modeling"
 const description =
@@ -78,11 +79,18 @@ const faqJsonLd = {
   })),
 }
 
+const breadcrumbs = breadcrumbJsonLd([
+  { name: "Home", path: "/" },
+  { name: "Courses", path: "/#courses" },
+  { name: "AutoCAD Training", path: "/programs/autocad-training" },
+])
+
 export default function AutoCadTrainingPage() {
   return (
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <Header />
       <main>
         <SimpleProgramPage

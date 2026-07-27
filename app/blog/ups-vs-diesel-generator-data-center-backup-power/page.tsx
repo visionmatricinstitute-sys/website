@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { ArticleShell } from "@/components/blog/article-shell"
+import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "UPS vs Diesel Generator: Which One Handles a Power Outage?"
 const description =
@@ -49,7 +50,13 @@ const jsonLd = {
   description,
   image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
-  publisher: { "@type": "Organization", name: "Vision Matrix Institute" },
+  publisher: {
+    "@type": "Organization",
+    name: "Vision Matrix Institute",
+    logo: { "@type": "ImageObject", url: "https://www.visionmatrixinstitute.com/icon.png" },
+  },
+  datePublished: "2026-07-24",
+  dateModified: "2026-07-24",
   mainEntityOfPage: "https://www.visionmatrixinstitute.com/blog/ups-vs-diesel-generator-data-center-backup-power",
 }
 
@@ -59,11 +66,18 @@ const faqJsonLd = {
   mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
 }
 
+const breadcrumbs = breadcrumbJsonLd([
+  { name: "Home", path: "/" },
+  { name: "Blog", path: "/blog" },
+  { name: title, path: "/blog/ups-vs-diesel-generator-data-center-backup-power" },
+])
+
 export default function UpsVsDgPost() {
   return (
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <Header />
       <main>
         <ArticleShell

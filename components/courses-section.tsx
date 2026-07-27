@@ -212,7 +212,7 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
           {course.image ? (
             <Image
               src={course.image}
-              alt={course.title}
+              alt={`${course.title} course — Vision Matrix Institute`}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
               className="object-cover"

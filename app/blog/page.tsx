@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { FadeIn } from "@/components/motion/fade-in"
 import { ArrowRight } from "lucide-react"
+import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "Blog"
 const description =
@@ -17,7 +18,20 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/blog" },
+  openGraph: {
+    type: "website",
+    url: "/blog",
+    title,
+    description,
+    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
+  },
+  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
 }
+
+const breadcrumbs = breadcrumbJsonLd([
+  { name: "Home", path: "/" },
+  { name: "Blog", path: "/blog" },
+])
 
 const posts = [
   {
@@ -60,6 +74,7 @@ const posts = [
 export default function BlogIndexPage() {
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <Header />
       <main>
         <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">

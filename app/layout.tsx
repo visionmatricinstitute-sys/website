@@ -81,11 +81,19 @@ export const metadata: Metadata = {
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
+  "@id": `${siteUrl}/#organization`,
   name: siteName,
   url: siteUrl,
   description: siteDescription,
   email: "info.visionmatrix@gmail.com",
   telephone: "+91-9930259997",
+  logo: {
+    "@type": "ImageObject",
+    url: `${siteUrl}/icon.png`,
+    width: 128,
+    height: 128,
+  },
+  image: `${siteUrl}/icon.png`,
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+91-9930259997",
@@ -93,9 +101,19 @@ const organizationJsonLd = {
     contactType: "admissions",
   },
   sameAs: [
-    "https://www.youtube.com/@visionMatrixInstitute",
+    "https://www.facebook.com/visionmatrixinstitute",
     "https://www.instagram.com/visionmatrixinstitute",
+    "https://www.youtube.com/@visionMatrixInstitute",
   ],
+}
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteUrl}/#website`,
+  name: siteName,
+  url: siteUrl,
+  publisher: { "@id": `${siteUrl}/#organization` },
 }
 
 export default function RootLayout({
@@ -110,6 +128,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         {gtmId && (
           <Script id="gtm-script" strategy="afterInteractive">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}

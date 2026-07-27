@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Target, Eye, BookOpen, MessageCircle } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 import { Button } from "@/components/ui/button"
+import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "About Us"
 const description =
@@ -16,11 +17,25 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/about" },
+  openGraph: {
+    type: "website",
+    url: "/about",
+    title,
+    description,
+    images: [{ url: "/hero-data-center.jpg", width: 1600, height: 894, alt: title }],
+  },
+  twitter: { card: "summary_large_image", title, description, images: ["/hero-data-center.jpg"] },
 }
+
+const breadcrumbs = breadcrumbJsonLd([
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+])
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <Header />
       <main>
         <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">

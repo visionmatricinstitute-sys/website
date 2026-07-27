@@ -9,6 +9,7 @@ import { ProgramModules } from "@/components/programs/program-modules"
 import { ProgramToolsOutcomes } from "@/components/programs/program-tools-outcomes"
 import { ProgramCareerOutcomes } from "@/components/programs/program-career-outcomes"
 import { ProgramEnroll } from "@/components/programs/program-enroll"
+import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "Electrical Design Engineer – Data Center Specialist Program"
 const description =
@@ -58,10 +59,17 @@ const courseJsonLd = {
   },
 }
 
+const breadcrumbs = breadcrumbJsonLd([
+  { name: "Home", path: "/" },
+  { name: "Courses", path: "/#courses" },
+  { name: "Electrical Design – Data Center Specialist", path: "/programs/electrical-design-data-center" },
+])
+
 export default function ElectricalDesignDataCenterPage() {
   return (
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <Header />
       <main>
         <ProgramHero />

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { CheckCircle2, MessageCircle } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 import { PrintButton } from "@/components/resources/print-button"
+import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "Data Center Design Basics Checklist"
 const description =
@@ -23,7 +24,9 @@ export const metadata: Metadata = {
     url: "/resources/data-center-design-basics-checklist",
     title,
     description,
+    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
   },
+  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
 }
 
 const sections = [
@@ -100,14 +103,29 @@ const jsonLd = {
   "@type": "Article",
   headline: title,
   description,
-  publisher: { "@type": "Organization", name: "Vision Matrix Institute" },
+  image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
+  author: { "@type": "Organization", name: "Vision Matrix Institute" },
+  publisher: {
+    "@type": "Organization",
+    name: "Vision Matrix Institute",
+    logo: { "@type": "ImageObject", url: "https://www.visionmatrixinstitute.com/icon.png" },
+  },
+  datePublished: "2026-07-24",
+  dateModified: "2026-07-24",
   mainEntityOfPage: "https://www.visionmatrixinstitute.com/resources/data-center-design-basics-checklist",
 }
+
+const breadcrumbs = breadcrumbJsonLd([
+  { name: "Home", path: "/" },
+  { name: "Blog", path: "/blog" },
+  { name: title, path: "/resources/data-center-design-basics-checklist" },
+])
 
 export default function ChecklistPage() {
   return (
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <Header />
       <main>
         <section className="relative bg-navy py-20 lg:py-24 overflow-hidden print:hidden">

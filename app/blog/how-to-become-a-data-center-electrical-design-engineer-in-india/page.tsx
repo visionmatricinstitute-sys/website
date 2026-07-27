@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { FadeIn } from "@/components/motion/fade-in"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
 import { DC_CAREER_FAQS, CAREER_PROGRESSION } from "@/lib/guide-data"
+import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "How to Become a Data Center Electrical Design Engineer in India (2026 Guide)"
 const description =
@@ -50,9 +51,21 @@ const articleJsonLd = {
   description,
   image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
-  publisher: { "@type": "Organization", name: "Vision Matrix Institute" },
+  publisher: {
+    "@type": "Organization",
+    name: "Vision Matrix Institute",
+    logo: { "@type": "ImageObject", url: "https://www.visionmatrixinstitute.com/icon.png" },
+  },
+  datePublished: "2026-07-14",
+  dateModified: "2026-07-14",
   mainEntityOfPage: "https://www.visionmatrixinstitute.com/blog/how-to-become-a-data-center-electrical-design-engineer-in-india",
 }
+
+const breadcrumbs = breadcrumbJsonLd([
+  { name: "Home", path: "/" },
+  { name: "Blog", path: "/blog" },
+  { name: title, path: "/blog/how-to-become-a-data-center-electrical-design-engineer-in-india" },
+])
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -82,6 +95,7 @@ export default function DataCenterCareerGuidePage() {
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <Header />
       <main>
         <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
