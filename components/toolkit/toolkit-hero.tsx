@@ -29,7 +29,7 @@ export function ToolkitHero() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-wrap gap-4">
               <Button
                 size="lg"
                 className="bg-accent hover:bg-accent/90 text-accent-foreground"
@@ -37,6 +37,16 @@ export function ToolkitHero() {
               >
                 Open Calculators
                 <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
+                onClick={() =>
+                  document.getElementById("toolkit-simulations")?.scrollIntoView({ behavior: "smooth" })
+                }
+              >
+                Try the Simulations
               </Button>
               <Button
                 size="lg"

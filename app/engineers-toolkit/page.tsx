@@ -4,6 +4,7 @@ import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { ToolkitHero } from "@/components/toolkit/toolkit-hero"
 import { ToolkitCalculatorsSection } from "@/components/toolkit/toolkit-calculators-section"
+import { ToolkitSimulationsSection } from "@/components/toolkit/toolkit-simulations-section"
 import { ToolkitStandardsSection } from "@/components/toolkit/toolkit-standards-section"
 import { ToolkitLibrarySection } from "@/components/toolkit/toolkit-library-section"
 import { ToolkitLinksSection } from "@/components/toolkit/toolkit-links-section"
@@ -47,6 +48,7 @@ export default function EngineersToolkitPage() {
       <main>
         <ToolkitHero />
         <ToolkitCalculatorsSection />
+        <ToolkitSimulationsSection />
         <ToolkitStandardsSection />
         <ToolkitLibrarySection />
         <ToolkitLinksSection />

@@ -48,6 +48,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [`${siteUrl}/engineers-toolkit-hero.jpg`],
     },
     {
+      url: `${siteUrl}/simulations/generator-physics-simulator.html`,
+      lastModified: new Date("2026-07-29"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/simulations/electron-drift-simulator.html`,
+      lastModified: new Date("2026-07-29"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${siteUrl}/programs/electrical-design-data-center`,
       lastModified: new Date(),
       changeFrequency: "weekly",

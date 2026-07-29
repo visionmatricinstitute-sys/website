@@ -881,7 +881,7 @@ export function ToolkitCalculatorsSection() {
     <section id="toolkit-calculators" className="py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <Badge className="bg-accent/10 text-accent mb-4 hover:bg-accent/10">Calculators</Badge>
+          <Badge className="bg-accent/10 text-accent mb-4 hover:bg-accent/10">Electrical Tools</Badge>
           <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Engineering Calculators</h2>
           <p className="text-lg text-muted-foreground font-serif max-w-3xl mx-auto leading-relaxed">
             Preliminary sizing tools for practicing the same calculations covered in our technical courses.
