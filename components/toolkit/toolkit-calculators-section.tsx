@@ -889,7 +889,7 @@ export function ToolkitCalculatorsSection() {
         </div>
 
         <Tabs defaultValue="sizing" className="items-center">
-          <TabsList className="flex-wrap h-auto gap-2 bg-muted/60 p-2 rounded-2xl border border-border">
+          <TabsList className="sticky top-16 md:top-[106px] z-40 flex-wrap h-auto gap-2 bg-background/95 backdrop-blur-md p-2 rounded-2xl border border-border shadow-sm">
             {[
               { value: "sizing", label: "Conductor Sizing", icon: Cable },
               { value: "transformer", label: "Transformer", icon: Boxes },
