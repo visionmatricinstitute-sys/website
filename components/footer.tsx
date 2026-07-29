@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Globe, Phone, Mail, Clock, Facebook, Instagram, Youtube } from "lucide-react"
+import { Globe, Phone, Mail, Clock, Facebook, Instagram, Youtube, Linkedin } from "lucide-react"
 import { NewsletterForm } from "@/components/newsletter-form"
 
 export function Footer() {
@@ -33,6 +33,11 @@ export function Footer() {
               <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
                 <a href="https://www.youtube.com/@visionMatrixInstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on YouTube">
                   <Youtube className="h-4 w-4" />
+                </a>
+              </Button>
+              <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
+                <a href="https://www.linkedin.com/company/vision-matrix-institutes" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on LinkedIn">
+                  <Linkedin className="h-4 w-4" />
                 </a>
               </Button>
             </div>

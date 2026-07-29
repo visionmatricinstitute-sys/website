@@ -104,6 +104,7 @@ const organizationJsonLd = {
     "https://www.facebook.com/visionmatrixinstitute",
     "https://www.instagram.com/visionmatrixinstitute",
     "https://www.youtube.com/@visionMatrixInstitute",
+    "https://www.linkedin.com/company/vision-matrix-institutes",
   ],
 }
 
