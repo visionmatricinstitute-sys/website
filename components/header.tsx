@@ -34,10 +34,10 @@ export function Header() {
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
               <a
-                href="mailto:info.visionmatrix@gmail.com"
+                href="mailto:info@visionmatrixinstitute.com"
                 className="rounded-sm transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               >
-                info.visionmatrix@gmail.com
+                info@visionmatrixinstitute.com
               </a>
             </div>
           </div>

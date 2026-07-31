@@ -85,7 +85,7 @@ const organizationJsonLd = {
   name: siteName,
   url: siteUrl,
   description: siteDescription,
-  email: "info.visionmatrix@gmail.com",
+  email: "info@visionmatrixinstitute.com",
   telephone: "+91-9930259997",
   logo: {
     "@type": "ImageObject",
@@ -97,7 +97,7 @@ const organizationJsonLd = {
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+91-9930259997",
-    email: "info.visionmatrix@gmail.com",
+    email: "info@visionmatrixinstitute.com",
     contactType: "admissions",
   },
   sameAs: [

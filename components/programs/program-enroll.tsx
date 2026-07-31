@@ -159,7 +159,7 @@ export function ProgramEnroll() {
                   size="lg"
                   variant="outline"
                   className="border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent"
-                  onClick={() => window.open("mailto:info.visionmatrix@gmail.com", "_blank")}
+                  onClick={() => window.open("mailto:info@visionmatrixinstitute.com", "_blank")}
                 >
                   <Mail className="mr-2 h-5 w-5" />
                   Email Us
