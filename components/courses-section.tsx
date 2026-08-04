@@ -11,7 +11,6 @@ import {
   Sparkles,
   Clock,
   Video,
-  Monitor,
   DraftingCompassIcon as Drafting,
   Building,
   Zap,
@@ -67,20 +66,6 @@ const popularCourses = [
     features: ["Revit MEP", "3D Modeling", "Project Coordination", "BIM Standards"],
     image: "/bim-training.jpg",
     href: "/programs/bim-revit-training",
-    isUpcoming: false,
-  },
-  {
-    id: 1,
-    title: "Computer Skills & Applications",
-    description:
-      "Master essential computer skills including basic operations, MS Office suite, internet tools, and digital literacy for modern workplace requirements.",
-    icon: Monitor,
-    duration: "2-4 months",
-    format: "Live Online",
-    level: "Beginner to Advanced",
-    features: ["Basic Computer", "MS Office", "Internet Tools", "Digital Literacy"],
-    image: "/computer-training-ms-office.png",
-    href: "/programs/computer-skills-applications",
     isUpcoming: false,
   },
 ]
