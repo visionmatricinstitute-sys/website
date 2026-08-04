@@ -119,14 +119,6 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/programs/computer-skills-applications"
-                  className="text-navy-foreground/80 hover:text-navy-foreground transition-colors"
-                >
-                  Computer Skills
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/programs/autocad-training"
                   className="text-navy-foreground/80 hover:text-navy-foreground transition-colors"
                 >
