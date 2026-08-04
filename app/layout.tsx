@@ -29,7 +29,7 @@ const siteUrl =
 const siteName = "Vision Matrix Institute"
 const siteTitle = "Vision Matrix Institute - Online Technical & Electrical Engineering Education"
 const siteDescription =
-  "Leading online technical education institute offering Computer Skills, Drafting & Design, BIM, Electrical Design, Data Center Specialist courses and more. Build your career with industry-relevant skills from anywhere."
+  "Leading online technical education institute offering Drafting & Design, BIM, Electrical Design, Data Center Specialist courses and more. Build your career with industry-relevant skills from anywhere."
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -40,7 +40,6 @@ export const metadata: Metadata = {
   description: siteDescription,
   keywords: [
     "online technical education",
-    "computer courses",
     "BIM training",
     "drafting design",
     "electrical design courses",

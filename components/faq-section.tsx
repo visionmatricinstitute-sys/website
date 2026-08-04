@@ -11,7 +11,7 @@ const FAQS = [
   {
     question: "How long do courses take?",
     answer:
-      "It depends on the course — anywhere from 2 months (Computer Skills) to 4–8 months (BIM, Electrical Design). Each course page lists its specific duration.",
+      "It depends on the course — anywhere from 3 months (AutoCAD) to 4–8 months (BIM, Electrical Design). Each course page lists its specific duration.",
   },
   {
     question: "Will I receive a certificate?",
