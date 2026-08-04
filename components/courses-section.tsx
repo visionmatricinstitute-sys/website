@@ -97,18 +97,6 @@ const upcomingCourses = [
     isUpcoming: true,
   },
   {
-    id: 8,
-    title: "Python Programming",
-    description:
-      "Learn Python from the ground up, covering scripting, data handling, and automation for engineering and IT tasks.",
-    icon: Terminal,
-    duration: "2-4 months",
-    format: "Coming Soon",
-    level: "Beginner to Intermediate",
-    features: ["Python Basics", "Automation Scripts", "Data Handling", "Libraries"],
-    isUpcoming: true,
-  },
-  {
     id: 9,
     title: "Industrial IoT",
     description:
@@ -154,30 +142,6 @@ const upcomingCourses = [
     format: "Coming Soon",
     level: "Intermediate to Advanced",
     features: ["Robot Kinematics", "Control Systems", "Sensors & Actuators", "Automation"],
-    isUpcoming: true,
-  },
-  {
-    id: 14,
-    title: "Machine Learning",
-    description:
-      "Core machine learning concepts and practical model building for real-world engineering and data problems.",
-    icon: BrainCircuit,
-    duration: "4-6 months",
-    format: "Coming Soon",
-    level: "Advanced",
-    features: ["ML Fundamentals", "Model Training", "Data Preprocessing", "Applied Projects"],
-    isUpcoming: true,
-  },
-  {
-    id: 15,
-    title: "Embedded Systems",
-    description:
-      "Microcontroller-based embedded systems design, covering firmware development and hardware interfacing.",
-    icon: CircuitBoard,
-    duration: "4-6 months",
-    format: "Coming Soon",
-    level: "Intermediate to Advanced",
-    features: ["Microcontrollers", "Firmware Development", "Hardware Interfacing", "RTOS"],
     isUpcoming: true,
   },
 ]
