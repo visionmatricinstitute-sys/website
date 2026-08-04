@@ -15,14 +15,12 @@ import {
   Building,
   Zap,
   Brain,
-  Terminal,
-  Wifi,
-  Workflow,
   Sun,
   BatteryCharging,
-  Bot,
-  BrainCircuit,
-  CircuitBoard,
+  Wind,
+  Flame,
+  Droplets,
+  Cable,
 } from "lucide-react"
 
 const popularCourses = [
@@ -97,30 +95,6 @@ const upcomingCourses = [
     isUpcoming: true,
   },
   {
-    id: 9,
-    title: "Industrial IoT",
-    description:
-      "Design and implement connected industrial systems using IoT sensors, gateways, and monitoring platforms.",
-    icon: Wifi,
-    duration: "3-5 months",
-    format: "Coming Soon",
-    level: "Intermediate to Advanced",
-    features: ["IoT Sensors", "Gateways", "Cloud Monitoring", "Industrial Networks"],
-    isUpcoming: true,
-  },
-  {
-    id: 10,
-    title: "PLC & SCADA Advanced",
-    description:
-      "Advanced programmable logic controller and SCADA system design for industrial automation and process control.",
-    icon: Workflow,
-    duration: "4-6 months",
-    format: "Coming Soon",
-    level: "Advanced",
-    features: ["PLC Programming", "SCADA Systems", "HMI Design", "Process Control"],
-    isUpcoming: true,
-  },
-  {
     id: 12,
     title: "EV Charging Infrastructure",
     description:
@@ -132,20 +106,56 @@ const upcomingCourses = [
     features: ["Charger Types", "Load Planning", "Grid Integration", "EV Standards"],
     isUpcoming: true,
   },
+
   {
-    id: 13,
-    title: "Robotics",
+    id: 16,
+    title: "HVAC Design for Data Centers",
     description:
-      "Fundamentals of robotics design, control systems, and automation for industrial and educational applications.",
-    icon: Bot,
-    duration: "4-6 months",
+      "Precision cooling and HVAC system design for data centers, covering airflow management, thermal load calculations, and redundancy planning for critical IT environments.",
+    icon: Wind,
+    duration: "2-4 months",
     format: "Coming Soon",
-    level: "Intermediate to Advanced",
-    features: ["Robot Kinematics", "Control Systems", "Sensors & Actuators", "Automation"],
+    level: "Intermediate",
+    features: ["Precision Cooling", "Airflow Management", "Thermal Load Calculations", "Redundancy Planning"],
     isUpcoming: true,
   },
-]
-
+  {
+    id: 17,
+    title: "Fire Fighting Design for Data Centers",
+    description:
+      "Fire detection and suppression system design for data centers, covering clean agent systems, early-warning detection, and compliance with fire safety codes.",
+    icon: Flame,
+    duration: "2-4 months",
+    format: "Coming Soon",
+    level: "Intermediate",
+    features: ["Fire Detection", "Clean Agent Suppression", "Early Warning Systems", "Fire Safety Codes"],
+    isUpcoming: true,
+  },
+  {
+    id: 18,
+    title: "Plumbing Design for Data Centers",
+    description:
+      "Plumbing and piping system design for data center facilities, covering chilled water piping, drainage systems, and leak detection.",
+    icon: Droplets,
+    duration: "2-4 months",
+    format: "Coming Soon",
+    level: "Intermediate",
+    features: ["Chilled Water Piping", "Drainage Systems", "Leak Detection", "Piping Standards"],
+    isUpcoming: true,
+  },
+  {
+    id: 19,
+    title: "ELV Design for Data Centers",
+    description:
+      "Extra-low voltage system design for data centers, covering CCTV, access control, fire alarm integration, and structured cabling.",
+    icon: Cable,
+    duration: "2-4 months",
+    format: "Coming Soon",
+    level: "Intermediate",
+    features: ["CCTV & Access Control", "Structured Cabling", "Fire Alarm Integration", "ELV Standards"],
+    isUpcoming: true,
+  },
+  ]
 const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
   const IconComponent = course.icon
   return (
