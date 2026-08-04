@@ -124,6 +124,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable} antialiased`}>
       <head>
+        <meta name="msvalidate.01" content="9166F8A67733A6CEF2B393A997444A3C" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
