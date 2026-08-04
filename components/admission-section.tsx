@@ -219,7 +219,6 @@ export function AdmissionSection() {
                       <SelectItem value="electrical-design-data-center">
                         Electrical Design – Data Center Specialist
                       </SelectItem>
-                      <SelectItem value="computer-skills">Computer Skills & Applications</SelectItem>
                       <SelectItem value="cad">AutoCAD</SelectItem>
                       <SelectItem value="bim">BIM (Building Information Modeling)</SelectItem>
                     </SelectContent>
