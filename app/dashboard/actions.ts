@@ -4,6 +4,10 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 
+// Free/manual enrollment — no longer wired into the dashboard UI now that
+// paid courses go through Razorpay (see components/dashboard/enroll-button.tsx
+// and app/api/razorpay/). Kept for admin/offline use (e.g. a WhatsApp-negotiated
+// enrollment) rather than deleted.
 export async function enrollInCourse(courseId: string) {
   const supabase = await createClient()
   const {

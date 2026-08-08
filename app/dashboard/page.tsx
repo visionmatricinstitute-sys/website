@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { BookOpen, Award, Download, ArrowRight, FileText, Video } from "lucide-react"
-import { enrollInCourse } from "./actions"
 import { JoinClassButton } from "@/components/dashboard/join-class-button"
+import { EnrollButton } from "@/components/dashboard/enroll-button"
 
 export default async function DashboardHomePage() {
   const supabase = await createClient()
@@ -23,8 +23,12 @@ export default async function DashboardHomePage() {
   const enrolledCourses = (enrollments ?? []).map((e: any) => e.courses).filter(Boolean)
   const enrolledCourseIds = enrolledCourses.map((c: any) => c.id)
 
-  const { data: allCourses } = await supabase.from("courses").select("id, slug, title, description")
+  const { data: allCourses } = await supabase
+    .from("courses")
+    .select("id, slug, title, description, price_amount, price_currency")
   const availableCourses = (allCourses ?? []).filter((c: any) => !enrolledCourseIds.includes(c.id))
+
+  const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
 
   const progressByCourse: Record<string, { completed: number; total: number }> = {}
   for (const course of enrolledCourses) {
@@ -158,11 +162,23 @@ export default async function DashboardHomePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-sm text-muted-foreground font-serif">{course.description}</p>
-                  <form action={enrollInCourse.bind(null, course.id)}>
-                    <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-                      Enroll Now
-                    </Button>
-                  </form>
+                  {course.price_amount ? (
+                    <>
+                      <p className="text-lg font-black font-sans text-foreground">
+                        ₹{(course.price_amount / 100).toLocaleString("en-IN")}
+                      </p>
+                      <EnrollButton
+                        courseId={course.id}
+                        courseTitle={course.title}
+                        studentName={profile?.full_name || ""}
+                        studentEmail={user.email || ""}
+                      />
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground font-serif">
+                      Pricing coming soon — contact us to enroll.
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             ))}
