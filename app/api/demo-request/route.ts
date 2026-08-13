@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
+import { createServiceClient } from "@/lib/supabase/service"
 
-const REQUIRED_FIELDS = ["name", "phone", "course"] as const
+const REQUIRED_FIELDS = ["studentName", "phone"] as const
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>
@@ -15,41 +16,59 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: `Missing required fields: ${missing.join(", ")}` }, { status: 400 })
   }
 
-  const webhookUrl = process.env.ADMISSION_SHEET_WEBHOOK_URL
-  if (!webhookUrl) {
-    console.error("ADMISSION_SHEET_WEBHOOK_URL is not set")
+  const softwareKnown = Array.isArray(body.softwareKnown)
+    ? (body.softwareKnown as unknown[]).map(String).filter(Boolean)
+    : []
+
+  const supabase = createServiceClient()
+  const { error: insertError } = await supabase.from("demo_requests").insert({
+    student_name: body.studentName,
+    education: body.education || null,
+    college: body.college || null,
+    current_year_semester: body.currentYearSemester || null,
+    graduation_year: body.graduationYear || null,
+    current_occupation: body.currentOccupation || null,
+    work_experience: body.workExperience || null,
+    current_company: body.currentCompany || null,
+    design_experience: body.designExperience || null,
+    software_known: softwareKnown,
+    expectations: body.expectations || null,
+    training_goal: body.trainingGoal || null,
+    phone: body.phone,
+    email: body.email || null,
+    heard_from: body.heardFrom || null,
+    course_interest: body.courseInterest || null,
+  })
+
+  if (insertError) {
+    console.error("Demo request insert failed:", insertError)
     return NextResponse.json(
-      { error: "The demo request form isn't connected yet. Please contact us directly via WhatsApp or email." },
+      { error: "Something went wrong submitting your request. Please try again or contact us directly." },
       { status: 500 },
     )
   }
 
-  try {
-    const response = await fetch(webhookUrl, {
+  // Best-effort mirror to the existing CRM sheet via n8n — the request is already saved above,
+  // so a webhook failure (e.g. n8n being down) must not fail the whole submission.
+  const webhookUrl = process.env.ADMISSION_SHEET_WEBHOOK_URL
+  if (webhookUrl) {
+    fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        firstName: body.name,
+        firstName: body.studentName,
         lastName: "",
-        email: "",
+        email: body.email || "",
         phone: body.phone,
-        course: body.course,
-        education: "",
-        message: body.preferredTime ? `Preferred time: ${body.preferredTime}` : "",
+        course: body.courseInterest || "",
+        education: body.education || "",
+        message: `Demo request. Training goal: ${body.trainingGoal || "n/a"}. Expects: ${body.expectations || "n/a"}`,
         source: "Demo Request",
       }),
+    }).catch((error) => {
+      console.error("Demo request webhook mirror failed (non-fatal):", error)
     })
-
-    if (!response.ok) {
-      throw new Error(`Sheet webhook responded with status ${response.status}`)
-    }
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error("Demo request submission failed:", error)
-    return NextResponse.json(
-      { error: "Something went wrong submitting your request. Please try again or contact us directly." },
-      { status: 502 },
-    )
   }
+
+  return NextResponse.json({ success: true })
 }

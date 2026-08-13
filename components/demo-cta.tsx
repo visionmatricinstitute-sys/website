@@ -5,6 +5,9 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Dialog,
@@ -15,31 +18,68 @@ import {
 } from "@/components/ui/dialog"
 import { CalendarCheck, Loader2 } from "lucide-react"
 
-const EMPTY_FORM = { name: "", phone: "", course: "", preferredTime: "" }
+const SOFTWARE_OPTIONS = ["AutoCAD", "ETAP", "EPLAN", "Revit MEP", "Dialux", "Excel"] as const
+
+const EMPTY_FORM = {
+  studentName: "",
+  education: "",
+  educationOther: "",
+  college: "",
+  currentYearSemester: "",
+  graduationYear: "",
+  currentOccupation: "",
+  workExperience: "",
+  currentCompany: "",
+  designExperience: "",
+  softwareKnown: [] as string[],
+  softwareOther: "",
+  expectations: "",
+  trainingGoal: "",
+  trainingGoalOther: "",
+  phone: "",
+  email: "",
+  heardFrom: "",
+  heardFromOther: "",
+  courseInterest: "",
+}
 
 export function DemoCta() {
   const [open, setOpen] = useState(false)
   const [form, setForm] = useState(EMPTY_FORM)
   const [submitting, setSubmitting] = useState(false)
 
-  function updateField(field: keyof typeof EMPTY_FORM, value: string) {
+  function updateField<K extends keyof typeof EMPTY_FORM>(field: K, value: (typeof EMPTY_FORM)[K]) {
     setForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  function toggleSoftware(name: string, checked: boolean) {
+    setForm((prev) => ({
+      ...prev,
+      softwareKnown: checked ? [...prev.softwareKnown, name] : prev.softwareKnown.filter((s) => s !== name),
+    }))
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    if (!form.name || !form.phone || !form.course) {
+    if (!form.studentName || !form.phone || !form.courseInterest) {
       toast.error("Please fill in your name, phone, and course of interest.")
       return
     }
 
     setSubmitting(true)
     try {
+      const education = form.education === "Other" ? form.educationOther : form.education
+      const trainingGoal = form.trainingGoal === "Other" ? form.trainingGoalOther : form.trainingGoal
+      const heardFrom = form.heardFrom === "Other" ? form.heardFromOther : form.heardFrom
+      const softwareKnown = form.softwareOther
+        ? [...form.softwareKnown, form.softwareOther]
+        : form.softwareKnown
+
       const response = await fetch("/api/demo-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, education, trainingGoal, heardFrom, softwareKnown }),
       })
 
       const data = await response.json()
@@ -79,30 +119,144 @@ export function DemoCta() {
         Book Free Demo
       </button>
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Book Your Free Demo</DialogTitle>
-          <DialogDescription>Tell us a bit about yourself and we'll call you to schedule it.</DialogDescription>
+          <DialogTitle>Electrical Design Demo Class — Registration</DialogTitle>
+          <DialogDescription>Tell us about yourself and we'll call you to schedule your free demo.</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="demo-name">Name *</Label>
+            <Label htmlFor="demo-name">1. Student Name *</Label>
             <Input
               id="demo-name"
               placeholder="Your full name"
-              value={form.name}
-              onChange={(e) => updateField("name", e.target.value)}
+              value={form.studentName}
+              onChange={(e) => updateField("studentName", e.target.value)}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="demo-phone">Phone Number *</Label>
+            <Label>2. Education / Qualification</Label>
+            <RadioGroup value={form.education} onValueChange={(v) => updateField("education", v)} className="gap-2">
+              {["Diploma in Electrical Engineering", "B.E./B.Tech in Electrical Engineering", "M.E./M.Tech", "ITI", "Other"].map((opt) => (
+                <div key={opt} className="flex items-center gap-2">
+                  <RadioGroupItem value={opt} id={`edu-${opt}`} />
+                  <Label htmlFor={`edu-${opt}`} className="font-normal">{opt}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+            {form.education === "Other" && (
+              <Input
+                placeholder="Please specify"
+                value={form.educationOther}
+                onChange={(e) => updateField("educationOther", e.target.value)}
+              />
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="demo-college">3. College / Institute</Label>
+              <Input id="demo-college" value={form.college} onChange={(e) => updateField("college", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="demo-year">4. Current Year / Semester</Label>
+              <Input id="demo-year" value={form.currentYearSemester} onChange={(e) => updateField("currentYearSemester", e.target.value)} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="demo-grad">5. Graduation Year</Label>
+              <Input id="demo-grad" value={form.graduationYear} onChange={(e) => updateField("graduationYear", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="demo-occupation">6. Current Occupation / Job Role</Label>
+              <Input id="demo-occupation" value={form.currentOccupation} onChange={(e) => updateField("currentOccupation", e.target.value)} />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>7. Work Experience</Label>
+            <RadioGroup value={form.workExperience} onValueChange={(v) => updateField("workExperience", v)} className="gap-2">
+              {["Fresher", "Less than 1 year", "1–3 years", "3–5 years", "5+ years"].map((opt) => (
+                <div key={opt} className="flex items-center gap-2">
+                  <RadioGroupItem value={opt} id={`exp-${opt}`} />
+                  <Label htmlFor={`exp-${opt}`} className="font-normal">{opt}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="demo-company">8. Current Company (if employed)</Label>
+            <Input id="demo-company" value={form.currentCompany} onChange={(e) => updateField("currentCompany", e.target.value)} />
+          </div>
+
+          <div className="space-y-2">
+            <Label>9. Electrical Design Experience</Label>
+            <RadioGroup value={form.designExperience} onValueChange={(v) => updateField("designExperience", v)} className="gap-2">
+              {["No experience", "Basic knowledge", "Less than 1 year", "1–3 years", "3+ years"].map((opt) => (
+                <div key={opt} className="flex items-center gap-2">
+                  <RadioGroupItem value={opt} id={`design-${opt}`} />
+                  <Label htmlFor={`design-${opt}`} className="font-normal">{opt}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
+            <Label>10. Software Known</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {SOFTWARE_OPTIONS.map((opt) => (
+                <div key={opt} className="flex items-center gap-2">
+                  <Checkbox
+                    id={`sw-${opt}`}
+                    checked={form.softwareKnown.includes(opt)}
+                    onCheckedChange={(checked) => toggleSoftware(opt, checked === true)}
+                  />
+                  <Label htmlFor={`sw-${opt}`} className="font-normal">{opt}</Label>
+                </div>
+              ))}
+            </div>
+            <Input
+              placeholder="Other software (optional)"
+              value={form.softwareOther}
+              onChange={(e) => updateField("softwareOther", e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="demo-expect">11. What do you expect to learn from the demo class?</Label>
+            <Textarea id="demo-expect" value={form.expectations} onChange={(e) => updateField("expectations", e.target.value)} rows={3} />
+          </div>
+
+          <div className="space-y-2">
+            <Label>12. Preferred Training Goal</Label>
+            <RadioGroup value={form.trainingGoal} onValueChange={(v) => updateField("trainingGoal", v)} className="gap-2">
+              {["Electrical Design Engineer Job", "Improve Existing Design Skills", "Learn Electrical Design Software", "Project-Based Learning", "Career Guidance", "Other"].map((opt) => (
+                <div key={opt} className="flex items-center gap-2">
+                  <RadioGroupItem value={opt} id={`goal-${opt}`} />
+                  <Label htmlFor={`goal-${opt}`} className="font-normal">{opt}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+            {form.trainingGoal === "Other" && (
+              <Input
+                placeholder="Please specify"
+                value={form.trainingGoalOther}
+                onChange={(e) => updateField("trainingGoalOther", e.target.value)}
+              />
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="demo-phone">13. Mobile / WhatsApp Number *</Label>
             <Input
               id="demo-phone"
               type="tel"
-              placeholder="Your phone number"
               value={form.phone}
               onChange={(e) => updateField("phone", e.target.value)}
               required
@@ -110,8 +264,32 @@ export function DemoCta() {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="demo-email">14. Email ID</Label>
+            <Input id="demo-email" type="email" value={form.email} onChange={(e) => updateField("email", e.target.value)} />
+          </div>
+
+          <div className="space-y-2">
+            <Label>15. How did you hear about the demo class?</Label>
+            <RadioGroup value={form.heardFrom} onValueChange={(v) => updateField("heardFrom", v)} className="gap-2">
+              {["WhatsApp", "Instagram", "YouTube", "Referral", "Other"].map((opt) => (
+                <div key={opt} className="flex items-center gap-2">
+                  <RadioGroupItem value={opt} id={`heard-${opt}`} />
+                  <Label htmlFor={`heard-${opt}`} className="font-normal">{opt}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+            {form.heardFrom === "Other" && (
+              <Input
+                placeholder="Please specify"
+                value={form.heardFromOther}
+                onChange={(e) => updateField("heardFromOther", e.target.value)}
+              />
+            )}
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="demo-course">Course Interest *</Label>
-            <Select value={form.course} onValueChange={(v) => updateField("course", v)}>
+            <Select value={form.courseInterest} onValueChange={(v) => updateField("courseInterest", v)}>
               <SelectTrigger id="demo-course">
                 <SelectValue placeholder="Select a course" />
               </SelectTrigger>
@@ -122,20 +300,6 @@ export function DemoCta() {
                 <SelectItem value="computer-skills">Computer Skills & Applications</SelectItem>
                 <SelectItem value="cad">AutoCAD</SelectItem>
                 <SelectItem value="bim">BIM (Building Information Modeling)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="demo-time">Preferred Time</Label>
-            <Select value={form.preferredTime} onValueChange={(v) => updateField("preferredTime", v)}>
-              <SelectTrigger id="demo-time">
-                <SelectValue placeholder="Any time that works" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="morning">Morning (9 AM – 12 PM)</SelectItem>
-                <SelectItem value="afternoon">Afternoon (12 PM – 4 PM)</SelectItem>
-                <SelectItem value="evening">Evening (4 PM – 7 PM)</SelectItem>
               </SelectContent>
             </Select>
           </div>
