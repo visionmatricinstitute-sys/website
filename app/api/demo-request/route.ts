@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/service"
+import { appendDemoRequestToSheet } from "@/lib/google-sheets"
 
 const REQUIRED_FIELDS = ["studentName", "phone"] as const
 
@@ -67,6 +68,31 @@ export async function POST(request: Request) {
       }),
     }).catch((error) => {
       console.error("Demo request webhook mirror failed (non-fatal):", error)
+    })
+  }
+
+  // Best-effort direct mirror to the "Demo Requests" tab — independent of n8n,
+  // doesn't need it to be running. Also non-fatal if it fails.
+  if (process.env.GOOGLE_OAUTH_REFRESH_TOKEN) {
+    appendDemoRequestToSheet({
+      studentName: String(body.studentName),
+      education: body.education as string | undefined,
+      college: body.college as string | undefined,
+      currentYearSemester: body.currentYearSemester as string | undefined,
+      graduationYear: body.graduationYear as string | undefined,
+      currentOccupation: body.currentOccupation as string | undefined,
+      workExperience: body.workExperience as string | undefined,
+      currentCompany: body.currentCompany as string | undefined,
+      designExperience: body.designExperience as string | undefined,
+      softwareKnown,
+      expectations: body.expectations as string | undefined,
+      trainingGoal: body.trainingGoal as string | undefined,
+      phone: String(body.phone),
+      email: body.email as string | undefined,
+      heardFrom: body.heardFrom as string | undefined,
+      courseInterest: body.courseInterest as string | undefined,
+    }).catch((error) => {
+      console.error("Demo request Google Sheets mirror failed (non-fatal):", error)
     })
   }
 
