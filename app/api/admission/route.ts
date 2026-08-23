@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { createServiceClient } from "@/lib/supabase/service"
 
 const REQUIRED_FIELDS = ["firstName", "lastName", "email", "phone", "course"] as const
 
@@ -15,32 +16,39 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: `Missing required fields: ${missing.join(", ")}` }, { status: 400 })
   }
 
-  const webhookUrl = process.env.ADMISSION_SHEET_WEBHOOK_URL
-  if (!webhookUrl) {
-    console.error("ADMISSION_SHEET_WEBHOOK_URL is not set")
+  const supabase = createServiceClient()
+  const { error: insertError } = await supabase.from("admission_requests").insert({
+    first_name: body.firstName,
+    last_name: body.lastName,
+    email: body.email,
+    phone: body.phone,
+    course: body.course,
+    education: body.education || null,
+    message: body.message || null,
+  })
+
+  if (insertError) {
+    console.error("Admission request insert failed:", insertError)
     return NextResponse.json(
-      { error: "The admission form isn't connected yet. Please contact us directly via WhatsApp or email." },
+      { error: "Something went wrong submitting your application. Please try again or contact us directly." },
       { status: 500 },
     )
   }
 
-  try {
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...body, source: "Admission Form" }),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Sheet webhook responded with status ${response.status}`)
+  // Best-effort mirror to the existing CRM sheet via n8n — the application is already
+  // saved above, so a webhook failure (e.g. n8n being down) must not fail the submission.
+  const webhookUrl = process.env.ADMISSION_SHEET_WEBHOOK_URL
+  if (webhookUrl) {
+    try {
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...body, source: "Admission Form" }),
+      })
+    } catch (error) {
+      console.error("Admission form webhook mirror failed (non-fatal):", error)
     }
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error("Admission form submission failed:", error)
-    return NextResponse.json(
-      { error: "Something went wrong submitting your application. Please try again or contact us directly." },
-      { status: 502 },
-    )
   }
+
+  return NextResponse.json({ success: true })
 }
