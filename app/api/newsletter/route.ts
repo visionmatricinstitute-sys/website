@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { createServiceClient } from "@/lib/supabase/service"
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>
@@ -13,32 +14,37 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Email is required." }, { status: 400 })
   }
 
-  const webhookUrl = process.env.ADMISSION_SHEET_WEBHOOK_URL
-  if (!webhookUrl) {
-    console.error("ADMISSION_SHEET_WEBHOOK_URL is not set")
+  const supabase = createServiceClient()
+  const { error: insertError } = await supabase
+    .from("newsletter_subscribers")
+    .insert({ email })
+
+  if (insertError) {
+    // Unique violation means they're already subscribed — treat as success, not an error.
+    if (insertError.code === "23505") {
+      return NextResponse.json({ success: true })
+    }
+    console.error("Newsletter signup insert failed:", insertError)
     return NextResponse.json(
-      { error: "Signup isn't connected yet. Please contact us directly via WhatsApp or email." },
+      { error: "Something went wrong. Please try again or contact us directly." },
       { status: 500 },
     )
   }
 
-  try {
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, source: "Newsletter" }),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Sheet webhook responded with status ${response.status}`)
+  // Best-effort mirror to the existing CRM sheet via n8n — the signup is already
+  // saved above, so a webhook failure (e.g. n8n being down) must not fail the request.
+  const webhookUrl = process.env.ADMISSION_SHEET_WEBHOOK_URL
+  if (webhookUrl) {
+    try {
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "Newsletter" }),
+      })
+    } catch (error) {
+      console.error("Newsletter webhook mirror failed (non-fatal):", error)
     }
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error("Newsletter signup failed:", error)
-    return NextResponse.json(
-      { error: "Something went wrong. Please try again or contact us directly." },
-      { status: 502 },
-    )
   }
+
+  return NextResponse.json({ success: true })
 }
