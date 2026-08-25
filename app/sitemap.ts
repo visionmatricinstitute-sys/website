@@ -104,6 +104,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${siteUrl}/blog/data-center-tier-classification-explained`,
+      lastModified: new Date("2026-08-26"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/electrical-design-data-center.jpg`],
+    },
+    {
       url: `${siteUrl}/blog/how-to-become-a-data-center-electrical-design-engineer-in-india`,
       lastModified: new Date("2026-07-14"),
       changeFrequency: "monthly",

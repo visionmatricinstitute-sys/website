@@ -12,7 +12,7 @@ import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "Blog"
 const description =
-  "Technical articles on data center electrical design, cable sizing, backup power, distribution architecture, and earthing — from Vision Matrix Institute."
+  "Technical articles on data center electrical design, tier classification, cable sizing, backup power, distribution architecture, and earthing — from Vision Matrix Institute."
 
 export const metadata: Metadata = {
   title,
@@ -34,6 +34,13 @@ const breadcrumbs = breadcrumbJsonLd([
 ])
 
 const posts = [
+  {
+    slug: "data-center-tier-classification-explained",
+    category: "Technical Basics",
+    title: "Data Center Tier Classification Explained (Tier I–IV)",
+    description:
+      "Tier I–IV isn't a marketing label — it's a specific engineering answer to one question: what happens when a component fails? Here's what actually separates each tier, the real numbers behind them, and the two systems people mix up.",
+  },
   {
     slug: "how-to-become-a-data-center-electrical-design-engineer-in-india",
     category: "Career Guide",
