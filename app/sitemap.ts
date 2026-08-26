@@ -104,6 +104,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${siteUrl}/blog/single-line-diagrams-explained`,
+      lastModified: new Date("2026-08-26"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-single-line-diagram.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/pdu-power-distribution-unit-explained`,
+      lastModified: new Date("2026-08-26"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-pdu-explained.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/ups-topologies-explained`,
+      lastModified: new Date("2026-08-26"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-ups-topologies.jpg`],
+    },
+    {
       url: `${siteUrl}/blog/redundancy-n-n1-2n-explained`,
       lastModified: new Date("2026-08-26"),
       changeFrequency: "monthly",
