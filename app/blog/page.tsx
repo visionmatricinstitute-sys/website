@@ -12,7 +12,7 @@ import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "Blog"
 const description =
-  "Technical articles on data center electrical design, tier classification, redundancy, PUE, hot/cold aisle containment, cable sizing, backup power, distribution architecture, and earthing — from Vision Matrix Institute."
+  "Technical articles on data center electrical design, tier classification, redundancy, PUE, hot/cold aisle containment, single-line diagrams, PDUs, UPS topologies, cable sizing, backup power, distribution architecture, and earthing — from Vision Matrix Institute."
 
 export const metadata: Metadata = {
   title,
@@ -34,6 +34,27 @@ const breadcrumbs = breadcrumbJsonLd([
 ])
 
 const posts = [
+  {
+    slug: "single-line-diagrams-explained",
+    category: "Technical Basics",
+    title: "Single-Line Diagrams Explained (SLD)",
+    description:
+      "A single-line diagram is the one drawing every electrical engineer, contractor, and inspector on a data center project actually works from — and it deliberately leaves almost everything out. Here's what it keeps, what the symbols mean, and how to actually read one.",
+  },
+  {
+    slug: "pdu-power-distribution-unit-explained",
+    category: "Technical Basics",
+    title: "PDU (Power Distribution Unit) Explained",
+    description:
+      "Somewhere between the UPS output and a server's power cord, one piece of equipment does the actual job of splitting bulk power into the dozens of individually protected circuits a data hall needs. Here's what a PDU really does — and the two very different things people mean by that name.",
+  },
+  {
+    slug: "ups-topologies-explained",
+    category: "Technical Basics",
+    title: "UPS Topologies Explained: Standby, Line-Interactive, Double-Conversion",
+    description:
+      "Not every UPS protects a server the same way, and the difference isn't marketing — it's how many milliseconds of interruption actually reach the load. Here's the three real UPS topologies, and the separate question of how many UPS units a design actually needs.",
+  },
   {
     slug: "redundancy-n-n1-2n-explained",
     category: "Technical Basics",
