@@ -91,7 +91,9 @@ export default function UpsTopologiesPost() {
         <ArticleShell
           category="Technical Basics"
           title={title}
-          description="\"UPS topology\" actually bundles two separate questions: how one UPS unit converts power internally, and how multiple UPS units are arranged for redundancy. Here's both, kept apart."
+          description={
+            '"UPS topology" actually bundles two separate questions: how one UPS unit converts power internally, and how multiple UPS units are arranged for redundancy. Here\'s both, kept apart.'
+          }
           faqs={faqs}
           whatsappMessage="Hi, I read the UPS Topologies article and want to know more about the Electrical Design course."
           heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
