@@ -11,6 +11,9 @@ const title = "Data Center Tier Classification Explained (Tier I–IV)"
 const description =
   "Tier I–IV isn't a marketing label — it's a specific engineering answer to one question: what happens when a component fails? Here's what actually separates each tier, the real numbers behind them, and the two systems people mix up."
 
+const heroImageSrc = "/data-center-tier-classification.jpg"
+const heroImageAlt = "Rows of server cabinets in a data center hall, showing the redundant infrastructure tier classification is built to protect"
+
 export const metadata: Metadata = {
   title,
   description,
@@ -20,9 +23,9 @@ export const metadata: Metadata = {
     url: "/blog/data-center-tier-classification-explained",
     title,
     description,
-    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
+    images: [{ url: heroImageSrc, width: 1200, height: 630, alt: heroImageAlt }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
+  twitter: { card: "summary_large_image", title, description, images: [heroImageSrc] },
 }
 
 const faqs = [
@@ -53,7 +56,7 @@ const jsonLd = {
   "@type": "Article",
   headline: title,
   description,
-  image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
+  image: `https://www.visionmatrixinstitute.com${heroImageSrc}`,
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
   publisher: {
     "@type": "Organization",
@@ -91,6 +94,7 @@ export default function TierClassificationPost() {
           description="Ask someone to name the four data center tiers and most people can. Ask them what actually changes between Tier II and Tier III, and the answers get vague fast. Here's the engineering underneath the label."
           faqs={faqs}
           whatsappMessage="Hi, I read the Tier Classification article and want to know more about the Electrical Design course."
+          heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
         >
           <div>
             <h2 id="one-question">Tier classification answers one question</h2>

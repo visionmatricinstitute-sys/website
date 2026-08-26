@@ -12,7 +12,7 @@ import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "Blog"
 const description =
-  "Technical articles on data center electrical design, tier classification, cable sizing, backup power, distribution architecture, and earthing — from Vision Matrix Institute."
+  "Technical articles on data center electrical design, tier classification, redundancy, PUE, hot/cold aisle containment, cable sizing, backup power, distribution architecture, and earthing — from Vision Matrix Institute."
 
 export const metadata: Metadata = {
   title,
@@ -34,6 +34,27 @@ const breadcrumbs = breadcrumbJsonLd([
 ])
 
 const posts = [
+  {
+    slug: "redundancy-n-n1-2n-explained",
+    category: "Technical Basics",
+    title: "Data Center Redundancy Explained: N, N+1, 2N, 2(N+1)",
+    description:
+      "N+1 and 2N both get called \"redundant\" — they are not remotely the same thing, and mixing them up in a design review or an interview is a fast way to lose credibility. Here's what each notation actually means.",
+  },
+  {
+    slug: "pue-power-usage-effectiveness-explained",
+    category: "Technical Basics",
+    title: "PUE (Power Usage Effectiveness) Explained",
+    description:
+      "PUE is the single number every data center operator quotes — and the single number most people can recite without being able to say what it actually penalizes. Here's the real formula, what drives it, and why 1.0 is a number you'll never see.",
+  },
+  {
+    slug: "hot-aisle-cold-aisle-containment-explained",
+    category: "Technical Basics",
+    title: "Hot Aisle / Cold Aisle Containment Explained",
+    description:
+      "Every data center layout diagram shows alternating hot and cold aisles, but the reason isn't decoration — it's the cheapest, most effective way to stop a facility from cooling its own exhaust air. Here's how it actually works.",
+  },
   {
     slug: "data-center-tier-classification-explained",
     category: "Technical Basics",
