@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,6 +11,11 @@ export interface ArticleFaq {
   answer: string
 }
 
+export interface ArticleHeroImage {
+  src: string
+  alt: string
+}
+
 export interface ArticleShellProps {
   category: string
   title: string
@@ -17,9 +23,10 @@ export interface ArticleShellProps {
   children: ReactNode
   faqs: ArticleFaq[]
   whatsappMessage: string
+  heroImage?: ArticleHeroImage
 }
 
-export function ArticleShell({ category, title, description, children, faqs, whatsappMessage }: ArticleShellProps) {
+export function ArticleShell({ category, title, description, children, faqs, whatsappMessage, heroImage }: ArticleShellProps) {
   const waHref = `https://wa.me/919930259997?text=${encodeURIComponent(whatsappMessage)}`
 
   return (
@@ -33,6 +40,16 @@ export function ArticleShell({ category, title, description, children, faqs, wha
           <p className="text-lg text-white/70 font-serif leading-relaxed">{description}</p>
         </div>
       </section>
+
+      {heroImage && (
+        <section className="bg-background">
+          <div className="container mx-auto px-4 max-w-3xl -mt-10 lg:-mt-14 relative">
+            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border">
+              <Image src={heroImage.src} alt={heroImage.alt} fill className="object-cover" priority />
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4 max-w-3xl space-y-10 font-serif text-foreground leading-relaxed [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-black [&_h2]:font-sans [&_h2]:text-foreground [&_h2]:mb-4 [&_h2]:mt-2 [&_p]:text-muted-foreground [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1.5 [&_ul]:text-muted-foreground [&_li]:leading-relaxed">

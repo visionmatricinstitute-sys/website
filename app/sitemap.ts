@@ -104,11 +104,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${siteUrl}/blog/redundancy-n-n1-2n-explained`,
+      lastModified: new Date("2026-08-26"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-redundancy-explained.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/pue-power-usage-effectiveness-explained`,
+      lastModified: new Date("2026-08-26"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-pue-explained.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/hot-aisle-cold-aisle-containment-explained`,
+      lastModified: new Date("2026-08-26"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-hot-cold-aisle.jpg`],
+    },
+    {
       url: `${siteUrl}/blog/data-center-tier-classification-explained`,
       lastModified: new Date("2026-08-26"),
       changeFrequency: "monthly",
       priority: 0.7,
-      images: [`${siteUrl}/electrical-design-data-center.jpg`],
+      images: [`${siteUrl}/data-center-tier-classification.jpg`],
     },
     {
       url: `${siteUrl}/blog/how-to-become-a-data-center-electrical-design-engineer-in-india`,
