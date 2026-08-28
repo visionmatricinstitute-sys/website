@@ -4,16 +4,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { ClipboardList } from "lucide-react"
+import { ClipboardList, Search } from "lucide-react"
 import { createAssignment } from "./actions"
 
-export default async function AdminAssignmentsPage() {
+export default async function AdminAssignmentsPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const { q } = await searchParams
   const supabase = await createClient()
   const { data: courses } = await supabase.from("courses").select("id, title").order("title")
   const { data: assignments } = await supabase
     .from("assignments")
     .select("id, title, due_at, courses(title), assignment_submissions(id)")
     .order("created_at", { ascending: false })
+
+  const query = (q ?? "").trim().toLowerCase()
+  const filteredAssignments = query
+    ? (assignments ?? []).filter(
+        (a: any) => a.title.toLowerCase().includes(query) || a.courses?.title?.toLowerCase().includes(query),
+      )
+    : (assignments ?? [])
 
   return (
     <div className="space-y-8 max-w-3xl">
@@ -69,11 +77,19 @@ export default async function AdminAssignmentsPage() {
       </Card>
 
       <div className="space-y-3">
-        <h2 className="text-lg font-bold font-sans text-foreground">All Assignments</h2>
-        {(assignments ?? []).length === 0 ? (
-          <p className="text-sm text-muted-foreground font-serif">No assignments yet.</p>
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <h2 className="text-lg font-bold font-sans text-foreground">All Assignments</h2>
+          <form method="get" className="flex gap-2">
+            <Input name="q" defaultValue={q ?? ""} placeholder="Search title or course" className="w-64" />
+            <Button type="submit" variant="outline" size="sm" className="gap-1.5 bg-transparent flex-shrink-0">
+              <Search className="h-3.5 w-3.5" />
+            </Button>
+          </form>
+        </div>
+        {filteredAssignments.length === 0 ? (
+          <p className="text-sm text-muted-foreground font-serif">No assignments match.</p>
         ) : (
-          (assignments ?? []).map((a: any) => (
+          filteredAssignments.map((a: any) => (
             <Link key={a.id} href={`/admin/assignments/${a.id}`}>
               <Card className="hover:border-accent/40 transition-colors">
                 <CardContent className="py-4 flex items-center justify-between gap-4">

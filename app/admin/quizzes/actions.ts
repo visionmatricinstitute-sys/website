@@ -41,22 +41,40 @@ export async function createQuiz(moduleId: string, title: string, questions: Que
   revalidatePath("/admin/quizzes")
 }
 
-export async function updateQuizTitle(quizId: string, formData: FormData) {
+// Replaces a quiz's title and its full question set in one go. Questions are deleted and
+// re-inserted rather than diffed — simpler and correct: quiz_attempts only references
+// quiz_id, not individual quiz_questions rows, so past attempt history is unaffected.
+export async function updateQuizQuestions(quizId: string, title: string, questions: QuestionInput[]) {
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
   if (!user) redirect("/login")
 
-  const title = String(formData.get("title") || "").trim()
-  if (!title) throw new Error("Quiz title is required.")
+  if (!title.trim() || questions.length === 0) {
+    throw new Error("Title and at least one question are required.")
+  }
 
-  const { error } = await supabase.from("quizzes").update({ title }).eq("id", quizId)
-  if (error) throw new Error(error.message)
+  const { error: titleError } = await supabase.from("quizzes").update({ title }).eq("id", quizId)
+  if (titleError) throw new Error(titleError.message)
 
-  await logAudit({ actorId: user.id, action: "quiz.renamed", entityType: "quiz", entityId: quizId, metadata: { title } })
+  const { error: deleteError } = await supabase.from("quiz_questions").delete().eq("quiz_id", quizId)
+  if (deleteError) throw new Error(deleteError.message)
+
+  const rows = questions.map((q, i) => ({
+    quiz_id: quizId,
+    order_index: i,
+    question: q.question,
+    options: q.options,
+    correct_index: q.correctIndex,
+  }))
+  const { error: insertError } = await supabase.from("quiz_questions").insert(rows)
+  if (insertError) throw new Error(insertError.message)
+
+  await logAudit({ actorId: user.id, action: "quiz.updated", entityType: "quiz", entityId: quizId, metadata: { title, questionCount: questions.length } })
 
   revalidatePath("/admin/quizzes")
+  revalidatePath(`/admin/quizzes/${quizId}`)
 }
 
 export async function deleteQuiz(quizId: string) {
@@ -72,4 +90,5 @@ export async function deleteQuiz(quizId: string) {
   await logAudit({ actorId: user.id, action: "quiz.deleted", entityType: "quiz", entityId: quizId })
 
   revalidatePath("/admin/quizzes")
+  redirect("/admin/quizzes")
 }
