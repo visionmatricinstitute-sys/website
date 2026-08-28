@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress"
 import { BookOpen, Award, Download, ArrowRight, FileText, Video } from "lucide-react"
 import { JoinClassButton } from "@/components/dashboard/join-class-button"
 import { EnrollButton } from "@/components/dashboard/enroll-button"
+import { CertificateDownloadButton } from "@/components/dashboard/certificate-download-button"
 
 export default async function DashboardHomePage() {
   const supabase = await createClient()
@@ -203,14 +204,29 @@ export default async function DashboardHomePage() {
           <div className="grid md:grid-cols-2 gap-5">
             {(certificates ?? []).map((cert: any) => (
               <Card key={cert.id} className="border-accent/30">
-                <CardContent className="py-5 flex items-center justify-between gap-4">
-                  <div>
-                    <div className="font-semibold text-foreground">{cert.courses?.title}</div>
-                    <div className="text-xs text-muted-foreground font-mono mt-1">
-                      Certificate #{cert.certificate_code}
+                <CardContent className="py-5 space-y-3">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <div className="font-semibold text-foreground">{cert.courses?.title}</div>
+                      <div className="text-xs text-muted-foreground font-mono mt-1">
+                        Certificate #{cert.certificate_code}
+                      </div>
                     </div>
+                    <Award className="h-8 w-8 text-accent flex-shrink-0" />
                   </div>
-                  <Award className="h-8 w-8 text-accent flex-shrink-0" />
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <CertificateDownloadButton
+                      studentName={profile?.full_name || user.email || "Student"}
+                      courseTitle={cert.courses?.title || ""}
+                      issuedAt={cert.issued_at}
+                      certificateCode={cert.certificate_code}
+                    />
+                    <Button asChild variant="ghost" size="sm" className="text-muted-foreground">
+                      <Link href={`/certificates/${cert.certificate_code}`} target="_blank">
+                        Verify
+                      </Link>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}

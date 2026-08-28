@@ -8,6 +8,7 @@ import { Award, CheckCircle2, Circle, ArrowLeft, ClipboardList, HelpCircle } fro
 import { toggleModuleComplete } from "../../actions"
 import { submitAssignment } from "./assignment-actions"
 import { getEmbedUrl } from "@/lib/video-embed"
+import { CertificateDownloadButton } from "@/components/dashboard/certificate-download-button"
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -45,10 +46,12 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
 
   const { data: certificate } = await supabase
     .from("certificates")
-    .select("certificate_code")
+    .select("certificate_code, issued_at")
     .eq("student_id", user.id)
     .eq("course_id", course.id)
     .maybeSingle()
+
+  const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
 
   const { data: quizzes } =
     moduleIds.length > 0
@@ -115,12 +118,20 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
 
       {certificate && (
         <Card className="border-accent/40 bg-accent/5">
-          <CardContent className="py-5 flex items-center gap-3">
-            <Award className="h-8 w-8 text-accent flex-shrink-0" />
-            <div>
-              <div className="font-semibold text-foreground">Certificate earned</div>
-              <div className="text-xs text-muted-foreground font-mono">Certificate #{certificate.certificate_code}</div>
+          <CardContent className="py-5 flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-3">
+              <Award className="h-8 w-8 text-accent flex-shrink-0" />
+              <div>
+                <div className="font-semibold text-foreground">Certificate earned</div>
+                <div className="text-xs text-muted-foreground font-mono">Certificate #{certificate.certificate_code}</div>
+              </div>
             </div>
+            <CertificateDownloadButton
+              studentName={profile?.full_name || user.email || "Student"}
+              courseTitle={course.title}
+              issuedAt={certificate.issued_at}
+              certificateCode={certificate.certificate_code}
+            />
           </CardContent>
         </Card>
       )}
