@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
-import { Award, CheckCircle2, Circle, ArrowLeft, ClipboardList, HelpCircle } from "lucide-react"
+import { Award, CheckCircle2, Circle, ArrowLeft, ClipboardList, HelpCircle, Download, FileText } from "lucide-react"
 import { toggleModuleComplete } from "../../actions"
 import { submitAssignment } from "./assignment-actions"
 import { getEmbedUrl } from "@/lib/video-embed"
@@ -42,6 +42,30 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
     .eq("student_id", user.id)
 
   const progressMap = new Map((progressRows ?? []).map((p: any) => [p.module_id, p.status]))
+
+  const { data: resources } =
+    moduleIds.length > 0
+      ? await supabase
+          .from("resources")
+          .select("id, module_id, title, file_url, file_path, resource_type")
+          .in("module_id", moduleIds)
+      : { data: [] }
+  const resourcesWithLinks = await Promise.all(
+    (resources ?? []).map(async (r: any) => {
+      if (r.file_path) {
+        const { data } = await supabase.storage.from("course-resources").createSignedUrl(r.file_path, 3600)
+        return { ...r, link: data?.signedUrl ?? null }
+      }
+      return { ...r, link: r.file_url }
+    }),
+  )
+  const resourcesByModule = new Map<string, any[]>()
+  for (const r of resourcesWithLinks) {
+    if (!r.module_id || !r.link) continue
+    const list = resourcesByModule.get(r.module_id) ?? []
+    list.push(r)
+    resourcesByModule.set(r.module_id, list)
+  }
 
   const { data: certificate } = await supabase
     .from("certificates")
@@ -131,6 +155,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
           const embedUrl = m.video_url ? getEmbedUrl(m.video_url) : null
           const quiz = quizzesByModule.get(m.id)
           const bestScore = quiz ? bestScoreByQuiz.get(quiz.id) : undefined
+          const moduleResources = resourcesByModule.get(m.id) ?? []
           return (
             <Card key={m.id}>
               <CardContent className="py-4 space-y-4">
@@ -163,6 +188,28 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                     ) : (
                       <video src={m.video_url} controls className="w-full rounded-lg border border-border" />
                     )}
+                  </div>
+                )}
+
+                {moduleResources.length > 0 && (
+                  <div className="pl-10 space-y-2">
+                    <div className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+                      <Download className="h-3.5 w-3.5" /> Resources
+                    </div>
+                    <div className="space-y-1.5">
+                      {moduleResources.map((r: any) => (
+                        <a
+                          key={r.id}
+                          href={r.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-sm hover:text-accent transition-colors"
+                        >
+                          <FileText className="h-3.5 w-3.5 flex-shrink-0" />
+                          {r.title}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 )}
 
