@@ -108,7 +108,8 @@ No deployment target change. New Storage buckets and RLS policies must be create
 
 ## 12a. Progress log
 
-- **Phase 1 — Course authoring: shipped**, `feature/course-authoring` branch, migration `009_course_authoring.sql` + `/admin/courses` (create/edit/publish/archive) + module create/delete/reorder. Awaiting Founder to run the migration and merge (queued in `FOUNDER-ACTION-ITEMS.md`). Now moving to Phase 2.
+- **Phase 1 — Course authoring: shipped**, `feature/course-authoring` branch, migration `009_course_authoring.sql` + `/admin/courses` (create/edit/publish/archive) + module create/delete/reorder. Awaiting Founder to run the migration and merge (queued in `FOUNDER-ACTION-ITEMS.md`).
+- **Phase 2 — Resource uploads: shipped**, `feature/course-resources` branch, migration `010_course_resources_storage.sql` + `/admin/resources` + Storage-backed, enrollment-gated downloads via signed URLs. Awaiting Founder to run the migration and merge. Flagged one coordination item: the still-unmerged chapters PR (#16) has its own older resource-rendering code that will need a small follow-up patch once merge order is known. Now moving to Phase 3 (certificates).
 
 ## 12. Phased roadmap
 
