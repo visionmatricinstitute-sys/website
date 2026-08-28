@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { getInstructorCourseIds } from "@/lib/instructor-scope"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -7,10 +8,18 @@ import { updateModuleVideo } from "./actions"
 
 export default async function AdminModulesPage() {
   const supabase = await createClient()
-  const { data: modules } = await supabase
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user!.id).maybeSingle()
+  const courseIds = await getInstructorCourseIds(user!.id, profile?.role)
+
+  let query = supabase
     .from("course_modules")
-    .select("id, module_number, title, video_url, courses(title)")
+    .select("id, module_number, title, video_url, course_id, courses(title)")
     .order("order_index")
+  if (courseIds) query = query.in("course_id", courseIds)
+  const { data: modules } = await query
 
   return (
     <div className="space-y-6 max-w-3xl">

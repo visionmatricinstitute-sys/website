@@ -7,10 +7,12 @@ import { signOut } from "@/app/dashboard/actions"
 export function DashboardShell({
   studentName,
   isAdmin,
+  isInstructor,
   children,
 }: {
   studentName: string
   isAdmin?: boolean
+  isInstructor?: boolean
   children: ReactNode
 }) {
   return (
@@ -23,11 +25,18 @@ export function DashboardShell({
           </Link>
           <div className="flex items-center gap-4">
             <span className="text-sm text-navy-foreground/80 font-serif hidden sm:inline">{studentName}</span>
-            {isAdmin && (
+            {(isAdmin || isInstructor) && (
               <div className="hidden lg:flex items-center gap-3 text-sm text-navy-foreground/70">
-                <Link href="/admin/live-classes" className="hover:text-navy-foreground transition-colors">
-                  Live Classes
-                </Link>
+                {isAdmin && (
+                  <>
+                    <Link href="/admin/instructors" className="hover:text-navy-foreground transition-colors">
+                      Instructors
+                    </Link>
+                    <Link href="/admin/live-classes" className="hover:text-navy-foreground transition-colors">
+                      Live Classes
+                    </Link>
+                  </>
+                )}
                 <Link href="/admin/modules" className="hover:text-navy-foreground transition-colors">
                   Modules
                 </Link>

@@ -6,14 +6,26 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { ClipboardList } from "lucide-react"
 import { createAssignment } from "./actions"
+import { getInstructorCourseIds } from "@/lib/instructor-scope"
 
 export default async function AdminAssignmentsPage() {
   const supabase = await createClient()
-  const { data: courses } = await supabase.from("courses").select("id, title").order("title")
-  const { data: assignments } = await supabase
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user!.id).maybeSingle()
+  const scopedCourseIds = await getInstructorCourseIds(user!.id, profile?.role)
+
+  let coursesQuery = supabase.from("courses").select("id, title").order("title")
+  if (scopedCourseIds) coursesQuery = coursesQuery.in("id", scopedCourseIds)
+  const { data: courses } = await coursesQuery
+
+  let assignmentsQuery = supabase
     .from("assignments")
     .select("id, title, due_at, courses(title), assignment_submissions(id)")
     .order("created_at", { ascending: false })
+  if (scopedCourseIds) assignmentsQuery = assignmentsQuery.in("course_id", scopedCourseIds)
+  const { data: assignments } = await assignmentsQuery
 
   return (
     <div className="space-y-8 max-w-3xl">
