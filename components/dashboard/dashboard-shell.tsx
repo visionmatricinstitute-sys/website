@@ -25,6 +25,9 @@ export function DashboardShell({
             <span className="text-sm text-navy-foreground/80 font-serif hidden sm:inline">{studentName}</span>
             {isAdmin && (
               <div className="hidden lg:flex items-center gap-3 text-sm text-navy-foreground/70">
+                <Link href="/admin/courses" className="hover:text-navy-foreground transition-colors">
+                  Courses
+                </Link>
                 <Link href="/admin/live-classes" className="hover:text-navy-foreground transition-colors">
                   Live Classes
                 </Link>

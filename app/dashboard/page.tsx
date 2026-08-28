@@ -26,6 +26,7 @@ export default async function DashboardHomePage() {
   const { data: allCourses } = await supabase
     .from("courses")
     .select("id, slug, title, description, price_amount, price_currency")
+    .eq("status", "published")
   const availableCourses = (allCourses ?? []).filter((c: any) => !enrolledCourseIds.includes(c.id))
 
   const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
