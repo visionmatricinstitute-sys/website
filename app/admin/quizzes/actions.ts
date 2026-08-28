@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
+import { logAudit } from "@/lib/audit-log"
 
 type QuestionInput = { question: string; options: string[]; correctIndex: number }
 
@@ -34,6 +35,41 @@ export async function createQuiz(moduleId: string, title: string, questions: Que
 
   const { error: qError } = await supabase.from("quiz_questions").insert(rows)
   if (qError) throw new Error(qError.message)
+
+  await logAudit({ actorId: user.id, action: "quiz.created", entityType: "quiz", entityId: quiz.id, metadata: { title } })
+
+  revalidatePath("/admin/quizzes")
+}
+
+export async function updateQuizTitle(quizId: string, formData: FormData) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  const title = String(formData.get("title") || "").trim()
+  if (!title) throw new Error("Quiz title is required.")
+
+  const { error } = await supabase.from("quizzes").update({ title }).eq("id", quizId)
+  if (error) throw new Error(error.message)
+
+  await logAudit({ actorId: user.id, action: "quiz.renamed", entityType: "quiz", entityId: quizId, metadata: { title } })
+
+  revalidatePath("/admin/quizzes")
+}
+
+export async function deleteQuiz(quizId: string) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  const { error } = await supabase.from("quizzes").delete().eq("id", quizId)
+  if (error) throw new Error(error.message)
+
+  await logAudit({ actorId: user.id, action: "quiz.deleted", entityType: "quiz", entityId: quizId })
 
   revalidatePath("/admin/quizzes")
 }
