@@ -31,6 +31,9 @@ export function DashboardShell({
                 <Link href="/admin/modules" className="hover:text-navy-foreground transition-colors">
                   Modules
                 </Link>
+                <Link href="/admin/chapters" className="hover:text-navy-foreground transition-colors">
+                  Chapters
+                </Link>
                 <Link href="/admin/assignments" className="hover:text-navy-foreground transition-colors">
                   Assignments
                 </Link>
