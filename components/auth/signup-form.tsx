@@ -9,6 +9,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Loader2, GraduationCap, MailCheck } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { TurnstileWidget } from "@/components/turnstile-widget"
+
+const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
 
 export function SignupForm() {
   const router = useRouter()
@@ -18,6 +21,7 @@ export function SignupForm() {
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [needsConfirmation, setNeedsConfirmation] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -28,11 +32,12 @@ export function SignupForm() {
     const { data, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName } },
+      options: { data: { full_name: fullName }, captchaToken: captchaToken ?? undefined },
     })
 
     if (signUpError) {
       setError(signUpError.message)
+      setCaptchaToken(null)
       setSubmitting(false)
       return
     }
@@ -117,7 +122,14 @@ export function SignupForm() {
             <p className="text-sm text-destructive bg-destructive/10 rounded-md px-3 py-2">{error}</p>
           )}
 
-          <Button type="submit" disabled={submitting} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg">
+          <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+
+          <Button
+            type="submit"
+            disabled={submitting || (captchaRequired && !captchaToken)}
+            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+            size="lg"
+          >
             {submitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
