@@ -4,9 +4,10 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { BookOpen, Award, Download, ArrowRight, FileText, Video } from "lucide-react"
+import { BookOpen, Award, Download, ArrowRight, FileText, Video, Megaphone } from "lucide-react"
 import { JoinClassButton } from "@/components/dashboard/join-class-button"
 import { EnrollButton } from "@/components/dashboard/enroll-button"
+import { markAnnouncementRead } from "./announcement-actions"
 
 export default async function DashboardHomePage() {
   const supabase = await createClient()
@@ -47,6 +48,15 @@ export default async function DashboardHomePage() {
     progressByCourse[course.id] = { completed, total: moduleIds.length }
   }
 
+  const { data: announcements } = await supabase
+    .from("announcements")
+    .select("id, title, body, created_at")
+    .order("created_at", { ascending: false })
+    .limit(10)
+  const { data: reads } = await supabase.from("announcement_reads").select("announcement_id").eq("student_id", user.id)
+  const readIds = new Set((reads ?? []).map((r: any) => r.announcement_id))
+  const unreadAnnouncements = (announcements ?? []).filter((a: any) => !readIds.has(a.id))
+
   const { data: certificates } = await supabase
     .from("certificates")
     .select("id, certificate_code, issued_at, courses(title)")
@@ -74,6 +84,30 @@ export default async function DashboardHomePage() {
         <h1 className="text-2xl lg:text-3xl font-black font-sans text-foreground">Welcome back</h1>
         <p className="text-muted-foreground font-serif mt-1">Here's where you left off.</p>
       </div>
+
+      {/* Unread announcements */}
+      {unreadAnnouncements.length > 0 && (
+        <section className="space-y-3">
+          {unreadAnnouncements.map((a: any) => (
+            <Card key={a.id} className="border-accent/40 bg-accent/5">
+              <CardContent className="py-4 flex items-start justify-between gap-4 flex-wrap">
+                <div className="flex items-start gap-3">
+                  <Megaphone className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold text-foreground">{a.title}</div>
+                    <p className="text-sm text-muted-foreground font-serif mt-0.5">{a.body}</p>
+                  </div>
+                </div>
+                <form action={markAnnouncementRead.bind(null, a.id)} className="flex-shrink-0">
+                  <Button type="submit" variant="ghost" size="sm">
+                    Dismiss
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+      )}
 
       {/* Upcoming live classes */}
       {(upcomingClasses ?? []).length > 0 && (

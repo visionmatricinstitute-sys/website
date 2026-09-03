@@ -37,6 +37,9 @@ export function DashboardShell({
                 <Link href="/admin/quizzes" className="hover:text-navy-foreground transition-colors">
                   Quizzes
                 </Link>
+                <Link href="/admin/announcements" className="hover:text-navy-foreground transition-colors">
+                  Announcements
+                </Link>
               </div>
             )}
             <Link
