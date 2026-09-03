@@ -1,6 +1,27 @@
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/service"
 
+async function verifyCaptcha(token: unknown, ip: string | null): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY
+  if (!secret) return true // CAPTCHA not configured yet — don't block signups over it.
+  if (typeof token !== "string" || !token) return false
+
+  try {
+    const body = new URLSearchParams({ secret, response: token })
+    if (ip) body.set("remoteip", ip)
+    const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    })
+    const result = await verifyRes.json()
+    return result.success === true
+  } catch (error) {
+    console.error("Turnstile verification request failed:", error)
+    return false
+  }
+}
+
 export async function POST(request: Request) {
   let body: Record<string, unknown>
   try {
@@ -12,6 +33,12 @@ export async function POST(request: Request) {
   const email = String(body.email ?? "").trim()
   if (!email) {
     return NextResponse.json({ error: "Email is required." }, { status: 400 })
+  }
+
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null
+  const captchaOk = await verifyCaptcha(body.captchaToken, ip)
+  if (!captchaOk) {
+    return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 400 })
   }
 
   const supabase = createServiceClient()

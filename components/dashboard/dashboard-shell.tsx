@@ -42,6 +42,12 @@ export function DashboardShell({
                 </Link>
               </div>
             )}
+            <Link
+              href="/dashboard/profile"
+              className="text-sm text-navy-foreground/70 hover:text-navy-foreground transition-colors hidden sm:inline"
+            >
+              Profile
+            </Link>
             <Link href="/" className="text-sm text-navy-foreground/70 hover:text-navy-foreground transition-colors hidden sm:inline">
               Back to website
             </Link>
