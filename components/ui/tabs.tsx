@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
-import { motion, type PanInfo } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -52,9 +51,6 @@ function Tabs({
   )
 
   const order = React.useMemo(() => collectTriggerValues(children), [children])
-  if (typeof window !== "undefined") {
-    console.log("[swipe-debug] Tabs render", { value, order })
-  }
 
   return (
     <TabsSwipeContext.Provider value={value ? { value, setValue, order } : null}>
@@ -111,24 +107,35 @@ function TabsContent({
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Content>) {
   const swipe = React.useContext(TabsSwipeContext)
+  const startRef = React.useRef<{ x: number; y: number } | null>(null)
 
-  // onPanEnd is framer-motion's gesture-only recognizer — unlike `drag`, it
-  // doesn't need dragConstraints/dragSnapToOrigin tricks to detect a swipe
-  // without visually moving the element, and works independently of any
-  // `drag` prop being set.
-  function handlePanEnd(_event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) {
-    console.log("[swipe-debug] handlePanEnd fired", { swipe, offset: info.offset })
-    if (!swipe) return
-    if (Math.abs(info.offset.x) < SWIPE_THRESHOLD_PX) return
-    if (Math.abs(info.offset.x) < Math.abs(info.offset.y)) return // mostly-vertical scroll, ignore
+  // Plain React pointer-event props rather than framer-motion's own gesture
+  // recognizer (onPan/drag) — that internal system didn't respond to any
+  // pointer input in production (verified directly), consistent with a
+  // known rough edge between framer-motion 11.x and React 19. Native
+  // onPointerDown/Up go through React's normal, well-tested event path
+  // instead — the same mechanism MagneticButton already uses successfully
+  // elsewhere on this site.
+  function handlePointerDown(event: React.PointerEvent) {
+    startRef.current = { x: event.clientX, y: event.clientY }
+  }
+
+  function handlePointerUp(event: React.PointerEvent) {
+    const start = startRef.current
+    startRef.current = null
+    if (!start || !swipe) return
+
+    const dx = event.clientX - start.x
+    const dy = event.clientY - start.y
+    if (Math.abs(dx) < SWIPE_THRESHOLD_PX) return
+    if (Math.abs(dx) < Math.abs(dy)) return // mostly-vertical scroll, ignore
 
     const currentIndex = swipe.order.indexOf(swipe.value)
-    console.log("[swipe-debug] currentIndex", currentIndex, "order", swipe.order)
     if (currentIndex === -1) return
 
-    // Swipe left (negative offset) advances to the next tab, swiping right
-    // goes back — the natural direction for a horizontally paged view.
-    const nextIndex = currentIndex + (info.offset.x < 0 ? 1 : -1)
+    // Swipe left (negative dx) advances to the next tab, swiping right goes
+    // back — the natural direction for a horizontally paged view.
+    const nextIndex = currentIndex + (dx < 0 ? 1 : -1)
     if (nextIndex < 0 || nextIndex >= swipe.order.length) return
 
     swipe.setValue(swipe.order[nextIndex])
@@ -140,9 +147,16 @@ function TabsContent({
       className={cn("flex-1 outline-none", className)}
       {...props}
     >
-      <motion.div onPanEnd={handlePanEnd} className="touch-pan-y">
+      <div
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={() => {
+          startRef.current = null
+        }}
+        className="touch-pan-y select-none"
+      >
         {children}
-      </motion.div>
+      </div>
     </TabsPrimitive.Content>
   )
 }
