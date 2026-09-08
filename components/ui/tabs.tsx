@@ -109,15 +109,20 @@ function TabsContent({
 }: React.ComponentProps<typeof TabsPrimitive.Content>) {
   const swipe = React.useContext(TabsSwipeContext)
 
-  function handleDragEnd(_event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) {
+  // onPanEnd is framer-motion's gesture-only recognizer — unlike `drag`, it
+  // doesn't need dragConstraints/dragSnapToOrigin tricks to detect a swipe
+  // without visually moving the element, and works independently of any
+  // `drag` prop being set.
+  function handlePanEnd(_event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) {
     if (!swipe) return
     if (Math.abs(info.offset.x) < SWIPE_THRESHOLD_PX) return
+    if (Math.abs(info.offset.x) < Math.abs(info.offset.y)) return // mostly-vertical scroll, ignore
 
     const currentIndex = swipe.order.indexOf(swipe.value)
     if (currentIndex === -1) return
 
-    // Drag/swipe left (negative offset) advances to the next tab, dragging
-    // right goes back — the natural direction for a horizontally paged view.
+    // Swipe left (negative offset) advances to the next tab, swiping right
+    // goes back — the natural direction for a horizontally paged view.
     const nextIndex = currentIndex + (info.offset.x < 0 ? 1 : -1)
     if (nextIndex < 0 || nextIndex >= swipe.order.length) return
 
@@ -130,15 +135,7 @@ function TabsContent({
       className={cn("flex-1 outline-none", className)}
       {...props}
     >
-      <motion.div
-        drag={swipe && swipe.order.length > 1 ? "x" : false}
-        dragElastic={0.2}
-        dragConstraints={{ left: 0, right: 0 }}
-        dragSnapToOrigin
-        whileDrag={{ scale: 0.98 }}
-        onDragEnd={handleDragEnd}
-        className="touch-pan-y"
-      >
+      <motion.div onPanEnd={handlePanEnd} className="touch-pan-y">
         {children}
       </motion.div>
     </TabsPrimitive.Content>
