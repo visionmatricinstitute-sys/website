@@ -9,6 +9,9 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CheckCircle, FileText, CreditCard, GraduationCap, Loader2 } from "lucide-react"
+import { TurnstileWidget } from "@/components/turnstile-widget"
+
+const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
 
 const EMPTY_FORM = {
   firstName: "",
@@ -23,6 +26,7 @@ const EMPTY_FORM = {
 export function AdmissionSection() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [submitting, setSubmitting] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   function updateField(field: keyof typeof EMPTY_FORM, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -35,13 +39,17 @@ export function AdmissionSection() {
       toast.error("Please fill in all required fields.")
       return
     }
+    if (captchaRequired && !captchaToken) {
+      toast.error("Please complete the verification check.")
+      return
+    }
 
     setSubmitting(true)
     try {
       const response = await fetch("/api/admission", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, captchaToken }),
       })
 
       const data = await response.json()
@@ -52,8 +60,10 @@ export function AdmissionSection() {
 
       toast.success("Application submitted! Our team will contact you within 24 hours.")
       setForm(EMPTY_FORM)
+      setCaptchaToken(null)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.")
+      setCaptchaToken(null)
     } finally {
       setSubmitting(false)
     }
@@ -251,9 +261,11 @@ export function AdmissionSection() {
                   />
                 </div>
 
+                <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+
                 <Button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || (captchaRequired && !captchaToken)}
                   className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
                   size="lg"
                 >

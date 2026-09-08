@@ -17,6 +17,9 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 import { CalendarCheck, Loader2 } from "lucide-react"
+import { TurnstileWidget } from "@/components/turnstile-widget"
+
+const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
 
 const SOFTWARE_OPTIONS = ["AutoCAD", "ETAP", "EPLAN", "Revit MEP", "Dialux", "Excel"] as const
 
@@ -47,6 +50,7 @@ export function DemoCta() {
   const [open, setOpen] = useState(false)
   const [form, setForm] = useState(EMPTY_FORM)
   const [submitting, setSubmitting] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   function updateField<K extends keyof typeof EMPTY_FORM>(field: K, value: (typeof EMPTY_FORM)[K]) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -66,6 +70,10 @@ export function DemoCta() {
       toast.error("Please fill in your name, phone, and course of interest.")
       return
     }
+    if (captchaRequired && !captchaToken) {
+      toast.error("Please complete the verification check.")
+      return
+    }
 
     setSubmitting(true)
     try {
@@ -79,7 +87,7 @@ export function DemoCta() {
       const response = await fetch("/api/demo-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, education, trainingGoal, heardFrom, softwareKnown }),
+        body: JSON.stringify({ ...form, education, trainingGoal, heardFrom, softwareKnown, captchaToken }),
       })
 
       const data = await response.json()
@@ -90,9 +98,11 @@ export function DemoCta() {
 
       toast.success("Demo request received! We'll call you to schedule it shortly.")
       setForm(EMPTY_FORM)
+      setCaptchaToken(null)
       setOpen(false)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.")
+      setCaptchaToken(null)
     } finally {
       setSubmitting(false)
     }
@@ -304,7 +314,14 @@ export function DemoCta() {
             </Select>
           </div>
 
-          <Button type="submit" disabled={submitting} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg">
+          <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+
+          <Button
+            type="submit"
+            disabled={submitting || (captchaRequired && !captchaToken)}
+            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+            size="lg"
+          >
             {submitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

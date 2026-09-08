@@ -15,7 +15,15 @@ export async function POST(request: Request) {
   const signature = request.headers.get("x-razorpay-signature")
 
   const expectedSignature = crypto.createHmac("sha256", webhookSecret).update(rawBody).digest("hex")
-  if (signature !== expectedSignature) {
+
+  // Constant-time comparison — see the same fix in /api/razorpay/verify for why
+  // a plain !== is a timing side-channel on a signature check.
+  const signaturesMatch =
+    typeof signature === "string" &&
+    expectedSignature.length === signature.length &&
+    crypto.timingSafeEqual(Buffer.from(expectedSignature), Buffer.from(signature))
+
+  if (!signaturesMatch) {
     return NextResponse.json({ error: "Invalid webhook signature" }, { status: 400 })
   }
 

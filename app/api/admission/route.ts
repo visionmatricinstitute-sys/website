@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/service"
+import { verifyCaptcha, clientIp } from "@/lib/turnstile"
 
 const REQUIRED_FIELDS = ["firstName", "lastName", "email", "phone", "course"] as const
 
@@ -14,6 +15,11 @@ export async function POST(request: Request) {
   const missing = REQUIRED_FIELDS.filter((field) => !String(body[field] ?? "").trim())
   if (missing.length > 0) {
     return NextResponse.json({ error: `Missing required fields: ${missing.join(", ")}` }, { status: 400 })
+  }
+
+  const captchaOk = await verifyCaptcha(body.captchaToken, clientIp(request))
+  if (!captchaOk) {
+    return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 400 })
   }
 
   const supabase = createServiceClient()
