@@ -52,6 +52,9 @@ function Tabs({
   )
 
   const order = React.useMemo(() => collectTriggerValues(children), [children])
+  if (typeof window !== "undefined") {
+    console.log("[swipe-debug] Tabs render", { value, order })
+  }
 
   return (
     <TabsSwipeContext.Provider value={value ? { value, setValue, order } : null}>
@@ -114,11 +117,13 @@ function TabsContent({
   // without visually moving the element, and works independently of any
   // `drag` prop being set.
   function handlePanEnd(_event: PointerEvent | MouseEvent | TouchEvent, info: PanInfo) {
+    console.log("[swipe-debug] handlePanEnd fired", { swipe, offset: info.offset })
     if (!swipe) return
     if (Math.abs(info.offset.x) < SWIPE_THRESHOLD_PX) return
     if (Math.abs(info.offset.x) < Math.abs(info.offset.y)) return // mostly-vertical scroll, ignore
 
     const currentIndex = swipe.order.indexOf(swipe.value)
+    console.log("[swipe-debug] currentIndex", currentIndex, "order", swipe.order)
     if (currentIndex === -1) return
 
     // Swipe left (negative offset) advances to the next tab, swiping right
