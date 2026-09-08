@@ -27,9 +27,9 @@ const siteUrl =
   (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000")
 
 const siteName = "Vision Matrix Institute"
-const siteTitle = "Vision Matrix Institute - Online Technical & Electrical Engineering Education"
+const siteTitle = "Data Center Electrical Design Training | Vision Matrix Institute"
 const siteDescription =
-  "Leading online technical education institute offering Drafting & Design, BIM, Electrical Design, Data Center Specialist courses and more. Build your career with industry-relevant skills from anywhere."
+  "India's specialist data center electrical design training institute. Build real data center skills in ETAP, Revit MEP, AutoCAD & IS/IEC standards — 100% live, online."
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -39,11 +39,15 @@ export const metadata: Metadata = {
   },
   description: siteDescription,
   keywords: [
+    "data center training",
+    "data center skills",
+    "data center training institute",
+    "data center electrical design training",
+    "data center electrical design course",
     "online technical education",
     "BIM training",
     "drafting design",
     "electrical design courses",
-    "data center training",
     "career courses",
   ],
   generator: "v0.app",

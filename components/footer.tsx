@@ -16,8 +16,8 @@ export function Footer() {
               <h3 className="text-2xl font-black font-sans">Vision Matrix Institute</h3>
             </div>
             <p className="text-navy-foreground/80 font-serif leading-relaxed">
-              Leading online technical education institute, empowering students with industry-relevant skills from
-              anywhere.
+              India's specialist data center electrical design training institute, building real data center
+              skills from anywhere.
             </p>
             <div className="flex space-x-4">
               <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
