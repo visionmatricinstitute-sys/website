@@ -1,10 +1,23 @@
+"use client"
+
 import type { ReactNode } from "react"
 import Image from "next/image"
+import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CheckCircle2, MessageCircle } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+}
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+}
 
 export interface ArticleFaq {
   question: string
@@ -34,19 +47,35 @@ export function ArticleShell({ category, title, description, children, faqs, wha
       <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
         <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent/25 blur-[110px]" />
-        <div className="relative container mx-auto px-4 max-w-3xl">
-          <Badge className="bg-accent/10 text-accent mb-6 hover:bg-accent/10">{category}</Badge>
-          <h1 className="text-3xl lg:text-5xl font-black font-sans text-white leading-tight mb-4">{title}</h1>
-          <p className="text-lg text-white/70 font-serif leading-relaxed">{description}</p>
-        </div>
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="relative container mx-auto px-4 max-w-3xl"
+        >
+          <motion.div variants={item}>
+            <Badge className="bg-accent/10 text-accent mb-6 hover:bg-accent/10">{category}</Badge>
+          </motion.div>
+          <motion.h1 variants={item} className="text-3xl lg:text-5xl font-black font-sans text-white leading-tight mb-4">
+            {title}
+          </motion.h1>
+          <motion.p variants={item} className="text-lg text-white/70 font-serif leading-relaxed">
+            {description}
+          </motion.p>
+        </motion.div>
       </section>
 
       {heroImage && (
         <section className="bg-background">
           <div className="container mx-auto px-4 max-w-3xl -mt-10 lg:-mt-14 relative">
-            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border">
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border"
+            >
               <Image src={heroImage.src} alt={heroImage.alt} fill className="object-cover" priority />
-            </div>
+            </motion.div>
           </div>
         </section>
       )}

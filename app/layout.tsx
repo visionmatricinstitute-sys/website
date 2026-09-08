@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google"
 import { Inter } from "next/font/google"
 import Script from "next/script"
 import { Toaster } from "@/components/ui/sonner"
+import { ScrollProgress } from "@/components/motion/scroll-progress"
 import "./globals.css"
 
 const gtmId = process.env.NEXT_PUBLIC_GTM_ID
@@ -151,6 +152,7 @@ export default function RootLayout({
             />
           </noscript>
         )}
+        <ScrollProgress />
         {children}
         <Toaster position="top-center" richColors />
       </body>

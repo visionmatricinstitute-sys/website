@@ -3,12 +3,16 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Globe, Phone, Mail, Clock, Facebook, Instagram, Youtube, Linkedin } from "lucide-react"
 import { NewsletterForm } from "@/components/newsletter-form"
+import { FadeIn } from "@/components/motion/fade-in"
+
+const SOCIAL_ICON_CLASS =
+  "text-navy-foreground hover:bg-navy-foreground/10 transition-transform duration-200 hover:scale-110 hover:-translate-y-0.5"
 
 export function Footer() {
   return (
     <footer className="bg-navy text-navy-foreground">
       <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <FadeIn className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
@@ -20,22 +24,22 @@ export function Footer() {
               skills from anywhere.
             </p>
             <div className="flex space-x-4">
-              <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
+              <Button asChild size="sm" variant="ghost" className={SOCIAL_ICON_CLASS}>
                 <a href="https://www.facebook.com/visionmatrixinstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on Facebook">
                   <Facebook className="h-4 w-4" />
                 </a>
               </Button>
-              <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
+              <Button asChild size="sm" variant="ghost" className={SOCIAL_ICON_CLASS}>
                 <a href="https://www.instagram.com/visionmatrixinstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on Instagram">
                   <Instagram className="h-4 w-4" />
                 </a>
               </Button>
-              <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
+              <Button asChild size="sm" variant="ghost" className={SOCIAL_ICON_CLASS}>
                 <a href="https://www.youtube.com/@visionMatrixInstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on YouTube">
                   <Youtube className="h-4 w-4" />
                 </a>
               </Button>
-              <Button asChild size="sm" variant="ghost" className="text-navy-foreground hover:bg-navy-foreground/10">
+              <Button asChild size="sm" variant="ghost" className={SOCIAL_ICON_CLASS}>
                 <a href="https://www.linkedin.com/company/vision-matrix-institutes" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on LinkedIn">
                   <Linkedin className="h-4 w-4" />
                 </a>
@@ -175,7 +179,7 @@ export function Footer() {
               </div>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Newsletter */}
         <div className="border-t border-navy-foreground/20 mt-12 pt-8">

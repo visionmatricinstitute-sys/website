@@ -3,8 +3,33 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { AnimatePresence, motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Phone, Mail, MessageCircle } from "lucide-react"
+
+const NAV_LINKS = [
+  { href: "/#home", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/#courses", label: "Courses" },
+  { href: "/#admission", label: "Admission" },
+  { href: "/engineers-toolkit", label: "Engineer's Toolkit" },
+  { href: "/blog", label: "Blog" },
+  { href: "/#contact", label: "Contact Us" },
+  { href: "/login", label: "Student Login" },
+]
+
+// Underline grows from the left on hover/focus — a plain CSS transform, not
+// framer-motion, so it stays instant and cheap on a nav rendered on every page.
+function NavLink({ href, label, className = "" }: { href: string; label: string; className?: string }) {
+  return (
+    <Link
+      href={href}
+      className={`relative text-foreground hover:text-accent transition-colors font-medium after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:after:scale-x-100 ${className}`}
+    >
+      {label}
+    </Link>
+  )
+}
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -55,32 +80,11 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="/#home" className="text-foreground hover:text-accent transition-colors font-medium">
-              Home
-            </a>
-            <a href="/#about" className="text-foreground hover:text-accent transition-colors font-medium">
-              About
-            </a>
-            <a href="/#courses" className="text-foreground hover:text-accent transition-colors font-medium">
-              Courses
-            </a>
-            <a href="/#admission" className="text-foreground hover:text-accent transition-colors font-medium">
-              Admission
-            </a>
-            <Link href="/engineers-toolkit" className="text-foreground hover:text-accent transition-colors font-medium">
-              Engineer's Toolkit
-            </Link>
-            <Link href="/blog" className="text-foreground hover:text-accent transition-colors font-medium">
-              Blog
-            </Link>
-            <a href="/#contact" className="text-foreground hover:text-accent transition-colors font-medium">
-              Contact Us
-            </a>
-            <Link href="/login" className="text-foreground hover:text-accent transition-colors font-medium">
-              Student Login
-            </Link>
+            {NAV_LINKS.map((link) => (
+              <NavLink key={link.href} href={link.href} label={link.label} />
+            ))}
             <Button
-              className="bg-green-500 hover:bg-green-600 text-white"
+              className="bg-green-500 hover:bg-green-600 text-white transition-transform hover:scale-105 active:scale-95"
               onClick={() => window.open("https://wa.me/919930259997", "_blank")}
             >
               <MessageCircle className="h-4 w-4 mr-2" />
@@ -89,49 +93,54 @@ export function Header() {
           </nav>
 
           {/* Mobile menu button */}
-          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={isMenuOpen ? "close" : "open"}
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.15 }}
+                className="block"
+              >
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </motion.span>
+            </AnimatePresence>
           </button>
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-border">
-            <div className="flex flex-col space-y-4">
-              <a href="/#home" className="text-foreground hover:text-accent transition-colors font-medium">
-                Home
-              </a>
-              <a href="/#about" className="text-foreground hover:text-accent transition-colors font-medium">
-                About
-              </a>
-              <a href="/#courses" className="text-foreground hover:text-accent transition-colors font-medium">
-                Courses
-              </a>
-              <a href="/#admission" className="text-foreground hover:text-accent transition-colors font-medium">
-                Admission
-              </a>
-              <Link href="/engineers-toolkit" className="text-foreground hover:text-accent transition-colors font-medium">
-                Engineer's Toolkit
-              </Link>
-              <Link href="/blog" className="text-foreground hover:text-accent transition-colors font-medium">
-                Blog
-              </Link>
-              <a href="/#contact" className="text-foreground hover:text-accent transition-colors font-medium">
-                Contact Us
-              </a>
-              <Link href="/login" className="text-foreground hover:text-accent transition-colors font-medium">
-                Student Login
-              </Link>
-              <Button
-                className="bg-green-500 hover:bg-green-600 text-white w-fit"
-                onClick={() => window.open("https://wa.me/919930259997", "_blank")}
-              >
-                <MessageCircle className="h-4 w-4 mr-2" />
-                WhatsApp
-              </Button>
-            </div>
-          </nav>
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.nav
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="md:hidden overflow-hidden border-t border-border"
+            >
+              <div className="flex flex-col space-y-4 py-4">
+                {NAV_LINKS.map((link, index) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2, delay: index * 0.04 }}
+                  >
+                    <NavLink href={link.href} label={link.label} className="after:hidden" />
+                  </motion.div>
+                ))}
+                <Button
+                  className="bg-green-500 hover:bg-green-600 text-white w-fit"
+                  onClick={() => window.open("https://wa.me/919930259997", "_blank")}
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  WhatsApp
+                </Button>
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   )
