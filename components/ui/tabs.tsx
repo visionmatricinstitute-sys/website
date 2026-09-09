@@ -17,15 +17,22 @@ interface TabsSwipeState {
 
 const TabsSwipeContext = React.createContext<TabsSwipeState | null>(null)
 
-function collectTriggerValues(children: React.ReactNode): string[] {
+function collectTriggerValues(children: React.ReactNode, depth = 0): string[] {
   const values: string[] = []
   React.Children.forEach(children, (child) => {
-    if (!React.isValidElement(child)) return
+    const isValid = React.isValidElement(child)
+    console.log(
+      "[swipe-debug] collect depth", depth,
+      "isValidElement", isValid,
+      "typeName", isValid ? ((child.type as any)?.name ?? child.type) : typeof child,
+      "isTabsTrigger", isValid ? child.type === TabsTrigger : false,
+    )
+    if (!isValid) return
     const props = child.props as { value?: unknown; children?: React.ReactNode }
     if (child.type === TabsTrigger && typeof props.value === "string") {
       values.push(props.value)
     } else if (props.children) {
-      values.push(...collectTriggerValues(props.children))
+      values.push(...collectTriggerValues(props.children, depth + 1))
     }
   })
   return values
