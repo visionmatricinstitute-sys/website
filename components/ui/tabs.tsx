@@ -119,20 +119,24 @@ function TabsContent({
   // PointerEvents, but some environments only ever emit legacy MouseEvents,
   // so relying on pointer events alone silently drops those.
   function start(x: number, y: number) {
+    console.log("[swipe-debug] start", x, y)
     startRef.current = { x, y }
   }
 
   function end(x: number, y: number) {
     const startPos = startRef.current
     startRef.current = null
+    console.log("[swipe-debug] end", x, y, "startPos", startPos, "swipe", swipe)
     if (!startPos || !swipe) return
 
     const dx = x - startPos.x
     const dy = y - startPos.y
+    console.log("[swipe-debug] dx", dx, "dy", dy, "threshold", SWIPE_THRESHOLD_PX)
     if (Math.abs(dx) < SWIPE_THRESHOLD_PX) return
     if (Math.abs(dx) < Math.abs(dy)) return // mostly-vertical scroll, ignore
 
     const currentIndex = swipe.order.indexOf(swipe.value)
+    console.log("[swipe-debug] currentIndex", currentIndex, "order", swipe.order)
     if (currentIndex === -1) return
 
     // Swipe left (negative dx) advances to the next tab, swiping right goes
