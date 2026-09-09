@@ -17,22 +17,23 @@ interface TabsSwipeState {
 
 const TabsSwipeContext = React.createContext<TabsSwipeState | null>(null)
 
-function collectTriggerValues(children: React.ReactNode, depth = 0): string[] {
+function collectTriggerValues(children: React.ReactNode): string[] {
   const values: string[] = []
   React.Children.forEach(children, (child) => {
-    const isValid = React.isValidElement(child)
-    console.log(
-      "[swipe-debug] collect depth", depth,
-      "isValidElement", isValid,
-      "typeName", isValid ? ((child.type as any)?.name ?? child.type) : typeof child,
-      "isTabsTrigger", isValid ? child.type === TabsTrigger : false,
-    )
-    if (!isValid) return
+    if (!React.isValidElement(child)) return
     const props = child.props as { value?: unknown; children?: React.ReactNode }
-    if (child.type === TabsTrigger && typeof props.value === "string") {
+    // Identify TabsTrigger by a marker property, not by function reference
+    // (child.type === TabsTrigger) — Next.js can instantiate this module
+    // separately per route chunk (this file is imported by both the
+    // homepage and the Engineer's Toolkit page), producing two distinct
+    // TabsTrigger function objects for what's conceptually the same
+    // component. Reference equality silently fails across that split;
+    // a string/boolean marker on the function does not.
+    const type = child.type as { isTabsTrigger?: boolean } | string
+    if (typeof type !== "string" && type.isTabsTrigger && typeof props.value === "string") {
       values.push(props.value)
     } else if (props.children) {
-      values.push(...collectTriggerValues(props.children, depth + 1))
+      values.push(...collectTriggerValues(props.children))
     }
   })
   return values
@@ -105,6 +106,7 @@ function TabsTrigger({
     />
   )
 }
+TabsTrigger.isTabsTrigger = true
 
 const SWIPE_THRESHOLD_PX = 60
 
@@ -126,24 +128,20 @@ function TabsContent({
   // PointerEvents, but some environments only ever emit legacy MouseEvents,
   // so relying on pointer events alone silently drops those.
   function start(x: number, y: number) {
-    console.log("[swipe-debug] start", x, y)
     startRef.current = { x, y }
   }
 
   function end(x: number, y: number) {
     const startPos = startRef.current
     startRef.current = null
-    console.log("[swipe-debug] end", x, y, "startPos", startPos, "swipe", swipe)
     if (!startPos || !swipe) return
 
     const dx = x - startPos.x
     const dy = y - startPos.y
-    console.log("[swipe-debug] dx", dx, "dy", dy, "threshold", SWIPE_THRESHOLD_PX)
     if (Math.abs(dx) < SWIPE_THRESHOLD_PX) return
     if (Math.abs(dx) < Math.abs(dy)) return // mostly-vertical scroll, ignore
 
     const currentIndex = swipe.order.indexOf(swipe.value)
-    console.log("[swipe-debug] currentIndex", currentIndex, "order", swipe.order)
     if (currentIndex === -1) return
 
     // Swipe left (negative dx) advances to the next tab, swiping right goes
