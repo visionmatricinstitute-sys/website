@@ -17,23 +17,25 @@ interface TabsSwipeState {
 
 const TabsSwipeContext = React.createContext<TabsSwipeState | null>(null)
 
-function collectTriggerValues(children: React.ReactNode): string[] {
+function collectTriggerValues(children: React.ReactNode, depth = 0): string[] {
   const values: string[] = []
   React.Children.forEach(children, (child) => {
     if (!React.isValidElement(child)) return
     const props = child.props as { value?: unknown; children?: React.ReactNode }
-    // Identify TabsTrigger by a marker property, not by function reference
-    // (child.type === TabsTrigger) — Next.js can instantiate this module
-    // separately per route chunk (this file is imported by both the
-    // homepage and the Engineer's Toolkit page), producing two distinct
-    // TabsTrigger function objects for what's conceptually the same
-    // component. Reference equality silently fails across that split;
-    // a string/boolean marker on the function does not.
-    const type = child.type as { isTabsTrigger?: boolean } | string
+    const type = child.type as { isTabsTrigger?: boolean; name?: string } | string
+    const markerVal = typeof type !== "string" ? type.isTabsTrigger : "N/A (host el)"
+    console.log(
+      "[swipe-debug]", depth,
+      "typeIsString", typeof type === "string",
+      "typeName", typeof type === "string" ? type : type.name,
+      "marker", markerVal,
+      "propsValue", props.value,
+      "typeofPropsValue", typeof props.value,
+    )
     if (typeof type !== "string" && type.isTabsTrigger && typeof props.value === "string") {
       values.push(props.value)
     } else if (props.children) {
-      values.push(...collectTriggerValues(props.children))
+      values.push(...collectTriggerValues(props.children, depth + 1))
     }
   })
   return values
