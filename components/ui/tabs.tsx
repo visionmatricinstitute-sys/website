@@ -7,39 +7,27 @@ import { cn } from "@/lib/utils"
 
 // Shares the active value, its setter, and the ordered list of trigger
 // values with every TabsContent, so a horizontal drag/swipe on the content
-// area can move to the adjacent tab — the same gesture whether it's a mouse
-// drag or a touch swipe, since framer-motion's drag handles both.
+// area can move to the adjacent tab.
+//
+// The list of trigger values is built by each TabsTrigger registering
+// itself on mount (registerTrigger), not by the parent statically
+// inspecting its children's element tree. An earlier version tried
+// identifying TabsTrigger elements from the outside — first by function
+// reference (child.type === TabsTrigger), then by a static marker
+// property on the function — and both silently found nothing: in this
+// "use client" module, the exported TabsTrigger a consumer imports isn't
+// guaranteed to be the exact same function/object the file's own code
+// holds a reference to, so neither reference equality nor a property
+// stamped on that reference survives the trip. Registration sidesteps the
+// problem entirely — it doesn't care what child.type resolves to.
 interface TabsSwipeState {
   value: string
   setValue: (value: string) => void
   order: string[]
+  registerTrigger: (value: string) => () => void
 }
 
 const TabsSwipeContext = React.createContext<TabsSwipeState | null>(null)
-
-function collectTriggerValues(children: React.ReactNode, depth = 0): string[] {
-  const values: string[] = []
-  React.Children.forEach(children, (child) => {
-    if (!React.isValidElement(child)) return
-    const props = child.props as { value?: unknown; children?: React.ReactNode }
-    const type = child.type as { isTabsTrigger?: boolean; name?: string } | string
-    const markerVal = typeof type !== "string" ? type.isTabsTrigger : "N/A (host el)"
-    console.log(
-      "[swipe-debug]", depth,
-      "typeIsString", typeof type === "string",
-      "typeName", typeof type === "string" ? type : type.name,
-      "marker", markerVal,
-      "propsValue", props.value,
-      "typeofPropsValue", typeof props.value,
-    )
-    if (typeof type !== "string" && type.isTabsTrigger && typeof props.value === "string") {
-      values.push(props.value)
-    } else if (props.children) {
-      values.push(...collectTriggerValues(props.children, depth + 1))
-    }
-  })
-  return values
-}
 
 function Tabs({
   className,
@@ -51,6 +39,7 @@ function Tabs({
 }: React.ComponentProps<typeof TabsPrimitive.Root>) {
   const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue)
   const value = controlledValue ?? uncontrolledValue
+  const [order, setOrder] = React.useState<string[]>([])
 
   const setValue = React.useCallback(
     (next: string) => {
@@ -60,11 +49,15 @@ function Tabs({
     [controlledValue, onValueChange],
   )
 
-  const order = React.useMemo(() => collectTriggerValues(children), [children])
-  if (typeof window !== "undefined") console.log("[swipe-debug] order", order)
+  const registerTrigger = React.useCallback((triggerValue: string) => {
+    setOrder((prev) => (prev.includes(triggerValue) ? prev : [...prev, triggerValue]))
+    return () => {
+      setOrder((prev) => prev.filter((v) => v !== triggerValue))
+    }
+  }, [])
 
   return (
-    <TabsSwipeContext.Provider value={value ? { value, setValue, order } : null}>
+    <TabsSwipeContext.Provider value={value ? { value, setValue, order, registerTrigger } : null}>
       <TabsPrimitive.Root
         data-slot="tabs"
         className={cn("flex flex-col gap-2", className)}
@@ -96,11 +89,21 @@ function TabsList({
 
 function TabsTrigger({
   className,
+  value,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  const swipe = React.useContext(TabsSwipeContext)
+  const registerTrigger = swipe?.registerTrigger
+
+  React.useEffect(() => {
+    if (typeof value !== "string" || !registerTrigger) return
+    return registerTrigger(value)
+  }, [value, registerTrigger])
+
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
+      value={value}
       className={cn(
         "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
@@ -109,7 +112,6 @@ function TabsTrigger({
     />
   )
 }
-TabsTrigger.isTabsTrigger = true
 
 const SWIPE_THRESHOLD_PX = 60
 
