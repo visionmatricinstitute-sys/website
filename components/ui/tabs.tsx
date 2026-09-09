@@ -109,24 +109,26 @@ function TabsContent({
   const swipe = React.useContext(TabsSwipeContext)
   const startRef = React.useRef<{ x: number; y: number } | null>(null)
 
-  // Plain React pointer-event props rather than framer-motion's own gesture
+  // Plain React event props rather than framer-motion's own gesture
   // recognizer (onPan/drag) — that internal system didn't respond to any
-  // pointer input in production (verified directly), consistent with a
-  // known rough edge between framer-motion 11.x and React 19. Native
-  // onPointerDown/Up go through React's normal, well-tested event path
-  // instead — the same mechanism MagneticButton already uses successfully
-  // elsewhere on this site.
-  function handlePointerDown(event: React.PointerEvent) {
-    startRef.current = { x: event.clientX, y: event.clientY }
+  // input in production (verified directly), consistent with a known rough
+  // edge between framer-motion 11.x and React 19. Both pointer and mouse
+  // handlers are wired to the same ref (whichever fires first wins, and
+  // clearing the ref after handling means a same-gesture duplicate from the
+  // other event family is a harmless no-op) — real mice/touchscreens fire
+  // PointerEvents, but some environments only ever emit legacy MouseEvents,
+  // so relying on pointer events alone silently drops those.
+  function start(x: number, y: number) {
+    startRef.current = { x, y }
   }
 
-  function handlePointerUp(event: React.PointerEvent) {
-    const start = startRef.current
+  function end(x: number, y: number) {
+    const startPos = startRef.current
     startRef.current = null
-    if (!start || !swipe) return
+    if (!startPos || !swipe) return
 
-    const dx = event.clientX - start.x
-    const dy = event.clientY - start.y
+    const dx = x - startPos.x
+    const dy = y - startPos.y
     if (Math.abs(dx) < SWIPE_THRESHOLD_PX) return
     if (Math.abs(dx) < Math.abs(dy)) return // mostly-vertical scroll, ignore
 
@@ -148,11 +150,13 @@ function TabsContent({
       {...props}
     >
       <div
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
+        onPointerDown={(e) => start(e.clientX, e.clientY)}
+        onPointerUp={(e) => end(e.clientX, e.clientY)}
         onPointerCancel={() => {
           startRef.current = null
         }}
+        onMouseDown={(e) => start(e.clientX, e.clientY)}
+        onMouseUp={(e) => end(e.clientX, e.clientY)}
         className="touch-pan-y select-none"
       >
         {children}
