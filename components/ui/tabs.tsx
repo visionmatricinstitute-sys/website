@@ -59,6 +59,7 @@ function Tabs({
   )
 
   const order = React.useMemo(() => collectTriggerValues(children), [children])
+  if (typeof window !== "undefined") console.log("[swipe-debug] order", order)
 
   return (
     <TabsSwipeContext.Provider value={value ? { value, setValue, order } : null}>
