@@ -153,7 +153,7 @@ export default function UpsTopologiesPost() {
         </ArticleShell>
         <section className="py-12 bg-background border-t border-border">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-sm text-muted-foreground font-serif">
+            <p className="text-sm text-muted-foreground font-body">
               Read more:{" "}
               <Link href="/blog" className="text-accent font-semibold hover:underline">
                 All articles

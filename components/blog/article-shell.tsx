@@ -46,7 +46,7 @@ export function ArticleShell({ category, title, description, children, faqs, wha
     <>
       <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
-        <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent/25 blur-[110px]" />
+        <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent-tint/20 blur-[110px]" />
         <motion.div
           variants={container}
           initial="hidden"
@@ -54,12 +54,12 @@ export function ArticleShell({ category, title, description, children, faqs, wha
           className="relative container mx-auto px-4 max-w-3xl"
         >
           <motion.div variants={item}>
-            <Badge className="bg-accent/10 text-accent mb-6 hover:bg-accent/10">{category}</Badge>
+            <Badge className="bg-accent-tint/10 text-accent-tint mb-6 hover:bg-accent-tint/10">{category}</Badge>
           </motion.div>
-          <motion.h1 variants={item} className="text-3xl lg:text-5xl font-black font-sans text-white leading-tight mb-4">
+          <motion.h1 variants={item} className="text-3xl lg:text-5xl font-serif font-medium text-white leading-tight mb-4">
             {title}
           </motion.h1>
-          <motion.p variants={item} className="text-lg text-white/70 font-serif leading-relaxed">
+          <motion.p variants={item} className="text-lg text-white/70 font-body leading-relaxed">
             {description}
           </motion.p>
         </motion.div>
@@ -81,12 +81,12 @@ export function ArticleShell({ category, title, description, children, faqs, wha
       )}
 
       <section className="py-16 bg-background">
-        <div className="container mx-auto px-4 max-w-3xl space-y-10 font-serif text-foreground leading-relaxed [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-black [&_h2]:font-sans [&_h2]:text-foreground [&_h2]:mb-4 [&_h2]:mt-2 [&_p]:text-muted-foreground [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1.5 [&_ul]:text-muted-foreground [&_li]:leading-relaxed">
+        <div className="container mx-auto px-4 max-w-3xl space-y-10 font-body text-foreground leading-relaxed [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-serif [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:mb-4 [&_h2]:mt-2 [&_p]:text-muted-foreground [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1.5 [&_ul]:text-muted-foreground [&_li]:leading-relaxed">
           {children}
 
           <section id="faq" className="pt-6">
             <FadeIn className="mb-8">
-              <h2 className="text-2xl lg:text-3xl font-black font-sans text-foreground">Frequently Asked Questions</h2>
+              <h2 className="text-2xl lg:text-3xl font-serif font-medium text-foreground">Frequently Asked Questions</h2>
             </FadeIn>
             <div className="space-y-4">
               {faqs.map((faq, index) => (
@@ -97,7 +97,7 @@ export function ArticleShell({ category, title, description, children, faqs, wha
                         <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
                         <div>
                           <h3 className="font-semibold font-sans text-foreground mb-1.5">{faq.question}</h3>
-                          <p className="text-sm text-muted-foreground font-serif leading-relaxed">{faq.answer}</p>
+                          <p className="text-sm text-muted-foreground font-body leading-relaxed">{faq.answer}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -113,13 +113,13 @@ export function ArticleShell({ category, title, description, children, faqs, wha
         <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
         <div className="relative container mx-auto px-4 text-center">
           <FadeIn>
-            <h2 className="text-2xl lg:text-4xl font-black font-sans text-white mb-3">Want to learn this properly?</h2>
-            <p className="text-white/60 font-serif mb-6">
+            <h2 className="text-2xl lg:text-4xl font-serif font-medium text-white mb-3">Want to learn this properly?</h2>
+            <p className="text-white/60 font-body mb-6">
               This topic is covered in depth in our Electrical Design – Data Center Specialist program.
             </p>
             <Button
               size="lg"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30"
+              variant="accent-on-dark"
               asChild
             >
               <a href={waHref} target="_blank" rel="noopener noreferrer">
