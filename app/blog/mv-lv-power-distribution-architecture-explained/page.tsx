@@ -6,6 +6,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { ArticleShell } from "@/components/blog/article-shell"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "MV/LV Power Distribution Architecture, Explained"
 const description =
@@ -70,6 +71,8 @@ const faqJsonLd = {
   mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
 }
 
+const { prev, next } = getAdjacentPosts("mv-lv-power-distribution-architecture-explained")
+
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
   { name: "Blog", path: "/blog" },
@@ -91,6 +94,8 @@ export default function MvLvDistributionPost() {
           faqs={faqs}
           whatsappMessage="Hi, I read the MV/LV distribution article and want to know more about the Electrical Design course."
           heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
+          prevPost={prev}
+          nextPost={next}
         >
           <div>
             <h2 id="why-stages">Why power arrives at medium voltage, not low voltage</h2>

@@ -6,6 +6,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { ArticleShell } from "@/components/blog/article-shell"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "PUE (Power Usage Effectiveness) Explained"
 const description =
@@ -74,6 +75,8 @@ const faqJsonLd = {
   mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
 }
 
+const { prev, next } = getAdjacentPosts("pue-power-usage-effectiveness-explained")
+
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
   { name: "Blog", path: "/blog" },
@@ -95,6 +98,8 @@ export default function PuePost() {
           faqs={faqs}
           whatsappMessage="Hi, I read the PUE article and want to know more about the Electrical Design course."
           heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
+          prevPost={prev}
+          nextPost={next}
         >
           <div>
             <h2 id="the-formula">The formula is deliberately simple</h2>

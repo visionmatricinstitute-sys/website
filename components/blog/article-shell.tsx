@@ -2,11 +2,12 @@
 
 import type { ReactNode } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, MessageCircle } from "lucide-react"
+import { CheckCircle2, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 
 const container = {
@@ -29,6 +30,11 @@ export interface ArticleHeroImage {
   alt: string
 }
 
+export interface AdjacentArticle {
+  slug: string
+  title: string
+}
+
 export interface ArticleShellProps {
   category: string
   title: string
@@ -37,9 +43,21 @@ export interface ArticleShellProps {
   faqs: ArticleFaq[]
   whatsappMessage: string
   heroImage?: ArticleHeroImage
+  prevPost?: AdjacentArticle | null
+  nextPost?: AdjacentArticle | null
 }
 
-export function ArticleShell({ category, title, description, children, faqs, whatsappMessage, heroImage }: ArticleShellProps) {
+export function ArticleShell({
+  category,
+  title,
+  description,
+  children,
+  faqs,
+  whatsappMessage,
+  heroImage,
+  prevPost,
+  nextPost,
+}: ArticleShellProps) {
   const waHref = `https://wa.me/919930259997?text=${encodeURIComponent(whatsappMessage)}`
 
   return (
@@ -47,6 +65,26 @@ export function ArticleShell({ category, title, description, children, faqs, wha
       <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
         <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent-tint/20 blur-[110px]" />
+
+        {prevPost && (
+          <Link
+            href={`/blog/${prevPost.slug}`}
+            aria-label={`Previous article: ${prevPost.title}`}
+            className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/30 transition-colors z-10"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Link>
+        )}
+        {nextPost && (
+          <Link
+            href={`/blog/${nextPost.slug}`}
+            aria-label={`Next article: ${nextPost.title}`}
+            className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/30 transition-colors z-10"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Link>
+        )}
+
         <motion.div
           variants={container}
           initial="hidden"
