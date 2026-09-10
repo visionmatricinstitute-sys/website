@@ -24,16 +24,6 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="https://www.facebook.com/visionmatrixinstitute"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Vision Matrix Institute on Facebook"
-                className={SOCIAL_BADGE_CLASS}
-                style={{ backgroundColor: "#1877F2" }}
-              >
-                <Facebook className="h-4 w-4" fill="currentColor" strokeWidth={0} />
-              </a>
-              <a
                 href="https://www.linkedin.com/company/vision-matrix-institutes"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -65,6 +55,16 @@ export function Footer() {
                 }}
               >
                 <Instagram className="h-4 w-4" strokeWidth={2} />
+              </a>
+              <a
+                href="https://www.facebook.com/visionmatrixinstitute"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Vision Matrix Institute on Facebook"
+                className={SOCIAL_BADGE_CLASS}
+                style={{ backgroundColor: "#1877F2" }}
+              >
+                <Facebook className="h-4 w-4" fill="currentColor" strokeWidth={0} />
               </a>
             </div>
           </div>
