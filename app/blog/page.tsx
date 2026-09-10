@@ -128,17 +128,17 @@ export default function BlogIndexPage() {
       <main>
         <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
           <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
-          <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent/25 blur-[110px]" />
+          <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent-tint/20 blur-[110px]" />
           <div className="relative container mx-auto px-4 max-w-3xl">
-            <h1 className="text-3xl lg:text-5xl font-black font-sans text-white leading-tight mb-4">Blog</h1>
-            <p className="text-lg text-white/70 font-serif leading-relaxed">
+            <h1 className="text-3xl lg:text-5xl font-serif font-medium text-white leading-tight mb-4">Blog</h1>
+            <p className="text-lg text-white/70 font-body leading-relaxed">
               Technical explainers and career guidance on data center electrical design — written by the same
               team that teaches our courses.
             </p>
             <p className="mt-4">
               <Link
                 href="/resources/data-center-design-basics-checklist"
-                className="text-accent font-semibold hover:underline"
+                className="text-accent-tint font-semibold hover:underline"
               >
                 Free download: Data Center Design Basics Checklist →
               </Link>
@@ -155,7 +155,7 @@ export default function BlogIndexPage() {
                     <CardContent className="p-6 space-y-3">
                       <Badge className="bg-accent/10 text-accent hover:bg-accent/10">{post.category}</Badge>
                       <h2 className="text-xl font-bold font-sans text-foreground">{post.title}</h2>
-                      <p className="text-sm text-muted-foreground font-serif leading-relaxed">{post.description}</p>
+                      <p className="text-sm text-muted-foreground font-body leading-relaxed">{post.description}</p>
                       <span className="inline-flex items-center gap-1.5 text-sm text-accent font-semibold">
                         Read article <ArrowRight className="h-4 w-4" />
                       </span>
