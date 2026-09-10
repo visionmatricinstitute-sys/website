@@ -114,7 +114,8 @@ export function DemoCta() {
       <Button
         onClick={() => setOpen(true)}
         size="lg"
-        className="hidden sm:flex fixed bottom-6 right-24 z-50 bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg rounded-full px-6"
+        variant="accent"
+        className="hidden sm:flex fixed bottom-6 right-24 z-50 rounded-full px-6"
       >
         <CalendarCheck className="h-5 w-5 mr-2" />
         Book Free Demo
@@ -123,7 +124,7 @@ export function DemoCta() {
       {/* Mobile: full-width bottom bar */}
       <button
         onClick={() => setOpen(true)}
-        className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-secondary text-secondary-foreground py-3.5 flex items-center justify-center gap-2 font-semibold shadow-[0_-4px_12px_rgba(0,0,0,0.15)]"
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-accent text-white py-3.5 flex items-center justify-center gap-2 font-semibold shadow-[0_-4px_12px_rgba(0,0,0,0.15)]"
       >
         <CalendarCheck className="h-5 w-5" />
         Book Free Demo
@@ -319,7 +320,8 @@ export function DemoCta() {
           <Button
             type="submit"
             disabled={submitting || (captchaRequired && !captchaToken)}
-            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+            variant="accent"
+            className="w-full"
             size="lg"
           >
             {submitting ? (

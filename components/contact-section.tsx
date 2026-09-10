@@ -24,7 +24,7 @@ const CONTACT_CARDS = [
     body: (
       <a
         href="mailto:info@visionmatrixinstitute.com"
-        className="text-muted-foreground font-serif rounded-sm transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+        className="text-muted-foreground font-body rounded-sm transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
         info@visionmatrixinstitute.com
       </a>
@@ -32,16 +32,16 @@ const CONTACT_CARDS = [
   },
   {
     icon: MessageCircle,
-    iconClassName: "text-green-500",
+    iconClassName: "text-green-700",
     title: "WhatsApp",
     body: (
       <>
-        <p className="text-muted-foreground font-serif mb-3">
+        <p className="text-muted-foreground font-body mb-3">
           Get instant support and quick responses to your queries.
         </p>
         <button
           onClick={() => window.open("https://wa.me/919930259997", "_blank")}
-          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors hover:scale-105 active:scale-95"
+          className="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors hover:scale-105 active:scale-95"
         >
           <MessageCircle className="h-4 w-4" />
           Chat on WhatsApp
@@ -68,8 +68,8 @@ export function ContactSection() {
     <section id="contact" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <FadeIn className="text-center mb-16">
-          <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Contact Us</h2>
-          <p className="text-lg text-muted-foreground font-serif max-w-3xl mx-auto leading-relaxed">
+          <h2 className="text-3xl lg:text-5xl font-serif font-medium text-foreground mb-4">Contact Us</h2>
+          <p className="text-lg text-muted-foreground font-body max-w-3xl mx-auto leading-relaxed">
             Get in touch with us for admissions, course information, or any queries. We're here to help you start your
             journey.
           </p>
@@ -89,7 +89,7 @@ export function ContactSection() {
                   </CardHeader>
                   <CardContent>
                     {typeof card.body === "string" ? (
-                      <p className="text-muted-foreground font-serif">{card.body}</p>
+                      <p className="text-muted-foreground font-body">{card.body}</p>
                     ) : (
                       card.body
                     )}
@@ -112,7 +112,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Live Interactive Classes</h4>
-                    <p className="text-sm text-muted-foreground font-serif">
+                    <p className="text-sm text-muted-foreground font-body">
                       Real-time sessions with instructors, not pre-recorded videos alone.
                     </p>
                   </div>
@@ -123,7 +123,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Recorded Sessions</h4>
-                    <p className="text-sm text-muted-foreground font-serif">
+                    <p className="text-sm text-muted-foreground font-body">
                       Every class is recorded so you can revisit lessons anytime.
                     </p>
                   </div>
@@ -134,7 +134,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Learn From Anywhere</h4>
-                    <p className="text-sm text-muted-foreground font-serif">
+                    <p className="text-sm text-muted-foreground font-body">
                       Join from any city or country — all you need is an internet connection.
                     </p>
                   </div>
