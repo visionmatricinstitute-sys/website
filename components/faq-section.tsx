@@ -50,7 +50,7 @@ export function FaqSection() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="container mx-auto px-4 max-w-3xl">
         <FadeIn className="text-center mb-12">
-          <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Frequently Asked Questions</h2>
+          <h2 className="text-3xl lg:text-5xl font-serif font-medium text-foreground mb-4">Frequently Asked Questions</h2>
         </FadeIn>
         <div className="space-y-4">
           {FAQS.map((faq, index) => (
@@ -61,7 +61,7 @@ export function FaqSection() {
                     <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
                     <div>
                       <h3 className="font-semibold font-sans text-foreground mb-1.5">{faq.question}</h3>
-                      <p className="text-sm text-muted-foreground font-serif leading-relaxed">{faq.answer}</p>
+                      <p className="text-sm text-muted-foreground font-body leading-relaxed">{faq.answer}</p>
                     </div>
                   </div>
                 </CardContent>

@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Poppins } from "next/font/google"
 import { Inter } from "next/font/google"
+import { Fraunces } from "next/font/google"
 import Script from "next/script"
 import { Toaster } from "@/components/ui/sonner"
 import { ScrollProgress } from "@/components/motion/scroll-progress"
@@ -21,6 +22,14 @@ const inter = Inter({
   display: "swap",
   variable: "--font-inter",
   weight: ["400", "500", "600", "700"],
+})
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fraunces",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 })
 
 const siteUrl =
@@ -127,7 +136,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} ${inter.variable} antialiased`}>
+    <html lang="en" className={`${poppins.variable} ${inter.variable} ${fraunces.variable} antialiased`}>
       <head>
         <meta name="msvalidate.01" content="9166F8A67733A6CEF2B393A997444A3C" />
         <script

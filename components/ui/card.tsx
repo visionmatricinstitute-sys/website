@@ -2,6 +2,16 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Documented className presets for the two recurring Card states seen
+ * across the site (e.g. CourseCard's featured/upcoming branching) — not a
+ * cva variant prop, since Card has no variant API today and this keeps
+ * that surface small. Compose with `cn(cardFeatured, className)`.
+ */
+export const cardFeatured =
+  "rounded-2xl border-transparent shadow-[0_30px_60px_-15px_rgb(15_23_42/0.15)]"
+export const cardMuted = "opacity-60 grayscale-[0.3]"
+
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

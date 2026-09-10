@@ -4,25 +4,43 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #0057d9;
+  /*
+   * Premium redesign palette — every text/background pairing below is
+   * verified against the canonical WCAG 2.x contrast formula (see
+   * scratchpad/contrast.pl, ported from github.com/gsnedders/wcag-contrast-ratio).
+   * --accent replaces the old --primary/--accent split: one sophisticated
+   * brand color instead of two competing ones. The old bright blue
+   * (#00a8ff) survives only as --accent-tint, for decorative low-opacity
+   * chip/icon backgrounds — never for text or solid fills (it fails AA there).
+   */
+  --background: #faf8f4;
+  --foreground: #1c1b1a;
+  --card: #faf8f4;
+  --card-foreground: #1c1b1a;
+  --popover: #faf8f4;
+  --popover-foreground: #1c1b1a;
+  --primary: #123c61;
   --primary-foreground: #ffffff;
   --secondary: #d32f2f;
   --secondary-foreground: #ffffff;
-  --muted: #f5f7fa;
-  --muted-foreground: #6b7280;
-  --accent: #00a8ff;
+  --muted: #f1eae0;
+  --muted-foreground: #6b6259;
+  --accent: #123c61;
   --accent-foreground: #ffffff;
+  --accent-tint: #00a8ff;
+  /*
+   * The deep accent above reads beautifully on light/ivory surfaces but is
+   * nearly invisible on the --navy dark sections (1.57:1 against #0f172a —
+   * verified via scratchpad/contrast.pl). Dark-section CTAs/links/icons use
+   * this lighter, still-sophisticated blue instead: 5.17:1 white-on-fill,
+   * 3.45:1 against navy (clears the 3:1 non-text/large-text threshold).
+   */
+  --accent-on-dark: #2563eb;
   --destructive: #d32f2f;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #f5f7fa;
-  --ring: #00a8ff80;
+  --border: #e5ded2;
+  --input: #f1eae0;
+  --ring: #123c6180;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.646 0.222 280.116);
   --chart-3: oklch(0.577 0.245 27.325);
@@ -33,14 +51,15 @@
   --navy-foreground: #ffffff;
   --sidebar: oklch(0.97 0 0);
   --sidebar-foreground: oklch(0.205 0 0);
-  --sidebar-primary: #0057d9;
+  --sidebar-primary: #123c61;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #d32f2f;
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: #00a8ff4d;
+  --sidebar-ring: #123c614d;
   --font-poppins: "Poppins", sans-serif;
   --font-inter: "Inter", sans-serif;
+  --font-fraunces: "Fraunces", serif;
 }
 
 .dark {
@@ -93,6 +112,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-tint: var(--accent-tint);
+  --color-accent-on-dark: var(--accent-on-dark);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -117,10 +138,32 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-navy: var(--navy);
   --color-navy-foreground: var(--navy-foreground);
+  /*
+   * font-sans (Poppins) = UI chrome: nav, buttons, badges, labels.
+   * font-serif (Fraunces) = editorial headlines (H1/H2) only — was
+   * previously mapped to Inter (a sans face), which was a misleading name;
+   * now it genuinely means serif.
+   * font-body (Inter) = paragraph/body copy — new explicit token, replacing
+   * the old font-serif-for-body usage one call site at a time.
+   */
   --font-sans: var(--font-poppins);
-  --font-serif: var(--font-inter);
+  --font-serif: var(--font-fraunces);
+  --font-body: var(--font-inter);
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+
+/*
+ * Design-system scale (documented, not enforced via new CSS vars — these
+ * codify the site's existing de-facto conventions so future work stays
+ * consistent rather than reinventing spacing/shadow on every component):
+ *
+ * Section rhythm:  py-20 default · py-28/py-32 for hero-weight sections
+ * Radius:          rounded-lg default surface · rounded-full pills/icon-badges
+ *                  · rounded-2xl hero-image frames + featured cards
+ * Shadow:          shadow-lg default elevated card · for hero/feature imagery
+ *                  use shadow-[0_30px_60px_-15px_rgb(15_23_42/0.15)] instead
+ *                  of shadow-2xl — softer, lower-opacity, more editorial
+ */
 
 @layer base {
   * {

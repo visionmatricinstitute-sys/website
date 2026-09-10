@@ -24,7 +24,7 @@ function NavLink({ href, label, className = "" }: { href: string; label: string;
   return (
     <Link
       href={href}
-      className={`relative text-foreground hover:text-accent transition-colors font-medium after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:after:scale-x-100 ${className}`}
+      className={`relative text-foreground hover:text-accent transition-colors font-medium tracking-tight after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300 hover:after:scale-x-100 ${className}`}
     >
       {label}
     </Link>
@@ -73,9 +73,9 @@ export function Header() {
 
         {/* Main navigation */}
         <div className="flex justify-between items-center py-4">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
             <Image src="/logo.png" alt="Vision Matrix Institute logo" width={36} height={36} className="h-9 w-9" />
-            <span className="text-2xl font-black font-sans text-primary">Vision Matrix Institute</span>
+            <span className="text-2xl font-black font-sans tracking-tight text-primary">Vision Matrix Institute</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -84,7 +84,8 @@ export function Header() {
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
             <Button
-              className="bg-green-500 hover:bg-green-600 text-white transition-transform hover:scale-105 active:scale-95"
+              variant="whatsapp"
+              className="transition-transform hover:scale-105 active:scale-95"
               onClick={() => window.open("https://wa.me/919930259997", "_blank")}
             >
               <MessageCircle className="h-4 w-4 mr-2" />
@@ -131,7 +132,8 @@ export function Header() {
                   </motion.div>
                 ))}
                 <Button
-                  className="bg-green-500 hover:bg-green-600 text-white w-fit"
+                  variant="whatsapp"
+                  className="w-fit"
                   onClick={() => window.open("https://wa.me/919930259997", "_blank")}
                 >
                   <MessageCircle className="h-4 w-4 mr-2" />

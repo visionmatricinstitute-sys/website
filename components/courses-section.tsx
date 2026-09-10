@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, cardMuted } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -161,9 +161,7 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
   return (
     <Card
       className={`group transition-all duration-300 ${
-        course.isUpcoming
-          ? "bg-gray-100 border-gray-300 opacity-75 hover:opacity-100"
-          : "hover:shadow-xl hover:-translate-y-1"
+        course.isUpcoming ? `${cardMuted} hover:opacity-100 hover:grayscale-0` : "hover:shadow-xl hover:-translate-y-1"
       }`}
     >
       <div className="relative overflow-hidden rounded-t-lg">
@@ -192,19 +190,15 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
 
       <CardHeader className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${course.isUpcoming ? "bg-gray-300" : "bg-accent/10"}`}>
-            <IconComponent className={`h-6 w-6 ${course.isUpcoming ? "text-gray-500" : "text-accent"}`} />
+          <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent/10">
+            <IconComponent className="h-6 w-6 text-accent" />
           </div>
-          <CardTitle className={`text-xl font-bold font-sans ${course.isUpcoming ? "text-gray-500" : "text-foreground"}`}>
-            {course.title}
-          </CardTitle>
+          <CardTitle className="text-xl font-bold font-sans text-foreground">{course.title}</CardTitle>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <p className={`font-serif leading-relaxed ${course.isUpcoming ? "text-gray-500" : "text-muted-foreground"}`}>
-          {course.description}
-        </p>
+        <p className="font-body leading-relaxed text-muted-foreground">{course.description}</p>
 
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div className="flex items-center gap-2 text-muted-foreground">
@@ -230,11 +224,11 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
 
         <div className="flex gap-3 pt-4">
           {course.isUpcoming ? (
-            <Button className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground" disabled>
+            <Button variant="accent" className="flex-1" disabled>
               Notify Me
             </Button>
           ) : (
-            <Button asChild className="flex-1 bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button asChild variant="accent" className="flex-1">
               <Link href="/#admission">Enroll Now</Link>
             </Button>
           )}
@@ -265,8 +259,8 @@ export function CoursesSection() {
     <section id="courses" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <FadeIn className="text-center mb-16">
-          <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Our Courses</h2>
-          <p className="text-lg text-muted-foreground font-serif max-w-3xl mx-auto leading-relaxed">
+          <h2 className="text-3xl lg:text-5xl font-serif font-medium text-foreground mb-4">Our Courses</h2>
+          <p className="text-lg text-muted-foreground font-body max-w-3xl mx-auto leading-relaxed">
             Discover our comprehensive range of industry-relevant courses designed to give you the skills employers are
             looking for. From established programs to exciting new offerings.
           </p>
@@ -291,7 +285,7 @@ export function CoursesSection() {
 
           <TabsContent value="courses" className="w-full mt-10">
             <FadeIn className="text-center mb-12">
-              <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
+              <p className="text-muted-foreground font-body max-w-2xl mx-auto">
                 Our most sought-after programs with proven track records of student success and industry recognition.
               </p>
             </FadeIn>
@@ -307,7 +301,7 @@ export function CoursesSection() {
 
           <TabsContent value="upcoming" className="w-full mt-10">
             <FadeIn className="text-center mb-12">
-              <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
+              <p className="text-muted-foreground font-body max-w-2xl mx-auto">
                 Exciting new programs launching soon to keep you ahead in the digital age. Get notified when
                 enrollment opens!
               </p>

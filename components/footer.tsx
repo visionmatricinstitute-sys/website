@@ -17,9 +17,9 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
               <Image src="/logo.png" alt="Vision Matrix Institute logo" width={36} height={36} className="h-9 w-9" />
-              <h3 className="text-2xl font-black font-sans">Vision Matrix Institute</h3>
+              <h3 className="text-2xl font-serif font-medium">Vision Matrix Institute</h3>
             </div>
-            <p className="text-navy-foreground/80 font-serif leading-relaxed">
+            <p className="text-navy-foreground/80 font-body leading-relaxed">
               India's specialist data center electrical design training institute, building real data center
               skills from anywhere.
             </p>
@@ -50,7 +50,7 @@ export function Footer() {
           {/* Quick Links */}
           <div className="space-y-4">
             <h4 className="text-lg font-bold font-sans">Quick Links</h4>
-            <ul className="space-y-2 font-serif">
+            <ul className="space-y-2 font-body">
               <li>
                 <a href="/#home" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
                   Home
@@ -112,7 +112,7 @@ export function Footer() {
           {/* Popular Courses */}
           <div className="space-y-4">
             <h4 className="text-lg font-bold font-sans">Popular Courses</h4>
-            <ul className="space-y-2 font-serif">
+            <ul className="space-y-2 font-body">
               <li>
                 <Link
                   href="/programs/electrical-design-data-center"
@@ -143,7 +143,7 @@ export function Footer() {
           {/* Contact Info */}
           <div className="space-y-4">
             <h4 className="text-lg font-bold font-sans">Contact Info</h4>
-            <div className="space-y-3 font-serif">
+            <div className="space-y-3 font-body">
               <div className="flex items-start gap-3">
                 <Globe className="h-5 w-5 text-navy-foreground/80 mt-0.5 flex-shrink-0" />
                 <div>
@@ -162,7 +162,7 @@ export function Footer() {
                 <Mail className="h-5 w-5 text-navy-foreground/80" />
                 <a
                   href="mailto:info@visionmatrixinstitute.com"
-                  className="text-navy-foreground/80 rounded-sm transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+                  className="text-navy-foreground/80 rounded-sm transition-colors hover:text-accent-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-tint focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                 >
                   info@visionmatrixinstitute.com
                 </a>
@@ -186,7 +186,7 @@ export function Footer() {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <h4 className="text-xl font-bold font-sans mb-2">Stay Updated</h4>
-              <p className="text-navy-foreground/80 font-serif">
+              <p className="text-navy-foreground/80 font-body">
                 Subscribe to our newsletter for course updates and career tips.
               </p>
             </div>
@@ -196,7 +196,7 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="border-t border-navy-foreground/20 mt-8 pt-8 text-center">
-          <p className="text-navy-foreground/60 font-serif">© 2025 Vision Matrix Institute. All rights reserved.</p>
+          <p className="text-navy-foreground/60 font-body">© 2025 Vision Matrix Institute. All rights reserved.</p>
         </div>
       </div>
     </footer>

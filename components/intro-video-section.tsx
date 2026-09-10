@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, cardFeatured } from "@/components/ui/card"
 import { FadeIn } from "@/components/motion/fade-in"
 import { INTRO_VIDEO } from "@/lib/video-data"
 
@@ -7,7 +7,7 @@ export function IntroVideoSection() {
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <FadeIn className="max-w-lg mx-auto">
-          <Card className="overflow-hidden">
+          <Card className={`overflow-hidden ${cardFeatured}`}>
             <div className="aspect-video">
               <iframe
                 src={`https://www.youtube.com/embed/${INTRO_VIDEO.id}`}
