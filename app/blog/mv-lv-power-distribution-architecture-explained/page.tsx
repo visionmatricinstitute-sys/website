@@ -11,6 +11,10 @@ const title = "MV/LV Power Distribution Architecture, Explained"
 const description =
   "Why data center power comes in at medium voltage and gets stepped down in stages, and how radial, ring, and 2N distribution architectures trade off cost against resilience."
 
+const heroImageSrc = "/data-center-mv-lv-distribution.jpg"
+const heroImageAlt =
+  "Medium-voltage switchgear and a dry-type transformer stepping down to low-voltage switchboards in a data center power distribution room"
+
 export const metadata: Metadata = {
   title,
   description,
@@ -20,9 +24,9 @@ export const metadata: Metadata = {
     url: "/blog/mv-lv-power-distribution-architecture-explained",
     title,
     description,
-    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
+    images: [{ url: heroImageSrc, width: 1200, height: 630, alt: heroImageAlt }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
+  twitter: { card: "summary_large_image", title, description, images: [heroImageSrc] },
 }
 
 const faqs = [
@@ -48,7 +52,7 @@ const jsonLd = {
   "@type": "Article",
   headline: title,
   description,
-  image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
+  image: `https://www.visionmatrixinstitute.com${heroImageSrc}`,
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
   publisher: {
     "@type": "Organization",
@@ -86,6 +90,7 @@ export default function MvLvDistributionPost() {
           description="Every data center steps utility power down in stages before it reaches a server. How those stages are arranged is one of the biggest cost-vs-resilience decisions in the whole design."
           faqs={faqs}
           whatsappMessage="Hi, I read the MV/LV distribution article and want to know more about the Electrical Design course."
+          heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
         >
           <div>
             <h2 id="why-stages">Why power arrives at medium voltage, not low voltage</h2>

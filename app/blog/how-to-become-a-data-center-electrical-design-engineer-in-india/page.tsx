@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -16,6 +17,10 @@ const title = "How to Become a Data Center Electrical Design Engineer in India (
 const description =
   "A complete guide to the data center electrical design career path in India: what the role involves, the tools and standards you need, real salary ranges, certifications, and how to get started."
 
+const heroImageSrc = "/data-center-electrical-engineer-career.jpg"
+const heroImageAlt =
+  "Data center electrical design engineer's desk with dual monitors showing a single-line diagram and BIM model, a hard hat, and printed drawings"
+
 export const metadata: Metadata = {
   title,
   description,
@@ -29,10 +34,10 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/electrical-design-data-center.jpg",
+        url: heroImageSrc,
         width: 1200,
         height: 630,
-        alt: title,
+        alt: heroImageAlt,
       },
     ],
   },
@@ -40,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/electrical-design-data-center.jpg"],
+    images: [heroImageSrc],
   },
 }
 
@@ -49,7 +54,7 @@ const articleJsonLd = {
   "@type": "Article",
   headline: title,
   description,
-  image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
+  image: `https://www.visionmatrixinstitute.com${heroImageSrc}`,
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
   publisher: {
     "@type": "Organization",
@@ -110,6 +115,14 @@ export default function DataCenterCareerGuidePage() {
               A complete, practical guide to one of electrical engineering's fastest-growing specializations —
               what the role involves, the tools and standards you need, real salary data, and how to get started.
             </p>
+          </div>
+        </section>
+
+        <section className="bg-background">
+          <div className="container mx-auto px-4 max-w-3xl -mt-10 lg:-mt-14 relative">
+            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border">
+              <Image src={heroImageSrc} alt={heroImageAlt} fill className="object-cover" priority />
+            </div>
           </div>
         </section>
 
