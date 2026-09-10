@@ -6,6 +6,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { ArticleShell } from "@/components/blog/article-shell"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "Earthing & Bonding Basics for Data Centers"
 const description =
@@ -70,6 +71,8 @@ const faqJsonLd = {
   mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
 }
 
+const { prev, next } = getAdjacentPosts("earthing-and-bonding-basics-for-data-centers")
+
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
   { name: "Blog", path: "/blog" },
@@ -91,6 +94,8 @@ export default function EarthingBondingPost() {
           faqs={faqs}
           whatsappMessage="Hi, I read the earthing & bonding article and want to know more about the Electrical Design course."
           heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
+          prevPost={prev}
+          nextPost={next}
         >
           <div>
             <h2 id="two-jobs">Two different jobs, one shared vocabulary</h2>

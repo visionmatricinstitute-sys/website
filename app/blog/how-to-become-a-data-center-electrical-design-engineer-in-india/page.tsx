@@ -9,9 +9,10 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { FadeIn } from "@/components/motion/fade-in"
-import { ArrowRight, CheckCircle2 } from "lucide-react"
+import { ArrowRight, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react"
 import { DC_CAREER_FAQS, CAREER_PROGRESSION } from "@/lib/guide-data"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "How to Become a Data Center Electrical Design Engineer in India (2026 Guide)"
 const description =
@@ -66,6 +67,8 @@ const articleJsonLd = {
   mainEntityOfPage: "https://www.visionmatrixinstitute.com/blog/how-to-become-a-data-center-electrical-design-engineer-in-india",
 }
 
+const { prev, next } = getAdjacentPosts("how-to-become-a-data-center-electrical-design-engineer-in-india")
+
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
   { name: "Blog", path: "/blog" },
@@ -106,6 +109,26 @@ export default function DataCenterCareerGuidePage() {
         <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
           <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
           <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent-tint/20 blur-[110px]" />
+
+          {prev && (
+            <Link
+              href={`/blog/${prev.slug}`}
+              aria-label={`Previous article: ${prev.title}`}
+              className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/30 transition-colors z-10"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Link>
+          )}
+          {next && (
+            <Link
+              href={`/blog/${next.slug}`}
+              aria-label={`Next article: ${next.title}`}
+              className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/30 transition-colors z-10"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Link>
+          )}
+
           <div className="relative container mx-auto px-4 max-w-3xl">
             <Badge className="bg-accent-tint/10 text-accent-tint mb-6 hover:bg-accent-tint/10">Career Guide</Badge>
             <h1 className="text-3xl lg:text-5xl font-serif font-medium text-white leading-tight mb-4">

@@ -6,6 +6,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { ArticleShell } from "@/components/blog/article-shell"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "Cable Sizing Basics for Data Center Electrical Design"
 const description =
@@ -70,6 +71,8 @@ const faqJsonLd = {
   mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
 }
 
+const { prev, next } = getAdjacentPosts("cable-sizing-basics-for-data-center-electrical-design")
+
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
   { name: "Blog", path: "/blog" },
@@ -91,6 +94,8 @@ export default function CableSizingBasicsPost() {
           faqs={faqs}
           whatsappMessage="Hi, I read the cable sizing article and want to know more about the Electrical Design course."
           heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
+          prevPost={prev}
+          nextPost={next}
         >
           <div>
             <h2 id="why-it-matters">Why cable sizing isn't just "pick a big enough wire"</h2>
