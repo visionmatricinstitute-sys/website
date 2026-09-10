@@ -11,6 +11,10 @@ const title = "UPS vs Diesel Generator: Which One Handles a Power Outage?"
 const description =
   "They're not competing solutions — a UPS and a diesel generator solve two different problems in a data center power outage. Here's what each one actually does, and why you almost always need both."
 
+const heroImageSrc = "/data-center-ups-vs-generator.jpg"
+const heroImageAlt =
+  "Row of modular UPS cabinets beside a diesel generator set visible through an open plant-room doorway in a data center"
+
 export const metadata: Metadata = {
   title,
   description,
@@ -20,9 +24,9 @@ export const metadata: Metadata = {
     url: "/blog/ups-vs-diesel-generator-data-center-backup-power",
     title,
     description,
-    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
+    images: [{ url: heroImageSrc, width: 1200, height: 630, alt: heroImageAlt }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
+  twitter: { card: "summary_large_image", title, description, images: [heroImageSrc] },
 }
 
 const faqs = [
@@ -48,7 +52,7 @@ const jsonLd = {
   "@type": "Article",
   headline: title,
   description,
-  image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
+  image: `https://www.visionmatrixinstitute.com${heroImageSrc}`,
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
   publisher: {
     "@type": "Organization",
@@ -86,6 +90,7 @@ export default function UpsVsDgPost() {
           description="Ask a room of engineering students which one 'is' the backup power system, and half will say UPS, half will say generator. The honest answer is: neither, alone."
           faqs={faqs}
           whatsappMessage="Hi, I read the UPS vs DG article and want to know more about the Electrical Design course."
+          heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
         >
           <div>
             <h2 id="the-gap">The gap between "power goes out" and "generator is running"</h2>
