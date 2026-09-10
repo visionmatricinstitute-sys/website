@@ -189,6 +189,12 @@
   50% { transform: translateY(8px); opacity: 1; }
 }
 
+/* Slow, subtle Ken-Burns-style breathing zoom for the hero background video */
+@keyframes hero-video-zoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
 .animate-float-slow {
   animation: float-slow 9s ease-in-out infinite;
 }
@@ -201,6 +207,10 @@
   animation: scroll-bounce 1.8s ease-in-out infinite;
 }
 
+.animate-hero-video-zoom {
+  animation: hero-video-zoom 20s ease-in-out infinite alternate;
+}
+
 .bg-grid-lines {
   background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
@@ -211,7 +221,8 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-float-slow,
   .animate-float-slower,
-  .animate-scroll-bounce {
+  .animate-scroll-bounce,
+  .animate-hero-video-zoom {
     animation: none;
   }
 }
