@@ -1,12 +1,11 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
 import { Globe, Phone, Mail, Clock, Facebook, Instagram, Youtube, Linkedin } from "lucide-react"
 import { NewsletterForm } from "@/components/newsletter-form"
 import { FadeIn } from "@/components/motion/fade-in"
 
-const SOCIAL_ICON_CLASS =
-  "text-navy-foreground hover:bg-navy-foreground/10 transition-transform duration-200 hover:scale-110 hover:-translate-y-0.5"
+const SOCIAL_BADGE_CLASS =
+  "flex h-9 w-9 items-center justify-center rounded-full text-white transition-transform duration-200 hover:scale-110 hover:-translate-y-0.5"
 
 export function Footer() {
   return (
@@ -23,27 +22,50 @@ export function Footer() {
               India's specialist data center electrical design training institute, building real data center
               skills from anywhere.
             </p>
-            <div className="flex space-x-4">
-              <Button asChild size="sm" variant="ghost" className={SOCIAL_ICON_CLASS}>
-                <a href="https://www.facebook.com/visionmatrixinstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on Facebook">
-                  <Facebook className="h-4 w-4" />
-                </a>
-              </Button>
-              <Button asChild size="sm" variant="ghost" className={SOCIAL_ICON_CLASS}>
-                <a href="https://www.instagram.com/visionmatrixinstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on Instagram">
-                  <Instagram className="h-4 w-4" />
-                </a>
-              </Button>
-              <Button asChild size="sm" variant="ghost" className={SOCIAL_ICON_CLASS}>
-                <a href="https://www.youtube.com/@visionMatrixInstitute" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on YouTube">
-                  <Youtube className="h-4 w-4" />
-                </a>
-              </Button>
-              <Button asChild size="sm" variant="ghost" className={SOCIAL_ICON_CLASS}>
-                <a href="https://www.linkedin.com/company/vision-matrix-institutes" target="_blank" rel="noopener noreferrer" aria-label="Vision Matrix Institute on LinkedIn">
-                  <Linkedin className="h-4 w-4" />
-                </a>
-              </Button>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://www.facebook.com/visionmatrixinstitute"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Vision Matrix Institute on Facebook"
+                className={SOCIAL_BADGE_CLASS}
+                style={{ backgroundColor: "#1877F2" }}
+              >
+                <Facebook className="h-4 w-4" fill="currentColor" strokeWidth={0} />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/vision-matrix-institutes"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Vision Matrix Institute on LinkedIn"
+                className={SOCIAL_BADGE_CLASS}
+                style={{ backgroundColor: "#0A66C2" }}
+              >
+                <Linkedin className="h-4 w-4" fill="currentColor" strokeWidth={0} />
+              </a>
+              <a
+                href="https://www.youtube.com/@visionMatrixInstitute"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Vision Matrix Institute on YouTube"
+                className={SOCIAL_BADGE_CLASS}
+                style={{ backgroundColor: "#FF0000" }}
+              >
+                <Youtube className="h-4 w-4" fill="currentColor" strokeWidth={0} />
+              </a>
+              <a
+                href="https://www.instagram.com/visionmatrixinstitute"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Vision Matrix Institute on Instagram"
+                className={SOCIAL_BADGE_CLASS}
+                style={{
+                  background:
+                    "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%)",
+                }}
+              >
+                <Instagram className="h-4 w-4" strokeWidth={2} />
+              </a>
             </div>
           </div>
 
