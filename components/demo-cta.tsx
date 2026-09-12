@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { CalendarCheck, Loader2 } from "lucide-react"
 import { TurnstileWidget } from "@/components/turnstile-widget"
+import { isValidPhone, PHONE_INPUT_PATTERN, PHONE_VALIDATION_MESSAGE } from "@/lib/phone"
 
 const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
 
@@ -68,6 +69,10 @@ export function DemoCta() {
 
     if (!form.studentName || !form.phone || !form.courseInterest) {
       toast.error("Please fill in your name, phone, and course of interest.")
+      return
+    }
+    if (!isValidPhone(form.phone)) {
+      toast.error(PHONE_VALIDATION_MESSAGE)
       return
     }
     if (captchaRequired && !captchaToken) {
@@ -270,6 +275,8 @@ export function DemoCta() {
               type="tel"
               value={form.phone}
               onChange={(e) => updateField("phone", e.target.value)}
+              pattern={PHONE_INPUT_PATTERN}
+              title={PHONE_VALIDATION_MESSAGE}
               required
             />
           </div>

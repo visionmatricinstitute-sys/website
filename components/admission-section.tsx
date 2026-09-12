@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CheckCircle, FileText, CreditCard, GraduationCap, Loader2 } from "lucide-react"
 import { TurnstileWidget } from "@/components/turnstile-widget"
+import { isValidPhone, PHONE_INPUT_PATTERN, PHONE_VALIDATION_MESSAGE } from "@/lib/phone"
 
 const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
 
@@ -37,6 +38,10 @@ export function AdmissionSection() {
 
     if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.course) {
       toast.error("Please fill in all required fields.")
+      return
+    }
+    if (!isValidPhone(form.phone)) {
+      toast.error(PHONE_VALIDATION_MESSAGE)
       return
     }
     if (captchaRequired && !captchaToken) {
@@ -215,6 +220,8 @@ export function AdmissionSection() {
                     placeholder="Enter your phone number"
                     value={form.phone}
                     onChange={(e) => updateField("phone", e.target.value)}
+                    pattern={PHONE_INPUT_PATTERN}
+                    title={PHONE_VALIDATION_MESSAGE}
                     required
                   />
                 </div>
