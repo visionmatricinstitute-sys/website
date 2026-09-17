@@ -103,6 +103,14 @@ export const blogPosts: BlogPostSummary[] = [
       "Earthing and bonding are two different jobs that get lumped together — one is about safety, the other is about keeping sensitive equipment from seeing electrical noise. Here's the difference and why data centers care more than most buildings.",
     image: "/data-center-earthing-bonding.jpg",
   },
+  {
+    slug: "current-transformer-potential-transformer-relay-explained",
+    category: "Electrical Equipment",
+    title: "Current Transformers, Potential Transformers & Protection Relays, Explained",
+    description:
+      "Protection relays and meters can't connect directly to an 11kV bus or a 2000A feeder — the voltages and currents would destroy them. CTs and PTs scale those signals down to something a relay can safely use, and the relay decides when to trip. Here's how the three work together.",
+    image: "/data-center-ct-pt-relay.jpg",
+  },
 ]
 
 export interface AdjacentPost {
