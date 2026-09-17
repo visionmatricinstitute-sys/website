@@ -104,12 +104,28 @@ export const blogPosts: BlogPostSummary[] = [
     image: "/data-center-earthing-bonding.jpg",
   },
   {
-    slug: "current-transformer-potential-transformer-relay-explained",
+    slug: "current-transformer-explained",
     category: "Electrical Equipment",
-    title: "Current Transformers, Potential Transformers & Protection Relays, Explained",
+    title: "Current Transformers (CT) Explained",
     description:
-      "Protection relays and meters can't connect directly to an 11kV bus or a 2000A feeder — the voltages and currents would destroy them. CTs and PTs scale those signals down to something a relay can safely use, and the relay decides when to trip. Here's how the three work together.",
+      "A protection relay can't sense 2000A of fault current directly, and it shouldn't. A current transformer scales that down to a safe, standardized signal — and one wiring mistake with it can be genuinely dangerous. Here's how CTs actually work.",
     image: "/data-center-ct-pt-relay.jpg",
+  },
+  {
+    slug: "potential-transformer-explained",
+    category: "Electrical Equipment",
+    title: "Potential Transformers (PT/VT) Explained",
+    description:
+      "A meter or relay can't safely see 11kV directly. A potential transformer scales bus voltage down to a small, standardized signal — and its one safety rule is the exact opposite of a current transformer's. Here's how PTs actually work.",
+    image: "/data-center-potential-transformer.jpg",
+  },
+  {
+    slug: "protection-relay-explained",
+    category: "Electrical Equipment",
+    title: "Protection Relays Explained",
+    description:
+      "CTs and PTs are the sensors. The protection relay is the decision-maker — the device that looks at their scaled-down signals, decides whether a fault has actually happened, and trips the breaker. Here's how a relay actually works.",
+    image: "/data-center-protection-relay.jpg",
   },
 ]
 
