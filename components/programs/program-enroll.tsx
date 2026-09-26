@@ -6,7 +6,15 @@ import { Button } from "@/components/ui/button"
 import { CheckCircle2, MessageCircle, Mail } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 import { MagneticButton } from "@/components/motion/magnetic-button"
-import { COHORTS, PREREQUISITES, INVESTMENT_TIERS, ENROLL_STEPS, WHO_SHOULD_JOIN } from "@/lib/program-data"
+import {
+  COHORTS,
+  PREREQUISITES,
+  ENROLL_STEPS,
+  WHO_SHOULD_JOIN,
+  PROGRAM_MODULES,
+  PROGRAM_TOTAL_HOURS,
+  COURSE_FEE,
+} from "@/lib/program-data"
 
 export function ProgramEnroll() {
   return (
@@ -74,47 +82,53 @@ export function ProgramEnroll() {
         <div className="container mx-auto px-4">
           <FadeIn className="text-center mb-12 max-w-2xl mx-auto">
             <Badge className="bg-accent/10 text-accent mb-4 hover:bg-accent/10">06 · Investment</Badge>
-            <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Three tiers. One decision.</h2>
-            <p className="text-muted-foreground font-serif leading-relaxed">
-              All tiers include the complete 240-hour curriculum, capstone, and certification. Higher tiers unlock
-              live cohort access, 1-on-1 mentoring, and career placement support.
-            </p>
+            <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">One course. One fee.</h2>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {INVESTMENT_TIERS.map((tier, index) => (
-              <FadeIn key={tier.name} delay={index * 0.1}>
-                <Card className={`h-full flex flex-col ${tier.featured ? "border-accent shadow-lg shadow-accent/20 relative" : ""}`}>
-                  {tier.featured && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-accent text-accent-foreground">Flagship</Badge>
+          <FadeIn className="max-w-2xl mx-auto mb-16">
+            <Card className="border-accent shadow-lg shadow-accent/20">
+              <CardContent className="p-8 space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold font-sans text-foreground">Electrical Design – Data Center Specialist</h3>
+                  <div className="text-3xl font-black font-sans text-accent mt-2">{COURSE_FEE}</div>
+                  <p className="text-xs text-muted-foreground font-serif mt-1">Fees may be revised in future.</p>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    `${PROGRAM_MODULES.length} modules, ${PROGRAM_TOTAL_HOURS} hours`,
+                    "Live, instructor-led classes taught by practising engineers",
+                    "Every class is recorded so you can revisit it",
+                    "Assignments and downloadable module handbooks",
+                    "Vision Matrix Institute certificate of completion, with a Certificate ID anyone can verify",
+                  ].map((f) => (
+                    <div key={f} className="flex items-start gap-2 text-sm text-foreground font-serif">
+                      <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                      {f}
                     </div>
-                  )}
-                  <CardContent className="p-6 flex flex-col flex-1">
-                    <h3 className="text-xl font-bold font-sans text-foreground">{tier.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{tier.subtitle}</p>
-                    <div className="text-2xl font-black font-sans text-accent mb-6">{tier.price}</div>
-                    <div className="space-y-2 flex-1">
-                      {tier.features.map((f) => (
-                        <div key={f} className="flex items-start gap-2 text-sm text-foreground font-serif">
-                          <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-                          {f}
-                        </div>
-                      ))}
-                    </div>
-                    <MagneticButton className="mt-6">
-                      <Button
-                        className={`w-full ${tier.featured ? "bg-accent hover:bg-accent/90 text-accent-foreground" : "bg-transparent border border-accent text-accent hover:bg-accent hover:text-accent-foreground"}`}
-                        onClick={() => window.open("https://wa.me/919930259997", "_blank")}
-                      >
-                        Enquire Now
-                      </Button>
-                    </MagneticButton>
-                  </CardContent>
-                </Card>
-              </FadeIn>
-            ))}
-          </div>
+                  ))}
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <MagneticButton>
+                    <Button
+                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                      onClick={() => (window.location.href = "/#admission")}
+                    >
+                      Apply now
+                    </Button>
+                  </MagneticButton>
+                  <MagneticButton>
+                    <Button
+                      variant="outline"
+                      className="w-full bg-transparent border border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                      onClick={() => window.open("https://wa.me/919930259997", "_blank")}
+                    >
+                      Enquire on WhatsApp
+                    </Button>
+                  </MagneticButton>
+                </div>
+              </CardContent>
+            </Card>
+          </FadeIn>
 
           <FadeIn className="text-center mb-8">
             <h3 className="text-2xl font-bold font-sans text-foreground">How to enrol — three simple steps</h3>

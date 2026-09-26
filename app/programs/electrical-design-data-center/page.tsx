@@ -16,7 +16,7 @@ import { PROGRAM_PREVIEW_VIDEOS } from "@/lib/video-data"
 
 const title = "Data Center Electrical Design Training – Specialist Program"
 const description =
-  "A 240-hour, 14-module data center electrical design training program building real data center skills — power distribution, UPS, generators, protection studies, BIM coordination and commissioning, anchored in IEC, IEEE, TIA-942 and Uptime Institute standards."
+  "A 206-hour, 12-module data center electrical design training program building real data center skills — power distribution, UPS, generators, protection studies, BIM coordination and commissioning, anchored in IEC, IEEE, TIA-942 and Uptime Institute standards."
 
 export const metadata: Metadata = {
   title,
