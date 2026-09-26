@@ -2,10 +2,9 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { createServiceClient } from "@/lib/supabase/service"
 
-// Only coupon that exists today — there's no coupon table yet, so this is a
-// hardcoded check rather than a lookup. If more coupons show up, promote
-// this to a real `coupons` table instead of adding more `if` branches here.
-const LAUNCH60_PRICE_PAISE = 1396000 // ₹13,960
+// There are no coupons. The launch offer (LAUNCH60) ended on 2026-09-26 and its
+// hardcoded branch was removed; the amount is always the course's price_amount.
+// If coupons return, add a real `coupons` table rather than `if` branches here.
 
 export async function POST(request: Request) {
   const supabase = await createClient()
@@ -14,7 +13,7 @@ export async function POST(request: Request) {
   } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: "Not signed in" }, { status: 401 })
 
-  const { courseId, couponCode } = await request.json()
+  const { courseId } = await request.json()
   if (!courseId) return NextResponse.json({ error: "courseId is required" }, { status: 400 })
 
   const { data: course } = await supabase
@@ -36,8 +35,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Already enrolled in this course" }, { status: 409 })
   }
 
-  const normalizedCoupon = typeof couponCode === "string" ? couponCode.trim().toUpperCase() : ""
-  const amount = normalizedCoupon === "LAUNCH60" ? LAUNCH60_PRICE_PAISE : course.price_amount
+  const amount = course.price_amount
 
   const keyId = process.env.RAZORPAY_KEY_ID
   const keySecret = process.env.RAZORPAY_KEY_SECRET
@@ -54,7 +52,7 @@ export async function POST(request: Request) {
     body: JSON.stringify({
       amount,
       currency: course.price_currency || "INR",
-      notes: { student_id: user.id, course_id: courseId, coupon_code: normalizedCoupon || undefined },
+      notes: { student_id: user.id, course_id: courseId },
     }),
   })
 
@@ -75,7 +73,6 @@ export async function POST(request: Request) {
     razorpay_order_id: order.id,
     amount,
     currency: course.price_currency || "INR",
-    coupon_code: normalizedCoupon || null,
     status: "created",
   })
   if (insertError) {

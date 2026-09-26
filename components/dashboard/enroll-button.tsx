@@ -3,8 +3,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 
 declare global {
   interface Window {
@@ -35,7 +33,6 @@ export function EnrollButton({
   studentEmail: string
 }) {
   const router = useRouter()
-  const [couponCode, setCouponCode] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -53,7 +50,7 @@ export function EnrollButton({
     const orderRes = await fetch("/api/razorpay/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseId, couponCode }),
+      body: JSON.stringify({ courseId }),
     })
     const orderData = await orderRes.json()
     if (!orderRes.ok) {
@@ -103,18 +100,6 @@ export function EnrollButton({
 
   return (
     <div className="space-y-2">
-      <div className="space-y-1">
-        <Label htmlFor={`coupon-${courseId}`} className="text-xs text-muted-foreground">
-          Coupon code (optional)
-        </Label>
-        <Input
-          id={`coupon-${courseId}`}
-          placeholder="LAUNCH60"
-          value={couponCode}
-          onChange={(e) => setCouponCode(e.target.value)}
-          className="h-8 text-sm"
-        />
-      </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
       <Button
         onClick={handleEnroll}
