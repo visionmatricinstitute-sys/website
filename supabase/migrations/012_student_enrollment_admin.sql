@@ -1,5 +1,6 @@
 -- Vision Matrix Institute — Student roster + manual enrollment admin
--- NOT YET APPLIED to the live database (as of 2026-09-27). Apply this, then merge the code.
+-- APPLIED to the live Supabase project on 2026-09-27 (migrations 'student_admin_is_admin_and_policies' and
+-- 'is_admin_callable_by_anon') with the Founder's go-ahead. Merge the code that uses it.
 --
 -- Two gaps this fixes: `profiles` only had an "owner can see their own row" policy, so an admin
 -- querying it for a roster got back only their own profile; `enrollments` had no admin policy,
@@ -25,6 +26,9 @@ $$;
 
 revoke all on function public.is_admin() from public, anon;
 grant execute on function public.is_admin() to authenticated;
+-- Policies that call is_admin() are also evaluated for anonymous requests; without EXECUTE they would raise
+-- "permission denied" instead of returning no rows. is_admin() returns false when nobody is signed in.
+grant execute on function public.is_admin() to anon;
 
 create policy "Admins view all profiles"
   on public.profiles for select
