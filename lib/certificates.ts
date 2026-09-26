@@ -8,10 +8,9 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.visionm
 // (https://www.linkedin.com/company/138274177), so LinkedIn shows the VMI logo.
 export const LINKEDIN_ORGANIZATION_ID = "138274177"
 
-// Shown on the printable certificate. Set the name once the signatory confirms
-// how it should read; until then only the title is printed.
-export const SIGNATORY_NAME = ""
-export const SIGNATORY_TITLE = "Founder, Vision Matrix Institute"
+// Shown on the printable certificate (confirmed by the Founder, 2026-09-27).
+export const SIGNATORY_NAME = "Bushra Shaikh"
+export const SIGNATORY_TITLE = "Founder"
 
 export function verifyUrl(certificateNumber: string): string {
   return `${SITE_URL}/verify/${encodeURIComponent(certificateNumber)}`

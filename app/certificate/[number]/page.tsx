@@ -10,9 +10,14 @@ export const metadata = {
   robots: { index: false, follow: false },
 }
 
-// Printable certificate. Signed-in students see only their own valid certificate
-// (row-level security on the certificates table); admins can also open any.
-// Use the browser's "Save as PDF" to get a PDF.
+// Printable certificate, laid out from the Founder's template (VMI-certificate-template.pdf):
+// white page, thin blue border with navy corner marks, logo at the top, name with a rule
+// beneath it, signature at the left, logo mark in the centre, certificate ID and date at the foot.
+// Wording is limited to what is true: a certificate of COMPLETION of a course. No claim of
+// accreditation, external certification or assessed proficiency.
+//
+// Signed-in students see only their own valid certificate (row-level security on the
+// certificates table); admins can open any. Use the browser's "Save as PDF".
 export default async function CertificatePage({ params }: { params: Promise<{ number: string }> }) {
   const { number } = await params
   const supabase = await createClient()
@@ -46,35 +51,59 @@ export default async function CertificatePage({ params }: { params: Promise<{ nu
         <PrintButton />
       </div>
 
-      <div className="mx-auto bg-white text-slate-900 shadow-lg print:shadow-none w-full max-w-5xl aspect-[297/210] p-4 print:max-w-none print:w-[297mm] print:h-[210mm]">
-        <div className="h-full w-full border-[6px] border-slate-900 p-2">
-          <div className="h-full w-full border border-slate-400 flex flex-col items-center justify-between py-8 px-10 text-center">
-            <div className="flex flex-col items-center gap-2">
-              <Image src="/logo.png" alt="Vision Matrix Institute logo" width={56} height={56} className="h-14 w-14" />
-              <div className="font-black tracking-wide text-lg">VISION MATRIX INSTITUTE</div>
-            </div>
+      <div className="relative mx-auto bg-white text-slate-900 shadow-lg print:shadow-none w-full max-w-5xl aspect-[297/210] print:max-w-none print:w-[297mm] print:h-[210mm]">
+        {/* thin blue border */}
+        <div className="absolute inset-[14px] border border-blue-300" />
+        {/* navy corner marks */}
+        <div className="absolute left-[10px] top-[10px] h-5 w-5 border-l-2 border-t-2 border-slate-900" />
+        <div className="absolute right-[10px] top-[10px] h-5 w-5 border-r-2 border-t-2 border-slate-900" />
+        <div className="absolute left-[10px] bottom-[10px] h-5 w-5 border-l-2 border-b-2 border-slate-900" />
+        <div className="absolute right-[10px] bottom-[10px] h-5 w-5 border-r-2 border-b-2 border-slate-900" />
 
-            <div className="space-y-3">
-              <div className="text-sm tracking-[0.3em] text-slate-500">CERTIFICATE OF COMPLETION</div>
-              <div className="text-sm text-slate-600">This certifies that</div>
-              <div className="text-4xl font-serif font-bold">{cert.recipient_name}</div>
-              <div className="text-sm text-slate-600">has completed</div>
-              <div className="text-2xl font-bold">{cert.course_title}</div>
-              {cert.course_hours ? <div className="text-sm text-slate-600">({cert.course_hours} hours)</div> : null}
-            </div>
+        <div className="relative h-full w-full flex flex-col items-center justify-between px-16 py-12 text-center">
+          <div className="flex flex-col items-center gap-2">
+            <Image src="/logo.png" alt="Vision Matrix Institute logo" width={64} height={64} className="h-16 w-16" />
+            <div className="font-sans font-bold tracking-wide text-slate-800">VISION MATRIX INSTITUTE</div>
+          </div>
 
-            <div className="w-full flex items-end justify-between text-left text-xs text-slate-600">
-              <div className="space-y-1">
-                <div>Issued on {issued}</div>
-                <div className="font-mono">Certificate ID: {cert.certificate_number}</div>
-                <div className="font-mono">Verify at {verifyUrl(cert.certificate_number)}</div>
-              </div>
-              <div className="text-center">
-                <div className="w-56 border-t border-slate-900 pt-1">
-                  {SIGNATORY_NAME ? <div className="font-semibold text-slate-900">{SIGNATORY_NAME}</div> : null}
-                  <div>{SIGNATORY_TITLE}</div>
+          <div className="space-y-4">
+            <div className="font-sans text-4xl font-bold text-slate-900">Certificate of Completion</div>
+            <div className="text-sm text-slate-500">This certificate is presented to</div>
+            <div>
+              <div className="font-sans text-5xl font-bold text-slate-900 px-8">{cert.recipient_name}</div>
+              <div className="mx-auto mt-3 h-px w-72 bg-slate-300" />
+            </div>
+            <div className="text-sm text-slate-500">for successfully completing the course</div>
+            <div className="font-sans text-2xl font-bold text-slate-900">{cert.course_title}</div>
+            {cert.course_hours ? <div className="text-sm text-slate-500">{cert.course_hours} hours</div> : null}
+          </div>
+
+          <div className="w-full">
+            <div className="grid grid-cols-3 items-end">
+              <div className="text-left">
+                <div className="w-56 border-t border-slate-400 pt-1 text-center">
+                  {SIGNATORY_NAME ? <div className="font-sans text-sm font-bold text-slate-900">{SIGNATORY_NAME}</div> : null}
+                  <div className="text-[10px] tracking-widest text-slate-500 uppercase">{SIGNATORY_TITLE}</div>
                 </div>
               </div>
+              <div className="flex justify-center">
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="h-9 w-9"
+                  style={{ filter: "brightness(0)" }}
+                />
+              </div>
+              <div className="text-right text-[10px] leading-snug text-slate-500">
+                <div>Verify this certificate at</div>
+                <div className="font-mono break-all">{verifyUrl(cert.certificate_number)}</div>
+              </div>
+            </div>
+            <div className="mt-5 text-[10px] tracking-widest text-slate-400 uppercase">
+              Certificate ID: <span className="font-mono">{cert.certificate_number}</span> &nbsp;&middot;&nbsp; Issued{" "}
+              {issued}
             </div>
           </div>
         </div>
