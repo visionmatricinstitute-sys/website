@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/service"
 import { appendDemoRequestToSheet } from "@/lib/google-sheets"
 import { verifyCaptcha, clientIp } from "@/lib/turnstile"
+import { isValidPhone, PHONE_VALIDATION_MESSAGE } from "@/lib/phone"
 
 const REQUIRED_FIELDS = ["studentName", "phone"] as const
 
@@ -16,6 +17,10 @@ export async function POST(request: Request) {
   const missing = REQUIRED_FIELDS.filter((field) => !String(body[field] ?? "").trim())
   if (missing.length > 0) {
     return NextResponse.json({ error: `Missing required fields: ${missing.join(", ")}` }, { status: 400 })
+  }
+
+  if (!isValidPhone(String(body.phone))) {
+    return NextResponse.json({ error: PHONE_VALIDATION_MESSAGE }, { status: 400 })
   }
 
   const captchaOk = await verifyCaptcha(body.captchaToken, clientIp(request))
