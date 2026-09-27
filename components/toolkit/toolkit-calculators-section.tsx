@@ -15,6 +15,7 @@ import {
   Cable,
   Boxes,
   BatteryCharging,
+  Battery,
   Fuel,
   Power,
   Zap,
@@ -22,6 +23,9 @@ import {
   Gauge,
   Lightbulb,
   ArrowDownToLine,
+  Server,
+  Snowflake,
+  TrendingDown,
 } from "lucide-react"
 
 /* ---------------- Reference data (indicative, see disclaimer) ---------------- */
@@ -876,6 +880,362 @@ function GroundingResistanceCalculator() {
   )
 }
 
+function BatteryRuntimeCalculator() {
+  const [loadKw, setLoadKw] = useState(20)
+  const [systemVoltageDc, setSystemVoltageDc] = useState(240)
+  const [batteryAh, setBatteryAh] = useState(100)
+  const [dod, setDod] = useState(80)
+  const [efficiency, setEfficiency] = useState(90)
+  const [desiredRuntimeMin, setDesiredRuntimeMin] = useState(15)
+
+  const result = useMemo(() => {
+    const usableWh = batteryAh * systemVoltageDc * (dod / 100) * (efficiency / 100)
+    const loadW = loadKw * 1000
+    const runtimeHours = loadW > 0 ? usableWh / loadW : Number.NaN
+    const runtimeMinutes = runtimeHours * 60
+    const requiredAh =
+      systemVoltageDc > 0 && dod > 0 && efficiency > 0
+        ? (loadW * (desiredRuntimeMin / 60)) / (systemVoltageDc * (dod / 100) * (efficiency / 100))
+        : Number.NaN
+    return { usableWh, runtimeHours, runtimeMinutes, requiredAh }
+  }, [loadKw, systemVoltageDc, batteryAh, dod, efficiency, desiredRuntimeMin])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Load (kW)</Label>
+              <Input type="number" value={loadKw} onChange={(e) => setLoadKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Battery Bank Voltage (V DC)</Label>
+              <Input type="number" value={systemVoltageDc} onChange={(e) => setSystemVoltageDc(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Battery Bank Capacity (Ah)</Label>
+              <Input type="number" value={batteryAh} onChange={(e) => setBatteryAh(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Allowed Depth of Discharge (%)</Label>
+              <Input type="number" value={dod} onChange={(e) => setDod(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Inverter/UPS Efficiency (%)</Label>
+              <Input type="number" value={efficiency} onChange={(e) => setEfficiency(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Desired Backup Time (min)</Label>
+              <Input type="number" value={desiredRuntimeMin} onChange={(e) => setDesiredRuntimeMin(Number(e.target.value))} />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4 col-span-2">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Runtime at This Battery Bank</div>
+              <div className="text-xl font-bold text-foreground mt-1">
+                {fmt(result.runtimeMinutes, 0)} min ({fmt(result.runtimeHours, 2)} h)
+              </div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4 col-span-2">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">
+                Battery Capacity Needed for {desiredRuntimeMin} min Backup
+              </div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.requiredAh, 1)} Ah</div>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Simple energy-balance estimate (Ah × V × DoD × efficiency ÷ load). Ignores the Peukert effect (capacity
+              drops at higher discharge rates) and battery aging/temperature derating — for a final design, size
+              against the manufacturer's discharge-rate table at the site's design temperature.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function DataCenterEfficiencyCalculator() {
+  const [totalFacilityKwh, setTotalFacilityKwh] = useState(1500)
+  const [itEquipmentKwh, setItEquipmentKwh] = useState(1000)
+  const [waterLiters, setWaterLiters] = useState(5000)
+  const [cef, setCef] = useState(0.7)
+
+  const result = useMemo(() => {
+    const pue = itEquipmentKwh > 0 ? totalFacilityKwh / itEquipmentKwh : Number.NaN
+    const dcie = Number.isFinite(pue) && pue > 0 ? (1 / pue) * 100 : Number.NaN
+    const wue = itEquipmentKwh > 0 ? waterLiters / itEquipmentKwh : Number.NaN
+    const cue = cef * pue
+    return { pue, dcie, wue, cue }
+  }, [totalFacilityKwh, itEquipmentKwh, waterLiters, cef])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Total Facility Energy (kWh)</Label>
+              <Input type="number" value={totalFacilityKwh} onChange={(e) => setTotalFacilityKwh(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>IT Equipment Energy (kWh)</Label>
+              <Input type="number" value={itEquipmentKwh} onChange={(e) => setItEquipmentKwh(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Water Used (litres)</Label>
+              <Input type="number" value={waterLiters} onChange={(e) => setWaterLiters(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Grid Carbon Factor (kgCO₂/kWh)</Label>
+              <Input type="number" step="0.01" value={cef} onChange={(e) => setCef(Number(e.target.value))} />
+            </div>
+          </div>
+          <div className="text-xs text-muted-foreground font-serif">
+            Use the same measurement period (e.g. one month) for all three energy/water figures. The carbon factor is
+            not looked up automatically — enter the site's actual grid emission factor.
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">PUE</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.pue)}</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">DCiE</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.dcie, 1)}%</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">WUE</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.wue)} L/kWh</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">CUE</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.cue)} kgCO₂/kWh</div>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              Definitions per The Green Grid: PUE = Total Facility Energy ÷ IT Equipment Energy, DCiE = 1/PUE, WUE =
+              Water Used ÷ IT Energy, CUE = Carbon Emission Factor × PUE. A PUE nearer 1.0 is more efficient; typical
+              facilities range roughly 1.2–2.0 depending on cooling design and climate.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function CoolingLoadCalculator() {
+  const [itLoadKw, setItLoadKw] = useState(100)
+  const [otherGainsPct, setOtherGainsPct] = useState(10)
+  const [redundancyPct, setRedundancyPct] = useState(25)
+
+  const result = useMemo(() => {
+    const totalHeatKw = itLoadKw * (1 + otherGainsPct / 100)
+    const coolingTr = totalHeatKw / 3.517
+    const installedTr = coolingTr * (1 + redundancyPct / 100)
+    return { totalHeatKw, coolingTr, installedTr }
+  }, [itLoadKw, otherGainsPct, redundancyPct])
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>IT Load (kW)</Label>
+              <Input type="number" value={itLoadKw} onChange={(e) => setItLoadKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Other Heat Gains (%)</Label>
+              <Input type="number" value={otherGainsPct} onChange={(e) => setOtherGainsPct(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5 col-span-2">
+              <Label>Cooling Redundancy Margin (%)</Label>
+              <Input type="number" value={redundancyPct} onChange={(e) => setRedundancyPct(Number(e.target.value))} />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Total Heat Load</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.totalHeatKw)} kW</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Cooling Capacity Needed</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.coolingTr)} TR</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4 col-span-2">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">
+                Installed Capacity incl. Redundancy
+              </div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.installedTr)} TR</div>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              IT heat load (1 TR = 3.517 kW) dominates a data hall's cooling load; "Other Heat Gains" is a lumped
+              placeholder for lighting, people and envelope/solar gains, which need a proper room-by-room heat-load
+              study for a real design — treat this as a preliminary IT-load-driven estimate only, not a substitute
+              for one.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function MotorStartingDipCalculator() {
+  const [motorKw, setMotorKw] = useState(75)
+  const [efficiency, setEfficiency] = useState(92)
+  const [pfRated, setPfRated] = useState(0.87)
+  const [startMethod, setStartMethod] = useState<"dol" | "star-delta" | "soft" | "vfd">("dol")
+  const [sourceScMva, setSourceScMva] = useState(15)
+
+  const result = useMemo(() => {
+    const flcKva = efficiency > 0 && pfRated > 0 ? motorKw / ((efficiency / 100) * pfRated) : Number.NaN
+    const startingKva = flcKva * MOTOR_START_MULTIPLIER[startMethod]
+    const sourceScKva = sourceScMva * 1000
+    const dipPct = (startingKva / (startingKva + sourceScKva)) * 100
+    return { flcKva, startingKva, dipPct }
+  }, [motorKw, efficiency, pfRated, startMethod, sourceScMva])
+
+  const severity = result.dipPct <= 10 ? "ok" : result.dipPct <= 15 ? "marginal" : "high"
+
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Design Inputs</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label>Motor Rating (kW)</Label>
+              <Input type="number" value={motorKw} onChange={(e) => setMotorKw(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Motor Efficiency (%)</Label>
+              <Input type="number" value={efficiency} onChange={(e) => setEfficiency(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Rated Power Factor</Label>
+              <Input type="number" step="0.01" value={pfRated} onChange={(e) => setPfRated(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Source Fault Level (MVA)</Label>
+              <Input type="number" value={sourceScMva} onChange={(e) => setSourceScMva(Number(e.target.value))} />
+            </div>
+            <div className="space-y-1.5 col-span-2">
+              <Label>Starting Method</Label>
+              <Select value={startMethod} onValueChange={(v) => setStartMethod(v as typeof startMethod)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="dol">Direct-On-Line (~6×)</SelectItem>
+                  <SelectItem value="star-delta">Star-Delta (~2.5×)</SelectItem>
+                  <SelectItem value="soft">Soft Starter (~3.5×)</SelectItem>
+                  <SelectItem value="vfd">VFD (~1.2×)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Results</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Starting kVA</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.startingKva)} kVA</div>
+            </div>
+            <div className="bg-muted/50 rounded-lg p-4">
+              <div className="text-xs font-semibold uppercase text-muted-foreground">Estimated Voltage Dip</div>
+              <div className="text-xl font-bold text-foreground mt-1">{fmt(result.dipPct)}%</div>
+            </div>
+          </div>
+
+          <div
+            className={`flex items-start gap-2 rounded-lg p-3 text-sm ${
+              severity === "ok"
+                ? "bg-green-500/10 text-green-700"
+                : severity === "marginal"
+                  ? "bg-amber-500/10 text-amber-700"
+                  : "bg-destructive/10 text-destructive"
+            }`}
+          >
+            {severity === "ok" ? (
+              <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
+            ) : (
+              <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+            )}
+            <span>
+              {severity === "ok"
+                ? "Within the commonly-cited 10% general-purpose limit."
+                : severity === "marginal"
+                  ? "Above 10% — acceptable for general loads under some codes, but check sensitive/lighting circuits and contactor drop-out."
+                  : "Above 15% — likely to cause visible lighting flicker, contactor drop-out or control-circuit malfunction; consider a softer starting method or a stronger source."}
+            </span>
+          </div>
+
+          <div className="flex items-start gap-2 rounded-lg p-3 text-sm bg-muted/40 text-muted-foreground">
+            <span>
+              %Dip ≈ Starting kVA ÷ (Starting kVA + Source Fault Level), a simplified point-of-common-coupling
+              estimate that ignores motor and cable impedance between the source and the motor. Acceptable dip limits
+              vary by standard/utility (commonly 10–15% general purpose, much tighter for UPS-fed or sensitive loads)
+              — confirm against the applicable code and the actual source impedance.
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 export function ToolkitCalculatorsSection() {
   return (
     <section id="toolkit-calculators" className="py-20">
@@ -900,6 +1260,10 @@ export function ToolkitCalculatorsSection() {
               { value: "pf-correction", label: "Power Factor", icon: Gauge },
               { value: "lighting", label: "Lighting", icon: Lightbulb },
               { value: "grounding", label: "Grounding", icon: ArrowDownToLine },
+              { value: "battery-runtime", label: "Battery Runtime", icon: Battery },
+              { value: "dc-efficiency", label: "PUE / WUE / CUE", icon: Server },
+              { value: "cooling-load", label: "Cooling Load", icon: Snowflake },
+              { value: "motor-dip", label: "Motor Starting Dip", icon: TrendingDown },
               { value: "formulas", label: "Quick Formulas", icon: Calculator },
             ].map(({ value, label, icon: TabIcon }) => (
               <TabsTrigger
@@ -939,6 +1303,18 @@ export function ToolkitCalculatorsSection() {
           <TabsContent value="grounding" className="w-full mt-8">
             <GroundingResistanceCalculator />
           </TabsContent>
+          <TabsContent value="battery-runtime" className="w-full mt-8">
+            <BatteryRuntimeCalculator />
+          </TabsContent>
+          <TabsContent value="dc-efficiency" className="w-full mt-8">
+            <DataCenterEfficiencyCalculator />
+          </TabsContent>
+          <TabsContent value="cooling-load" className="w-full mt-8">
+            <CoolingLoadCalculator />
+          </TabsContent>
+          <TabsContent value="motor-dip" className="w-full mt-8">
+            <MotorStartingDipCalculator />
+          </TabsContent>
           <TabsContent value="formulas" className="w-full mt-8">
             <QuickFormulasCalculator />
           </TabsContent>
@@ -947,8 +1323,8 @@ export function ToolkitCalculatorsSection() {
         <div className="mt-10 max-w-3xl mx-auto text-center text-sm text-muted-foreground font-serif bg-muted/40 rounded-lg p-4">
           Values shown are indicative, simplified reference figures for preliminary/learning purposes and are
           aligned in principle with the IEC 60364, IEC 60076, IEC 62040, ISO 8528, IEC 60909, IEEE 80, IEEE 141,
-          EN 12464-1 and TIA-942 standards. Always verify against a manufacturer's datasheet and the applicable
-          standard before using these figures on a real project.
+          EN 12464-1, TIA-942 and The Green Grid (PUE/WUE/CUE) references. Always verify against a manufacturer's
+          datasheet and the applicable standard before using these figures on a real project.
         </div>
       </div>
     </section>
