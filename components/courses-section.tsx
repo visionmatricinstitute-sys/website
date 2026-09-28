@@ -36,6 +36,10 @@ const popularCourses = [
     features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
     image: "/electrical-design-data-center.jpg",
     href: "/programs/electrical-design-data-center",
+    // The only course actually priced and sellable in the database today — see
+    // checkout/[slug]/page.tsx. The other two below still route to the general
+    // admission form until they're priced and added there too.
+    checkoutSlug: "electrical-design-data-center",
     isUpcoming: false,
   },
   {
@@ -229,7 +233,9 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
             </Button>
           ) : (
             <Button asChild variant="accent" className="flex-1">
-              <Link href="/#admission">Enroll Now</Link>
+              <Link href={course.checkoutSlug ? `/checkout/${course.checkoutSlug}` : "/#admission"}>
+                Enroll Now
+              </Link>
             </Button>
           )}
           {course.href ? (
