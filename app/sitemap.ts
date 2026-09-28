@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next"
 import { INTRO_VIDEO, PROGRAM_PREVIEW_VIDEOS } from "@/lib/video-data"
+import { TOOLKIT_TOOLS } from "@/lib/toolkit-tools"
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
@@ -47,6 +48,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       images: [`${siteUrl}/engineers-toolkit-hero.jpg`],
     },
+    ...TOOLKIT_TOOLS.map((tool) => ({
+      url: `${siteUrl}/engineers-toolkit/${tool.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      images: [`${siteUrl}/engineers-toolkit-hero.jpg`],
+    })),
     {
       url: `${siteUrl}/simulations/generator-physics-simulator.html`,
       lastModified: new Date("2026-07-29"),
@@ -157,35 +165,56 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-07-14"),
       changeFrequency: "monthly",
       priority: 0.7,
-      images: [`${siteUrl}/electrical-design-data-center.jpg`],
+      images: [`${siteUrl}/data-center-electrical-engineer-career.jpg`],
     },
     {
       url: `${siteUrl}/blog/cable-sizing-basics-for-data-center-electrical-design`,
       lastModified: new Date("2026-07-24"),
       changeFrequency: "monthly",
       priority: 0.7,
-      images: [`${siteUrl}/electrical-design-data-center.jpg`],
+      images: [`${siteUrl}/data-center-cable-sizing.jpg`],
     },
     {
       url: `${siteUrl}/blog/ups-vs-diesel-generator-data-center-backup-power`,
       lastModified: new Date("2026-07-24"),
       changeFrequency: "monthly",
       priority: 0.7,
-      images: [`${siteUrl}/electrical-design-data-center.jpg`],
+      images: [`${siteUrl}/data-center-ups-vs-generator.jpg`],
     },
     {
       url: `${siteUrl}/blog/mv-lv-power-distribution-architecture-explained`,
       lastModified: new Date("2026-07-24"),
       changeFrequency: "monthly",
       priority: 0.7,
-      images: [`${siteUrl}/electrical-design-data-center.jpg`],
+      images: [`${siteUrl}/data-center-mv-lv-distribution.jpg`],
     },
     {
       url: `${siteUrl}/blog/earthing-and-bonding-basics-for-data-centers`,
       lastModified: new Date("2026-07-24"),
       changeFrequency: "monthly",
       priority: 0.7,
-      images: [`${siteUrl}/electrical-design-data-center.jpg`],
+      images: [`${siteUrl}/data-center-earthing-bonding.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/current-transformer-explained`,
+      lastModified: new Date("2026-09-17"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-ct-pt-relay.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/potential-transformer-explained`,
+      lastModified: new Date("2026-09-17"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-potential-transformer.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/protection-relay-explained`,
+      lastModified: new Date("2026-09-17"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-protection-relay.jpg`],
     },
     {
       url: `${siteUrl}/resources/data-center-design-basics-checklist`,
