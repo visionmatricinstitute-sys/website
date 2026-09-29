@@ -37,6 +37,8 @@ const popularCourses = [
     features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
     image: "/electrical-design-data-center.jpg",
     href: "/programs/electrical-design-data-center",
+    // Already priced and sellable in the database today (see PR #51).
+    checkoutSlug: "electrical-design-data-center",
     isUpcoming: false,
   },
   {
@@ -51,6 +53,9 @@ const popularCourses = [
     features: ["AutoCAD 2D", "AutoCAD 3D", "Technical Drawing", "Design Principles"],
     image: "/autocad-training.png",
     href: "/programs/autocad-training",
+    // Priced in the database via supabase/migrations/019 (not yet applied
+    // live — see that file's header comment).
+    checkoutSlug: "autocad-training",
     isUpcoming: false,
   },
   {
@@ -65,6 +70,9 @@ const popularCourses = [
     features: ["Revit MEP", "3D Modeling", "Project Coordination", "BIM Standards"],
     image: "/bim-training.jpg",
     href: "/programs/bim-revit-training",
+    // Priced in the database via supabase/migrations/019 (not yet applied
+    // live — see that file's header comment).
+    checkoutSlug: "bim-revit-training",
     isUpcoming: false,
   },
 ]

@@ -114,6 +114,8 @@ export default function AutoCadTrainingPage() {
           ]}
           faqs={faqs}
           whatsappMessage="Hi, I'm interested in the AutoCAD Training course."
+          price="₹10,000"
+          checkoutSlug="autocad-training"
         />
         <section className="py-12 bg-background border-t border-border">
           <div className="container mx-auto px-4 text-center">
