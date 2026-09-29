@@ -60,10 +60,10 @@ export function HeroSection() {
 
       <div className="relative container mx-auto px-4">
         <motion.div variants={staggerContainer} initial="hidden" animate="show" className="max-w-2xl">
-          <motion.div variants={staggerItem} className="space-y-4">
-            <h1 className="text-5xl lg:text-7xl font-serif font-medium text-white leading-[1.05] tracking-tight text-balance">
-              Online Training for
-              <span className="text-accent-tint block">Data Center Electrical Design & BIM</span>
+          <motion.div variants={staggerItem} className="space-y-5">
+            <h1 className="text-5xl lg:text-7xl font-sans font-black uppercase text-white leading-[1.02] tracking-tight text-balance">
+              Learn What
+              <span className="text-accent-tint block">Engineering School Skips</span>
             </h1>
             <p className="text-lg text-white/70 font-body leading-relaxed max-w-lg">
               Vision Matrix Institute teaches data center electrical design, BIM/Revit modeling, and the
@@ -73,7 +73,7 @@ export function HeroSection() {
 
           <motion.div variants={staggerItem} className="flex flex-col sm:flex-row gap-4 mt-8">
             <MagneticButton>
-              <Button asChild size="lg" variant="accent-on-dark">
+              <Button asChild size="lg" variant="accent-on-dark" className="rounded-full px-8 font-bold uppercase tracking-wide">
                 <Link href="/#courses">
                   Explore Courses
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -85,7 +85,7 @@ export function HeroSection() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent"
+                className="rounded-full px-8 font-bold uppercase tracking-wide border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent"
               >
                 <a href="/brochures/electrical-design-data-center-brochure.pdf" download>
                   <Download className="mr-2 h-5 w-5" />

@@ -114,6 +114,8 @@ export default function BimRevitTrainingPage() {
           ]}
           faqs={faqs}
           whatsappMessage="Hi, I'm interested in the BIM Training (Revit MEP) course."
+          price="₹30,000"
+          checkoutSlug="bim-revit-training"
         />
         <section className="py-12 bg-background border-t border-border">
           <div className="container mx-auto px-4 text-center">
