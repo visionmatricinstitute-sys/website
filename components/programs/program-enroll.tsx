@@ -1,9 +1,10 @@
 "use client"
 
+import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, MessageCircle, Mail } from "lucide-react"
+import { CheckCircle2, CreditCard, MessageCircle, Mail } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 import { MagneticButton } from "@/components/motion/magnetic-button"
 import {
@@ -109,11 +110,11 @@ export function ProgramEnroll() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <MagneticButton>
-                    <Button
-                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                      onClick={() => (window.location.href = "/#admission")}
-                    >
-                      Apply now
+                    <Button asChild className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                      <Link href="/checkout/electrical-design-data-center">
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        Enroll & Pay {COURSE_FEE}
+                      </Link>
                     </Button>
                   </MagneticButton>
                   <MagneticButton>
@@ -126,6 +127,12 @@ export function ProgramEnroll() {
                     </Button>
                   </MagneticButton>
                 </div>
+                <p className="text-xs text-center text-muted-foreground font-serif">
+                  Prefer to talk first?{" "}
+                  <Link href="/#admission" className="text-accent hover:underline">
+                    Apply without paying yet
+                  </Link>
+                </p>
               </CardContent>
             </Card>
           </FadeIn>

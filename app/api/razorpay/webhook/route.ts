@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import crypto from "crypto"
 import { createServiceClient } from "@/lib/supabase/service"
+import { sendAccountSetupEmailIfNeeded } from "@/lib/account-setup-email"
 
 // Configure this URL in Razorpay Dashboard → Settings → Webhooks, subscribed
 // to "payment.captured" and "payment.failed". This is the reliable source of
@@ -54,6 +55,12 @@ export async function POST(request: Request) {
             { student_id: payment.student_id, course_id: payment.course_id },
             { onConflict: "student_id,course_id" },
           )
+
+        // Reliability path for the guest-checkout flow: if the browser closed
+        // before /api/enroll/verify's callback ran, this webhook is the only
+        // place that still sends the "set your password" email — without it,
+        // someone could pay and be enrolled with no way to ever sign in.
+        await sendAccountSetupEmailIfNeeded(payment.student_id)
       } else {
         await serviceClient.from("payments").update({ status: "failed" }).eq("id", payment.id)
       }
