@@ -21,7 +21,6 @@ import {
   Flame,
   Droplets,
   Cable,
-  CheckCircle2,
 } from "lucide-react"
 
 const popularCourses = [
@@ -53,8 +52,6 @@ const popularCourses = [
     features: ["AutoCAD 2D", "AutoCAD 3D", "Technical Drawing", "Design Principles"],
     image: "/autocad-training.png",
     href: "/programs/autocad-training",
-    // Priced in the database via supabase/migrations/019 (not yet applied
-    // live — see that file's header comment).
     checkoutSlug: "autocad-training",
     isUpcoming: false,
   },
@@ -70,8 +67,6 @@ const popularCourses = [
     features: ["Revit MEP", "3D Modeling", "Project Coordination", "BIM Standards"],
     image: "/bim-training.jpg",
     href: "/programs/bim-revit-training",
-    // Priced in the database via supabase/migrations/019 (not yet applied
-    // live — see that file's header comment).
     checkoutSlug: "bim-revit-training",
     isUpcoming: false,
   },
@@ -238,9 +233,7 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
             </Button>
           ) : (
             <Button asChild variant="accent" className="flex-1">
-              <Link href={course.checkoutSlug ? `/checkout/${course.checkoutSlug}` : "/#admission"}>
-                Enroll Now
-              </Link>
+              <Link href={course.checkoutSlug ? `/checkout/${course.checkoutSlug}` : "/#admission"}>Enroll Now</Link>
             </Button>
           )}
           {course.href ? (
@@ -265,90 +258,12 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
   )
 }
 
-// Big alternating showcase card for the main course lineup — image bleeding one
-// side, badge/headline/checkmark-bullet list and a pill CTA on the other, image
-// side alternating left/right per index.
-const CourseShowcaseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
-  const IconComponent = course.icon
-  const imageOnRight = index % 2 === 0
-
-  const imageBlock = (
-    <div className="relative h-64 lg:h-full min-h-[280px]">
-      {course.image ? (
-        <Image
-          src={course.image}
-          alt={`${course.title} course — Vision Matrix Institute`}
-          fill
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-cover"
-        />
-      ) : (
-        <CourseThumbnail icon={IconComponent} index={index} />
-      )}
-    </div>
-  )
-
-  return (
-    <div className="rounded-3xl overflow-hidden bg-navy grid lg:grid-cols-2 items-stretch">
-      <div className={imageOnRight ? "lg:order-2" : "lg:order-1"}>{imageBlock}</div>
-      <div className={`p-8 lg:p-12 flex flex-col justify-center ${imageOnRight ? "lg:order-1" : "lg:order-2"}`}>
-        <Badge className="w-fit mb-4 bg-white/10 text-white hover:bg-white/10 uppercase tracking-wide text-xs font-bold">
-          {course.level}
-        </Badge>
-        <h3 className="text-2xl lg:text-4xl font-sans font-black uppercase text-white leading-tight mb-4">
-          {course.title}
-        </h3>
-        <p className="font-body leading-relaxed text-white/70 mb-6">{course.description}</p>
-
-        <div className="flex items-center gap-6 text-sm text-white/60 mb-6">
-          <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4" />
-            <span>{course.duration}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Video className="h-4 w-4" />
-            <span>{course.format}</span>
-          </div>
-        </div>
-
-        <ul className="space-y-2.5 mb-8">
-          {course.features.map((feature: string) => (
-            <li key={feature} className="flex items-start gap-2.5 text-white/85 font-body">
-              <CheckCircle2 className="h-5 w-5 text-accent-tint shrink-0 mt-0.5" />
-              {feature}
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex flex-wrap gap-3">
-          <Button asChild size="lg" variant="accent-on-dark" className="rounded-full px-8 font-bold uppercase tracking-wide">
-            <Link href={course.checkoutSlug ? `/checkout/${course.checkoutSlug}` : "/#admission"}>Get Started</Link>
-          </Button>
-          {course.href && (
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-full px-8 font-bold uppercase tracking-wide border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent"
-            >
-              <Link href={course.href}>Learn More</Link>
-            </Button>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export function CoursesSection() {
   return (
     <section id="courses" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <FadeIn className="text-center mb-16">
-          <Badge className="mb-4 uppercase tracking-wide text-xs font-bold">Courses</Badge>
-          <h2 className="text-3xl lg:text-6xl font-sans font-black uppercase text-foreground mb-4">
-            Become Skilled at What Matters
-          </h2>
+          <h2 className="text-3xl lg:text-5xl font-serif font-medium text-foreground mb-4">Our Courses</h2>
           <p className="text-lg text-muted-foreground font-body max-w-3xl mx-auto leading-relaxed">
             Discover our comprehensive range of industry-relevant courses designed to give you the skills employers are
             looking for. From established programs to exciting new offerings.
@@ -379,10 +294,10 @@ export function CoursesSection() {
               </p>
             </FadeIn>
 
-            <div className="space-y-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {popularCourses.map((course, index) => (
-                <FadeIn key={course.id} delay={index * 0.1}>
-                  <CourseShowcaseCard course={course} index={index} />
+                <FadeIn key={course.id} delay={(index % 3) * 0.1}>
+                  <CourseCard course={course} index={index} />
                 </FadeIn>
               ))}
             </div>
