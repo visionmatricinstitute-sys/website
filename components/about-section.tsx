@@ -37,8 +37,9 @@ export function AboutSection() {
 
         <div className="py-20 px-4 lg:px-16">
           <FadeIn>
-            <h2 className="text-3xl lg:text-5xl font-serif font-medium text-foreground mb-4 leading-tight">
-              About Vision Matrix Institute
+            <span className="inline-block text-xs font-bold uppercase tracking-widest text-accent mb-3">About</span>
+            <h2 className="text-3xl lg:text-6xl font-sans font-black uppercase text-foreground mb-4 leading-[1.05]">
+              Vision Matrix Institute
             </h2>
             <p className="text-lg text-muted-foreground font-body leading-relaxed mb-10">
               Founded in 2025, Vision Matrix Institute is India's specialist data center electrical design training
@@ -48,7 +49,7 @@ export function AboutSection() {
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <h3 className="text-2xl font-bold font-sans text-foreground mb-4">Empowering Students Since 2025</h3>
+            <h3 className="text-2xl font-black font-sans uppercase text-foreground mb-4">Empowering Students Since 2025</h3>
             <p className="text-muted-foreground font-body leading-relaxed mb-4">
               Vision Matrix Institute has been at the forefront of online data center skills training, delivering
               live, instructor-led classes to students wherever they are. Our modern virtual classrooms, experienced
@@ -71,7 +72,7 @@ export function AboutSection() {
                   <pillar.icon className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <h4 className="font-bold font-sans text-foreground mb-1">{pillar.title}</h4>
+                  <h4 className="font-black font-sans uppercase text-foreground mb-1">{pillar.title}</h4>
                   <p className="text-sm text-muted-foreground font-body leading-relaxed">{pillar.text}</p>
                 </div>
               </FadeIn>

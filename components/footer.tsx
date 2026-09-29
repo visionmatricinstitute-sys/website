@@ -71,7 +71,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-lg font-bold font-sans">Quick Links</h4>
+            <h4 className="text-sm font-black font-sans uppercase tracking-widest">Quick Links</h4>
             <ul className="space-y-2 font-body">
               <li>
                 <a href="/#home" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
@@ -133,7 +133,7 @@ export function Footer() {
 
           {/* Popular Courses */}
           <div className="space-y-4">
-            <h4 className="text-lg font-bold font-sans">Popular Courses</h4>
+            <h4 className="text-sm font-black font-sans uppercase tracking-widest">Popular Courses</h4>
             <ul className="space-y-2 font-body">
               <li>
                 <Link
@@ -164,7 +164,7 @@ export function Footer() {
 
           {/* Contact Info */}
           <div className="space-y-4">
-            <h4 className="text-lg font-bold font-sans">Contact Info</h4>
+            <h4 className="text-sm font-black font-sans uppercase tracking-widest">Contact Info</h4>
             <div className="space-y-3 font-body">
               <div className="flex items-start gap-3">
                 <Globe className="h-5 w-5 text-navy-foreground/80 mt-0.5 flex-shrink-0" />
@@ -207,7 +207,7 @@ export function Footer() {
         <div className="border-t border-navy-foreground/20 mt-12 pt-8">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <h4 className="text-xl font-bold font-sans mb-2">Stay Updated</h4>
+              <h4 className="text-xl font-black font-sans uppercase mb-2">Stay Updated</h4>
               <p className="text-navy-foreground/80 font-body">
                 Subscribe to our newsletter for course updates and career tips.
               </p>
