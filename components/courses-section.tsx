@@ -37,7 +37,7 @@ const popularCourses = [
     features: ["SLD & GAD Drawings", "Transformer/UPS/DG Sizing", "Short-Circuit Studies", "TIA-942 & IEC Standards"],
     image: "/electrical-design-data-center.jpg",
     href: "/programs/electrical-design-data-center",
-    // Already priced and sellable in the database today (see PR #51).
+    // Priced and sellable in the database, same as AutoCAD/BIM below.
     checkoutSlug: "electrical-design-data-center",
     isUpcoming: false,
   },
@@ -238,7 +238,9 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
             </Button>
           ) : (
             <Button asChild variant="accent" className="flex-1">
-              <Link href="/#admission">Enroll Now</Link>
+              <Link href={course.checkoutSlug ? `/checkout/${course.checkoutSlug}` : "/#admission"}>
+                Enroll Now
+              </Link>
             </Button>
           )}
           {course.href ? (
