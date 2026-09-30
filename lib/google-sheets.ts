@@ -4,7 +4,11 @@
 // mint short-lived access tokens on demand.
 
 const SPREADSHEET_ID = "1Wk_0lmKiwDAWszyX18kMV1nDn-fb-PXrh55lVgDU8jg"
-const SHEET_RANGE = "Demo Requests!A1"
+// A separate n8n workflow also writes to a tab literally named "Demo Requests" with its
+// own column layout (Name/Email/Phone/Course/Source/ReceivedAt/Score/Tier/Reasoning) for
+// AI lead scoring. Appending this raw column order into that same tab silently misaligned
+// every row, so this mirror gets its own tab to avoid colliding with it.
+const SHEET_RANGE = "Demo Requests Raw!A1"
 
 async function getAccessToken(): Promise<string> {
   const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID!
