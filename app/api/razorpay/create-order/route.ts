@@ -7,6 +7,15 @@ import { createServiceClient } from "@/lib/supabase/service"
 // If coupons return, add a real `coupons` table rather than `if` branches here.
 
 export async function POST(request: Request) {
+  // URGENT, TEMPORARY (2026-09-28): server-side half of the same pause as
+  // components/dashboard/enroll-button.tsx — hiding the button isn't enough,
+  // since this route could still be called directly. See FOUNDER-ACTION-ITEMS.md
+  // item 0.1: Razorpay's Demo payment method lets anyone "pay" for free while
+  // the account isn't fully activated.
+  if (process.env.NEXT_PUBLIC_PAYMENTS_ENABLED !== "true") {
+    return NextResponse.json({ error: "Online payment is temporarily paused." }, { status: 503 })
+  }
+
   const supabase = await createClient()
   const {
     data: { user },

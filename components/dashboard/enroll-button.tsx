@@ -10,6 +10,15 @@ declare global {
   }
 }
 
+// URGENT, TEMPORARY (2026-09-28): Razorpay's checkout widget offers a "Demo"
+// payment method (Done/Failed buttons) on accounts pending full business
+// verification — clicking "Done" returns a genuinely valid signature without
+// moving real money, so anyone could get free course access through this
+// button right now. Paused until Razorpay activation is confirmed; set
+// NEXT_PUBLIC_PAYMENTS_ENABLED=true (no code change needed) to turn real
+// payment back on. See FOUNDER-ACTION-ITEMS.md item 0.1.
+const paymentsEnabled = process.env.NEXT_PUBLIC_PAYMENTS_ENABLED === "true"
+
 function loadRazorpayScript(): Promise<boolean> {
   return new Promise((resolve) => {
     if (window.Razorpay) return resolve(true)
@@ -96,6 +105,21 @@ export function EnrollButton({
     })
 
     razorpay.open()
+  }
+
+  if (!paymentsEnabled) {
+    return (
+      <div className="space-y-2">
+        <p className="text-xs text-muted-foreground">
+          Online payment is temporarily paused while we finish setting up our payment provider.
+        </p>
+        <Button asChild variant="outline" className="w-full">
+          <a href="https://wa.me/919930259997" target="_blank" rel="noopener noreferrer">
+            Contact us to enrol
+          </a>
+        </Button>
+      </div>
+    )
   }
 
   return (
