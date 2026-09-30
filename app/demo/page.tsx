@@ -133,7 +133,7 @@ export default function DemoPage() {
               </div>
 
               {/* Right: the form */}
-              <Card className="shadow-2xl bg-white max-w-md lg:ml-auto">
+              <Card className="shadow-2xl bg-white/80 backdrop-blur max-w-md lg:ml-auto">
                 <CardContent className="p-6 lg:p-8">
                   <div className="flex items-center gap-2 mb-2">
                     <CalendarCheck className="h-5 w-5 text-accent" />
