@@ -17,8 +17,16 @@ import {
 import { Loader2, ShieldCheck } from "lucide-react"
 import { TurnstileWidget } from "@/components/turnstile-widget"
 import { isValidPhone, PHONE_INPUT_PATTERN, PHONE_VALIDATION_MESSAGE } from "@/lib/phone"
+import { cn } from "@/lib/utils"
 
 const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
+
+// Large, rounded, generously-padded fields — matching the demo form's pill-style inputs.
+const FIELD_CLASS = "h-12 rounded-full px-5 text-base"
+
+function RequiredMark() {
+  return <span className="text-destructive">*</span>
+}
 
 const PROGRAM_OPTIONS = [
   { value: "electrical-design-data-center", label: "Electrical Design – Data Center Specialist" },
@@ -117,29 +125,37 @@ export function BrochureRequestDialog({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label htmlFor="brochure-first-name">First Name</Label>
+              <Label htmlFor="brochure-first-name">
+                First Name <RequiredMark />
+              </Label>
               <Input
                 id="brochure-first-name"
                 placeholder="First Name"
                 value={form.firstName}
                 onChange={(e) => updateField("firstName", e.target.value)}
+                className={FIELD_CLASS}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="brochure-last-name">Last Name</Label>
+              <Label htmlFor="brochure-last-name">
+                Last Name <RequiredMark />
+              </Label>
               <Input
                 id="brochure-last-name"
                 placeholder="Last Name"
                 value={form.lastName}
                 onChange={(e) => updateField("lastName", e.target.value)}
+                className={FIELD_CLASS}
                 required
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="brochure-mobile">Mobile</Label>
+            <Label htmlFor="brochure-mobile">
+              Mobile <RequiredMark />
+            </Label>
             <Input
               id="brochure-mobile"
               type="tel"
@@ -148,26 +164,30 @@ export function BrochureRequestDialog({
               onChange={(e) => updateField("mobile", e.target.value)}
               pattern={PHONE_INPUT_PATTERN}
               title={PHONE_VALIDATION_MESSAGE}
+              className={FIELD_CLASS}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="brochure-email">Email</Label>
+            <Label htmlFor="brochure-email">
+              Email <RequiredMark />
+            </Label>
             <Input
               id="brochure-email"
               type="email"
               placeholder="Email"
               value={form.email}
               onChange={(e) => updateField("email", e.target.value)}
+              className={FIELD_CLASS}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="brochure-state">State/Province:</Label>
+            <Label htmlFor="brochure-state">State/Province</Label>
             <Select value={form.state} onValueChange={(v) => updateField("state", v)}>
-              <SelectTrigger id="brochure-state">
+              <SelectTrigger id="brochure-state" className={cn(FIELD_CLASS, "w-full")}>
                 <SelectValue placeholder="--None--" />
               </SelectTrigger>
               <SelectContent>
@@ -181,9 +201,9 @@ export function BrochureRequestDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="brochure-program">Choose a Program:</Label>
+            <Label htmlFor="brochure-program">Choose a Program</Label>
             <Select value={form.program} onValueChange={(v) => updateField("program", v)}>
-              <SelectTrigger id="brochure-program">
+              <SelectTrigger id="brochure-program" className={cn(FIELD_CLASS, "w-full")}>
                 <SelectValue placeholder="--None--" />
               </SelectTrigger>
               <SelectContent>
@@ -208,7 +228,7 @@ export function BrochureRequestDialog({
             disabled={submitting || (captchaRequired && !captchaToken)}
             variant="accent"
             size="lg"
-            className="w-full"
+            className="w-full rounded-full"
           >
             {submitting ? (
               <>
