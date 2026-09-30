@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 import { TurnstileWidget } from "@/components/turnstile-widget"
@@ -18,9 +17,22 @@ import { cn } from "@/lib/utils"
 
 const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
 
+// Large, rounded, generously-padded fields — matching the reference's pill-style inputs.
+const FIELD_CLASS = "h-12 rounded-full px-5 text-base"
+
+function RequiredMark() {
+  return <span className="text-destructive">*</span>
+}
+
 const SOFTWARE_OPTIONS = ["AutoCAD", "ETAP", "EPLAN", "Revit MEP", "Dialux", "Excel"] as const
 
 const STEPS = ["About You", "Your Experience", "Goals & Contact"] as const
+
+const EDUCATION_OPTIONS = ["Diploma in Electrical Engineering", "B.E./B.Tech in Electrical Engineering", "M.E./M.Tech", "ITI", "Other"]
+const WORK_EXPERIENCE_OPTIONS = ["Fresher", "Less than 1 year", "1–3 years", "3–5 years", "5+ years"]
+const DESIGN_EXPERIENCE_OPTIONS = ["No experience", "Basic knowledge", "Less than 1 year", "1–3 years", "3+ years"]
+const TRAINING_GOAL_OPTIONS = ["Electrical Design Engineer Job", "Improve Existing Design Skills", "Learn Electrical Design Software", "Project-Based Learning", "Career Guidance", "Other"]
+const HEARD_FROM_OPTIONS = ["WhatsApp", "Instagram", "YouTube", "Referral", "Other"]
 
 const EMPTY_FORM = {
   studentName: "",
@@ -189,31 +201,39 @@ export function DemoForm() {
             {step === 0 && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="demo-name">Student Name *</Label>
+                  <Label htmlFor="demo-name">
+                    Student Name <RequiredMark />
+                  </Label>
                   <Input
                     id="demo-name"
                     placeholder="Your full name"
                     value={form.studentName}
                     onChange={(e) => updateField("studentName", e.target.value)}
+                    className={FIELD_CLASS}
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Education / Qualification</Label>
-                  <RadioGroup value={form.education} onValueChange={(v) => updateField("education", v)} className="gap-2">
-                    {["Diploma in Electrical Engineering", "B.E./B.Tech in Electrical Engineering", "M.E./M.Tech", "ITI", "Other"].map((opt) => (
-                      <div key={opt} className="flex items-center gap-2">
-                        <RadioGroupItem value={opt} id={`edu-${opt}`} />
-                        <Label htmlFor={`edu-${opt}`} className="font-normal">{opt}</Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
+                  <Label htmlFor="demo-education">Education / Qualification</Label>
+                  <Select value={form.education} onValueChange={(v) => updateField("education", v)}>
+                    <SelectTrigger id="demo-education" className={cn(FIELD_CLASS, "w-full")}>
+                      <SelectValue placeholder="Select your qualification" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {EDUCATION_OPTIONS.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {form.education === "Other" && (
                     <Input
                       placeholder="Please specify"
                       value={form.educationOther}
                       onChange={(e) => updateField("educationOther", e.target.value)}
+                      className={FIELD_CLASS}
                     />
                   )}
                 </div>
@@ -221,22 +241,22 @@ export function DemoForm() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="demo-college">College / Institute</Label>
-                    <Input id="demo-college" value={form.college} onChange={(e) => updateField("college", e.target.value)} />
+                    <Input id="demo-college" value={form.college} onChange={(e) => updateField("college", e.target.value)} className={FIELD_CLASS} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="demo-year">Current Year / Semester</Label>
-                    <Input id="demo-year" value={form.currentYearSemester} onChange={(e) => updateField("currentYearSemester", e.target.value)} />
+                    <Input id="demo-year" value={form.currentYearSemester} onChange={(e) => updateField("currentYearSemester", e.target.value)} className={FIELD_CLASS} />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="demo-grad">Graduation Year</Label>
-                    <Input id="demo-grad" value={form.graduationYear} onChange={(e) => updateField("graduationYear", e.target.value)} />
+                    <Input id="demo-grad" value={form.graduationYear} onChange={(e) => updateField("graduationYear", e.target.value)} className={FIELD_CLASS} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="demo-occupation">Current Occupation / Job Role</Label>
-                    <Input id="demo-occupation" value={form.currentOccupation} onChange={(e) => updateField("currentOccupation", e.target.value)} />
+                    <Input id="demo-occupation" value={form.currentOccupation} onChange={(e) => updateField("currentOccupation", e.target.value)} className={FIELD_CLASS} />
                   </div>
                 </div>
               </>
@@ -245,32 +265,40 @@ export function DemoForm() {
             {step === 1 && (
               <>
                 <div className="space-y-2">
-                  <Label>Work Experience</Label>
-                  <RadioGroup value={form.workExperience} onValueChange={(v) => updateField("workExperience", v)} className="gap-2">
-                    {["Fresher", "Less than 1 year", "1–3 years", "3–5 years", "5+ years"].map((opt) => (
-                      <div key={opt} className="flex items-center gap-2">
-                        <RadioGroupItem value={opt} id={`exp-${opt}`} />
-                        <Label htmlFor={`exp-${opt}`} className="font-normal">{opt}</Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
+                  <Label htmlFor="demo-work-exp">Work Experience</Label>
+                  <Select value={form.workExperience} onValueChange={(v) => updateField("workExperience", v)}>
+                    <SelectTrigger id="demo-work-exp" className={cn(FIELD_CLASS, "w-full")}>
+                      <SelectValue placeholder="Select your work experience" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {WORK_EXPERIENCE_OPTIONS.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="demo-company">Current Company (if employed)</Label>
-                  <Input id="demo-company" value={form.currentCompany} onChange={(e) => updateField("currentCompany", e.target.value)} />
+                  <Input id="demo-company" value={form.currentCompany} onChange={(e) => updateField("currentCompany", e.target.value)} className={FIELD_CLASS} />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Electrical Design Experience</Label>
-                  <RadioGroup value={form.designExperience} onValueChange={(v) => updateField("designExperience", v)} className="gap-2">
-                    {["No experience", "Basic knowledge", "Less than 1 year", "1–3 years", "3+ years"].map((opt) => (
-                      <div key={opt} className="flex items-center gap-2">
-                        <RadioGroupItem value={opt} id={`design-${opt}`} />
-                        <Label htmlFor={`design-${opt}`} className="font-normal">{opt}</Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
+                  <Label htmlFor="demo-design-exp">Electrical Design Experience</Label>
+                  <Select value={form.designExperience} onValueChange={(v) => updateField("designExperience", v)}>
+                    <SelectTrigger id="demo-design-exp" className={cn(FIELD_CLASS, "w-full")}>
+                      <SelectValue placeholder="Select your design experience" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DESIGN_EXPERIENCE_OPTIONS.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-2">
@@ -291,6 +319,7 @@ export function DemoForm() {
                     placeholder="Other software (optional)"
                     value={form.softwareOther}
                     onChange={(e) => updateField("softwareOther", e.target.value)}
+                    className={FIELD_CLASS}
                   />
                 </div>
               </>
@@ -300,30 +329,37 @@ export function DemoForm() {
               <>
                 <div className="space-y-2">
                   <Label htmlFor="demo-expect">What do you expect to learn from the demo class?</Label>
-                  <Textarea id="demo-expect" value={form.expectations} onChange={(e) => updateField("expectations", e.target.value)} rows={3} />
+                  <Textarea id="demo-expect" value={form.expectations} onChange={(e) => updateField("expectations", e.target.value)} rows={3} className="rounded-2xl px-5 py-3 text-base" />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Preferred Training Goal</Label>
-                  <RadioGroup value={form.trainingGoal} onValueChange={(v) => updateField("trainingGoal", v)} className="gap-2">
-                    {["Electrical Design Engineer Job", "Improve Existing Design Skills", "Learn Electrical Design Software", "Project-Based Learning", "Career Guidance", "Other"].map((opt) => (
-                      <div key={opt} className="flex items-center gap-2">
-                        <RadioGroupItem value={opt} id={`goal-${opt}`} />
-                        <Label htmlFor={`goal-${opt}`} className="font-normal">{opt}</Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
+                  <Label htmlFor="demo-goal">Preferred Training Goal</Label>
+                  <Select value={form.trainingGoal} onValueChange={(v) => updateField("trainingGoal", v)}>
+                    <SelectTrigger id="demo-goal" className={cn(FIELD_CLASS, "w-full")}>
+                      <SelectValue placeholder="Select your training goal" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TRAINING_GOAL_OPTIONS.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {form.trainingGoal === "Other" && (
                     <Input
                       placeholder="Please specify"
                       value={form.trainingGoalOther}
                       onChange={(e) => updateField("trainingGoalOther", e.target.value)}
+                      className={FIELD_CLASS}
                     />
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="demo-phone">Mobile / WhatsApp Number *</Label>
+                  <Label htmlFor="demo-phone">
+                    Mobile / WhatsApp Number <RequiredMark />
+                  </Label>
                   <Input
                     id="demo-phone"
                     type="tel"
@@ -331,38 +367,46 @@ export function DemoForm() {
                     onChange={(e) => updateField("phone", e.target.value)}
                     pattern={PHONE_INPUT_PATTERN}
                     title={PHONE_VALIDATION_MESSAGE}
+                    className={FIELD_CLASS}
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="demo-email">Email ID</Label>
-                  <Input id="demo-email" type="email" value={form.email} onChange={(e) => updateField("email", e.target.value)} />
+                  <Input id="demo-email" type="email" value={form.email} onChange={(e) => updateField("email", e.target.value)} className={FIELD_CLASS} />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>How did you hear about the demo class?</Label>
-                  <RadioGroup value={form.heardFrom} onValueChange={(v) => updateField("heardFrom", v)} className="gap-2">
-                    {["WhatsApp", "Instagram", "YouTube", "Referral", "Other"].map((opt) => (
-                      <div key={opt} className="flex items-center gap-2">
-                        <RadioGroupItem value={opt} id={`heard-${opt}`} />
-                        <Label htmlFor={`heard-${opt}`} className="font-normal">{opt}</Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
+                  <Label htmlFor="demo-heard">How did you hear about the demo class?</Label>
+                  <Select value={form.heardFrom} onValueChange={(v) => updateField("heardFrom", v)}>
+                    <SelectTrigger id="demo-heard" className={cn(FIELD_CLASS, "w-full")}>
+                      <SelectValue placeholder="Select one" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {HEARD_FROM_OPTIONS.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {form.heardFrom === "Other" && (
                     <Input
                       placeholder="Please specify"
                       value={form.heardFromOther}
                       onChange={(e) => updateField("heardFromOther", e.target.value)}
+                      className={FIELD_CLASS}
                     />
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="demo-course">Course Interest *</Label>
+                  <Label htmlFor="demo-course">
+                    Course Interest <RequiredMark />
+                  </Label>
                   <Select value={form.courseInterest} onValueChange={(v) => updateField("courseInterest", v)}>
-                    <SelectTrigger id="demo-course">
+                    <SelectTrigger id="demo-course" className={cn(FIELD_CLASS, "w-full")}>
                       <SelectValue placeholder="Select a course" />
                     </SelectTrigger>
                     <SelectContent>
@@ -384,13 +428,13 @@ export function DemoForm() {
 
         <div className="flex items-center gap-3 mt-8">
           {step > 0 && (
-            <Button type="button" variant="outline" size="lg" onClick={handleBack} className="flex-1">
+            <Button type="button" variant="outline" size="lg" onClick={handleBack} className="flex-1 rounded-full">
               <ChevronLeft className="mr-1 h-4 w-4" />
               Back
             </Button>
           )}
           {step < STEPS.length - 1 ? (
-            <Button type="button" variant="accent" size="lg" onClick={handleNext} className="flex-1">
+            <Button type="button" variant="accent" size="lg" onClick={handleNext} className="flex-1 rounded-full">
               Next
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
@@ -400,7 +444,7 @@ export function DemoForm() {
               disabled={submitting || (captchaRequired && !captchaToken)}
               variant="accent"
               size="lg"
-              className="flex-1"
+              className="flex-1 rounded-full"
             >
               {submitting ? (
                 <>
