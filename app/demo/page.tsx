@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     url: "/demo",
     title,
     description,
-    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
+    images: [{ url: "/demo-class-hero.webp", width: 1200, height: 630, alt: title }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
+  twitter: { card: "summary_large_image", title, description, images: ["/demo-class-hero.webp"] },
 }
 
 const breadcrumbs = breadcrumbJsonLd([
@@ -80,15 +80,16 @@ export default function DemoPage() {
         <section className="relative overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/hero-data-center.jpg"
-              alt="Vision Matrix Institute — live data center electrical design training"
+              src="/demo-class-hero.webp"
+              alt="A VMI instructor leading a live data center electrical design demo class"
               fill
               priority
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/50" />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-navy/30" />
+            {/* The photo already has a dark left third built in for text contrast — just a
+                light bottom fade here for a clean transition into the facts strip below. */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           </div>
 
           <div className="relative container mx-auto px-4 py-16 lg:py-24">
