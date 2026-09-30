@@ -4,7 +4,7 @@ import { appendDemoRequestToSheet } from "@/lib/google-sheets"
 import { verifyCaptcha, clientIp } from "@/lib/turnstile"
 import { isValidPhone, PHONE_VALIDATION_MESSAGE } from "@/lib/phone"
 
-const REQUIRED_FIELDS = ["studentName", "phone"] as const
+const REQUIRED_FIELDS = ["studentName", "phone", "location", "courseInterest"] as const
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>
@@ -50,6 +50,7 @@ export async function POST(request: Request) {
     email: body.email || null,
     heard_from: body.heardFrom || null,
     course_interest: body.courseInterest || null,
+    location: body.location || null,
   })
 
   if (insertError) {
@@ -74,7 +75,7 @@ export async function POST(request: Request) {
         phone: body.phone,
         course: body.courseInterest || "",
         education: body.education || "",
-        message: `Demo request. Training goal: ${body.trainingGoal || "n/a"}. Expects: ${body.expectations || "n/a"}`,
+        message: `Demo request. Location: ${body.location || "n/a"}. Training goal: ${body.trainingGoal || "n/a"}. Expects: ${body.expectations || "n/a"}`,
         source: "Demo Request",
       }),
     }).catch((error) => {
@@ -105,6 +106,7 @@ export async function POST(request: Request) {
         email: body.email as string | undefined,
         heardFrom: body.heardFrom as string | undefined,
         courseInterest: body.courseInterest as string | undefined,
+        location: body.location as string | undefined,
       })
     } catch (error) {
       console.error("Demo request Google Sheets mirror failed (non-fatal):", error)

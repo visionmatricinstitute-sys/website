@@ -47,6 +47,7 @@ export async function appendDemoRequestToSheet(row: {
   email?: string | null
   heardFrom?: string | null
   courseInterest?: string | null
+  location?: string | null
 }) {
   const accessToken = await getAccessToken()
 
@@ -67,6 +68,7 @@ export async function appendDemoRequestToSheet(row: {
     row.email || "",
     row.heardFrom || "",
     row.courseInterest || "",
+    row.location || "",
     new Date().toISOString(),
   ]
 
