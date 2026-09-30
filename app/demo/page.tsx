@@ -98,16 +98,16 @@ export default function DemoPage() {
               <div className="lg:pt-4">
                 <div className="flex items-center gap-2 text-sm font-semibold text-white/80 mb-6 tracking-wide">
                   <span>LIVE</span>
-                  <span className="text-accent-tint">|</span>
+                  <span className="text-secondary">|</span>
                   <span>INTERACTIVE</span>
-                  <span className="text-accent-tint">|</span>
+                  <span className="text-secondary">|</span>
                   <span>INDUSTRY FOCUSED</span>
                 </div>
 
                 <h1 className="text-4xl lg:text-6xl font-black font-sans text-white leading-tight mb-4">
                   Experience Real
                   <br />
-                  Data Center <span className="text-accent-tint">Learning</span>
+                  Data Center <span className="text-secondary">Learning</span>
                 </h1>
                 <p className="text-lg text-white/70 font-serif leading-relaxed mb-10 max-w-lg">
                   Join a free demo class and see how VMI makes data center electrical design simple,
@@ -120,7 +120,7 @@ export default function DemoPage() {
                     return (
                       <div key={item.title} className="flex gap-4 items-start">
                         <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 border border-white/20 shrink-0">
-                          <Icon className="h-5 w-5 text-accent-tint" />
+                          <Icon className="h-5 w-5 text-secondary" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-white mb-1">{item.title}</h3>
