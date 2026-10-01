@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/motion/magnetic-button"
 import { BrochureRequestDialog } from "@/components/brochure-request-dialog"
 import { MessageCircle, Download, Zap } from "lucide-react"
+import { PROGRAM_MODULES, PROGRAM_TOTAL_HOURS, DELIVERABLES, TOOL_CATEGORIES } from "@/lib/program-data"
+
+const TOOL_COUNT = TOOL_CATEGORIES.reduce((sum, c) => sum + c.tools.length, 0)
 
 const container = {
   hidden: {},
@@ -64,10 +67,10 @@ export function ProgramHero() {
 
           <motion.div variants={item} className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { value: "14", label: "Core Modules" },
-              { value: "240", label: "Learning Hours" },
-              { value: "40+", label: "Deliverables" },
-              { value: "18", label: "Software Tools" },
+              { value: String(PROGRAM_MODULES.length), label: "Core Modules" },
+              { value: String(PROGRAM_TOTAL_HOURS), label: "Learning Hours" },
+              { value: `${DELIVERABLES.length}+`, label: "Deliverables" },
+              { value: String(TOOL_COUNT), label: "Software Tools" },
             ].map((stat) => (
               <div key={stat.label} className="text-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-md py-4">
                 <div className="text-2xl font-bold text-white">{stat.value}</div>
