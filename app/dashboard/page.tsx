@@ -7,6 +7,8 @@ import { Progress } from "@/components/ui/progress"
 import { BookOpen, Award, Download, ArrowRight, FileText, Video } from "lucide-react"
 import { JoinClassButton } from "@/components/dashboard/join-class-button"
 import { EnrollButton } from "@/components/dashboard/enroll-button"
+import { CertificateConsentToggle } from "@/components/dashboard/certificate-consent-toggle"
+import { linkedInAddToProfileUrl } from "@/lib/certificates"
 
 export default async function DashboardHomePage() {
   const supabase = await createClient()
@@ -49,8 +51,9 @@ export default async function DashboardHomePage() {
 
   const { data: certificates } = await supabase
     .from("certificates")
-    .select("id, certificate_code, issued_at, courses(title)")
+    .select("id, course_id, certificate_number, course_title, recipient_name, approved_at, status, public_name_consent")
     .eq("student_id", user.id)
+    .order("approved_at", { ascending: false })
 
   const { data: resources } =
     enrolledCourseIds.length > 0
@@ -203,31 +206,90 @@ export default async function DashboardHomePage() {
         <h2 className="text-lg font-bold font-sans text-foreground flex items-center gap-2">
           <Award className="h-5 w-5 text-accent" /> Certificates
         </h2>
-        {(certificates ?? []).length === 0 ? (
-          <Card>
-            <CardContent className="py-6 text-center">
-              <p className="text-sm text-muted-foreground font-serif">
-                Complete every module in a course to earn its certificate.
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid md:grid-cols-2 gap-5">
-            {(certificates ?? []).map((cert: any) => (
-              <Card key={cert.id} className="border-accent/30">
-                <CardContent className="py-5 flex items-center justify-between gap-4">
-                  <div>
-                    <div className="font-semibold text-foreground">{cert.courses?.title}</div>
-                    <div className="text-xs text-muted-foreground font-mono mt-1">
-                      Certificate #{cert.certificate_code}
-                    </div>
-                  </div>
-                  <Award className="h-8 w-8 text-accent flex-shrink-0" />
+        {(() => {
+          // Row-level security only returns approved ("valid") or revoked certificates to the student.
+          const issued = (certificates ?? []) as any[]
+          // A finished course whose certificate VMI has not approved yet.
+          const awaiting = (enrolledCourses as any[]).filter((c: any) => {
+            const pr = progressByCourse[c.id]
+            return (
+              pr && pr.total > 0 && pr.completed >= pr.total && !issued.some((cert: any) => cert.course_id === c.id)
+            )
+          })
+          if (issued.length === 0 && awaiting.length === 0) {
+            return (
+              <Card>
+                <CardContent className="py-6 text-center">
+                  <p className="text-sm text-muted-foreground font-serif">
+                    Complete every module in a course to become eligible for its certificate.
+                  </p>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        )}
+            )
+          }
+          return (
+            <div className="grid md:grid-cols-2 gap-5">
+              {awaiting.map((c: any) => (
+                <Card key={`awaiting-${c.id}`} className="border-border">
+                  <CardContent className="py-5">
+                    <div className="font-semibold text-foreground">{c.title}</div>
+                    <p className="text-sm text-muted-foreground font-serif mt-1">
+                      You have completed every module. Your certificate will appear here once Vision Matrix
+                      Institute approves it.
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+              {issued.map((cert: any) =>
+                cert.status === "revoked" ? (
+                  <Card key={cert.id} className="border-destructive/30">
+                    <CardContent className="py-5">
+                      <div className="font-semibold text-foreground">{cert.course_title}</div>
+                      <div className="text-xs text-muted-foreground font-mono mt-1">
+                        Certificate ID {cert.certificate_number} &middot; revoked
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card key={cert.id} className="border-accent/30">
+                    <CardContent className="py-5 space-y-4">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <div className="font-semibold text-foreground">{cert.course_title}</div>
+                          <div className="text-xs text-muted-foreground font-mono mt-1">
+                            Certificate ID {cert.certificate_number}
+                          </div>
+                        </div>
+                        <Award className="h-8 w-8 text-accent flex-shrink-0" />
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <Button asChild size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                          <Link href={`/certificate/${encodeURIComponent(cert.certificate_number)}`}>
+                            View / Download PDF
+                          </Link>
+                        </Button>
+                        <Button asChild size="sm" variant="outline">
+                          <a
+                            href={linkedInAddToProfileUrl({
+                              certificate_number: cert.certificate_number,
+                              course_title: cert.course_title,
+                              approved_at: cert.approved_at,
+                            })}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Add to LinkedIn
+                          </a>
+                        </Button>
+                      </div>
+                      <CertificateConsentToggle certificateId={cert.id} initialConsent={!!cert.public_name_consent} />
+                    </CardContent>
+                  </Card>
+                ),
+              )}
+            </div>
+          )
+        })()}
       </section>
 
       {/* Downloads */}

@@ -6,10 +6,15 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { ArticleShell } from "@/components/blog/article-shell"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "Earthing & Bonding Basics for Data Centers"
 const description =
   "Earthing and bonding are two different jobs that get lumped together — one is about safety, the other is about keeping sensitive equipment from seeing electrical noise. Here's the difference and why data centers care more than most buildings."
+
+const heroImageSrc = "/data-center-earthing-bonding.jpg"
+const heroImageAlt =
+  "Copper earthing busbar with green-yellow bonding conductors connected to server racks and cable trays in a data center electrical room"
 
 export const metadata: Metadata = {
   title,
@@ -20,9 +25,9 @@ export const metadata: Metadata = {
     url: "/blog/earthing-and-bonding-basics-for-data-centers",
     title,
     description,
-    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
+    images: [{ url: heroImageSrc, width: 1200, height: 630, alt: heroImageAlt }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
+  twitter: { card: "summary_large_image", title, description, images: [heroImageSrc] },
 }
 
 const faqs = [
@@ -48,7 +53,7 @@ const jsonLd = {
   "@type": "Article",
   headline: title,
   description,
-  image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
+  image: `https://www.visionmatrixinstitute.com${heroImageSrc}`,
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
   publisher: {
     "@type": "Organization",
@@ -65,6 +70,8 @@ const faqJsonLd = {
   "@type": "FAQPage",
   mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
 }
+
+const { prev, next } = getAdjacentPosts("earthing-and-bonding-basics-for-data-centers")
 
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
@@ -86,6 +93,9 @@ export default function EarthingBondingPost() {
           description="Ask most electrical students to define earthing and bonding separately, and most will struggle. In a data center, that distinction is exactly what keeps a lightning strike from becoming a server-room disaster."
           faqs={faqs}
           whatsappMessage="Hi, I read the earthing & bonding article and want to know more about the Electrical Design course."
+          heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
+          prevPost={prev}
+          nextPost={next}
         >
           <div>
             <h2 id="two-jobs">Two different jobs, one shared vocabulary</h2>
@@ -142,7 +152,7 @@ export default function EarthingBondingPost() {
         </ArticleShell>
         <section className="py-12 bg-background border-t border-border">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-sm text-muted-foreground font-serif">
+            <p className="text-sm text-muted-foreground font-body">
               Read more:{" "}
               <Link href="/blog" className="text-accent font-semibold hover:underline">
                 All articles

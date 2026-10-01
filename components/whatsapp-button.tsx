@@ -2,6 +2,7 @@
 
 import { MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { FadeIn } from "@/components/motion/fade-in"
 
 export function WhatsAppButton() {
   const handleWhatsAppClick = () => {
@@ -12,15 +13,16 @@ export function WhatsAppButton() {
   }
 
   return (
-    <div className="fixed bottom-20 left-4 sm:bottom-6 sm:left-6 z-50">
+    <FadeIn delay={0.8} y={12} className="fixed bottom-20 left-4 sm:bottom-6 sm:left-6 z-50">
       <Button
         onClick={handleWhatsAppClick}
         size="lg"
-        className="bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 animate-bounce"
+        variant="whatsapp"
+        className="rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300"
       >
         <MessageCircle className="h-6 w-6 mr-2" />
         WhatsApp
       </Button>
-    </div>
+    </FadeIn>
   )
 }

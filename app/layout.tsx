@@ -2,8 +2,10 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Poppins } from "next/font/google"
 import { Inter } from "next/font/google"
+import { Fraunces } from "next/font/google"
 import Script from "next/script"
 import { Toaster } from "@/components/ui/sonner"
+import { ScrollProgress } from "@/components/motion/scroll-progress"
 import "./globals.css"
 
 const gtmId = process.env.NEXT_PUBLIC_GTM_ID
@@ -22,14 +24,22 @@ const inter = Inter({
   weight: ["400", "500", "600", "700"],
 })
 
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fraunces",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+})
+
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000")
 
 const siteName = "Vision Matrix Institute"
-const siteTitle = "Vision Matrix Institute - Online Technical & Electrical Engineering Education"
+const siteTitle = "Data Center Electrical Design Training | Vision Matrix Institute"
 const siteDescription =
-  "Leading online technical education institute offering Drafting & Design, BIM, Electrical Design, Data Center Specialist courses and more. Build your career with industry-relevant skills from anywhere."
+  "India's specialist data center electrical design training institute. Build real data center skills in ETAP, Revit MEP, AutoCAD & IS/IEC standards — 100% live, online."
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -39,11 +49,15 @@ export const metadata: Metadata = {
   },
   description: siteDescription,
   keywords: [
+    "data center training",
+    "data center skills",
+    "data center training institute",
+    "data center electrical design training",
+    "data center electrical design course",
     "online technical education",
     "BIM training",
     "drafting design",
     "electrical design courses",
-    "data center training",
     "career courses",
   ],
   generator: "v0.app",
@@ -122,7 +136,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} ${inter.variable} antialiased`}>
+    <html lang="en" className={`${poppins.variable} ${inter.variable} ${fraunces.variable} antialiased`}>
       <head>
         <meta name="msvalidate.01" content="9166F8A67733A6CEF2B393A997444A3C" />
         <script
@@ -147,6 +161,7 @@ export default function RootLayout({
             />
           </noscript>
         )}
+        <ScrollProgress />
         {children}
         <Toaster position="top-center" richColors />
       </body>

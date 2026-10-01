@@ -1,10 +1,24 @@
+"use client"
+
 import type { ReactNode } from "react"
 import Image from "next/image"
+import Link from "next/link"
+import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, MessageCircle } from "lucide-react"
+import { CheckCircle2, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+}
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+}
 
 export interface ArticleFaq {
   question: string
@@ -16,6 +30,11 @@ export interface ArticleHeroImage {
   alt: string
 }
 
+export interface AdjacentArticle {
+  slug: string
+  title: string
+}
+
 export interface ArticleShellProps {
   category: string
   title: string
@@ -24,40 +43,88 @@ export interface ArticleShellProps {
   faqs: ArticleFaq[]
   whatsappMessage: string
   heroImage?: ArticleHeroImage
+  prevPost?: AdjacentArticle | null
+  nextPost?: AdjacentArticle | null
 }
 
-export function ArticleShell({ category, title, description, children, faqs, whatsappMessage, heroImage }: ArticleShellProps) {
+export function ArticleShell({
+  category,
+  title,
+  description,
+  children,
+  faqs,
+  whatsappMessage,
+  heroImage,
+  prevPost,
+  nextPost,
+}: ArticleShellProps) {
   const waHref = `https://wa.me/919930259997?text=${encodeURIComponent(whatsappMessage)}`
 
   return (
     <>
       <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
-        <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent/25 blur-[110px]" />
-        <div className="relative container mx-auto px-4 max-w-3xl">
-          <Badge className="bg-accent/10 text-accent mb-6 hover:bg-accent/10">{category}</Badge>
-          <h1 className="text-3xl lg:text-5xl font-black font-sans text-white leading-tight mb-4">{title}</h1>
-          <p className="text-lg text-white/70 font-serif leading-relaxed">{description}</p>
-        </div>
+        <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent-tint/20 blur-[110px]" />
+
+        {prevPost && (
+          <Link
+            href={`/blog/${prevPost.slug}`}
+            aria-label={`Previous article: ${prevPost.title}`}
+            className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/30 transition-colors z-10"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Link>
+        )}
+        {nextPost && (
+          <Link
+            href={`/blog/${nextPost.slug}`}
+            aria-label={`Next article: ${nextPost.title}`}
+            className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/30 transition-colors z-10"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Link>
+        )}
+
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="relative container mx-auto px-4 max-w-3xl"
+        >
+          <motion.div variants={item}>
+            <Badge className="bg-accent-tint/10 text-accent-tint mb-6 hover:bg-accent-tint/10">{category}</Badge>
+          </motion.div>
+          <motion.h1 variants={item} className="text-3xl lg:text-5xl font-serif font-medium text-white leading-tight mb-4">
+            {title}
+          </motion.h1>
+          <motion.p variants={item} className="text-lg text-white/70 font-body leading-relaxed">
+            {description}
+          </motion.p>
+        </motion.div>
       </section>
 
       {heroImage && (
         <section className="bg-background">
           <div className="container mx-auto px-4 max-w-3xl -mt-10 lg:-mt-14 relative">
-            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border">
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border"
+            >
               <Image src={heroImage.src} alt={heroImage.alt} fill className="object-cover" priority />
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
 
       <section className="py-16 bg-background">
-        <div className="container mx-auto px-4 max-w-3xl space-y-10 font-serif text-foreground leading-relaxed [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-black [&_h2]:font-sans [&_h2]:text-foreground [&_h2]:mb-4 [&_h2]:mt-2 [&_p]:text-muted-foreground [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1.5 [&_ul]:text-muted-foreground [&_li]:leading-relaxed">
+        <div className="container mx-auto px-4 max-w-3xl space-y-10 font-body text-foreground leading-relaxed [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-serif [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:mb-4 [&_h2]:mt-2 [&_p]:text-muted-foreground [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1.5 [&_ul]:text-muted-foreground [&_li]:leading-relaxed">
           {children}
 
           <section id="faq" className="pt-6">
             <FadeIn className="mb-8">
-              <h2 className="text-2xl lg:text-3xl font-black font-sans text-foreground">Frequently Asked Questions</h2>
+              <h2 className="text-2xl lg:text-3xl font-serif font-medium text-foreground">Frequently Asked Questions</h2>
             </FadeIn>
             <div className="space-y-4">
               {faqs.map((faq, index) => (
@@ -68,7 +135,7 @@ export function ArticleShell({ category, title, description, children, faqs, wha
                         <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
                         <div>
                           <h3 className="font-semibold font-sans text-foreground mb-1.5">{faq.question}</h3>
-                          <p className="text-sm text-muted-foreground font-serif leading-relaxed">{faq.answer}</p>
+                          <p className="text-sm text-muted-foreground font-body leading-relaxed">{faq.answer}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -84,13 +151,13 @@ export function ArticleShell({ category, title, description, children, faqs, wha
         <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
         <div className="relative container mx-auto px-4 text-center">
           <FadeIn>
-            <h2 className="text-2xl lg:text-4xl font-black font-sans text-white mb-3">Want to learn this properly?</h2>
-            <p className="text-white/60 font-serif mb-6">
+            <h2 className="text-2xl lg:text-4xl font-serif font-medium text-white mb-3">Want to learn this properly?</h2>
+            <p className="text-white/60 font-body mb-6">
               This topic is covered in depth in our Electrical Design – Data Center Specialist program.
             </p>
             <Button
               size="lg"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30"
+              variant="accent-on-dark"
               asChild
             >
               <a href={waHref} target="_blank" rel="noopener noreferrer">
