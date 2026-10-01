@@ -5,13 +5,17 @@
 
 :root {
   /*
-   * Premium redesign palette — every text/background pairing below is
-   * verified against the canonical WCAG 2.x contrast formula (see
-   * scratchpad/contrast.pl, ported from github.com/gsnedders/wcag-contrast-ratio).
-   * --accent replaces the old --primary/--accent split: one sophisticated
-   * brand color instead of two competing ones. The old bright blue
-   * (#00a8ff) survives only as --accent-tint, for decorative low-opacity
-   * chip/icon backgrounds — never for text or solid fills (it fails AA there).
+   * Brand palette: Red + White + Charcoal (Founder, 2026-10-01). Every
+   * text/background pairing below is verified against the canonical WCAG 2.x
+   * contrast formula (see scratchpad/contrast.pl, ported from
+   * github.com/gsnedders/wcag-contrast-ratio).
+   * --accent used to be unified with --primary as a navy blue (#123c61) from
+   * an earlier "Premium redesign" pass -- that was a deviation from the real
+   * brand color, not a deliberate choice to keep. Both now use the real brand
+   * red (matching --secondary, the color already used for the logo mark).
+   * The old bright blue (#00a8ff) survives only as --accent-tint, for
+   * decorative low-opacity chip/icon backgrounds — never for text or solid
+   * fills (it fails AA there).
    */
   --background: #faf8f4;
   --foreground: #1c1b1a;
@@ -19,28 +23,33 @@
   --card-foreground: #1c1b1a;
   --popover: #faf8f4;
   --popover-foreground: #1c1b1a;
-  --primary: #123c61;
+  --primary: #d32f2f;
   --primary-foreground: #ffffff;
   --secondary: #d32f2f;
   --secondary-foreground: #ffffff;
   --muted: #f1eae0;
   --muted-foreground: #6b6259;
-  --accent: #123c61;
+  --accent: #d32f2f;
   --accent-foreground: #ffffff;
   --accent-tint: #00a8ff;
   /*
-   * The deep accent above reads beautifully on light/ivory surfaces but is
-   * nearly invisible on the --navy dark sections (1.57:1 against #0f172a —
-   * verified via scratchpad/contrast.pl). Dark-section CTAs/links/icons use
-   * this lighter, still-sophisticated blue instead: 5.17:1 white-on-fill,
-   * 3.45:1 against navy (clears the 3:1 non-text/large-text threshold).
+   * The brand red above reads at 4.98:1 white-on-fill (passes AA normal
+   * text) on light/ivory surfaces. Against the --navy dark sections it's
+   * 3.59:1 (#d32f2f on #0f172a), which clears the 3:1 UI-component minimum.
+   * --accent-on-dark is only used as a button fill with white text (see the
+   * "accent-on-dark" variant in components/ui/button.tsx), so the fill must
+   * keep white text at >= 4.5:1: a lighter red like #ef4444 reads better on
+   * navy (4.74:1) but only gives 3.76:1 white-on-fill, which fails AA for
+   * normal-size button text. Kept as its own token so it can diverge later.
+   * Ratios recomputed with a one-off WCAG luminance script, not
+   * scratchpad/contrast.pl.
    */
-  --accent-on-dark: #2563eb;
+  --accent-on-dark: #d32f2f;
   --destructive: #d32f2f;
   --destructive-foreground: #ffffff;
   --border: #e5ded2;
   --input: #f1eae0;
-  --ring: #123c6180;
+  --ring: #d32f2f80;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.646 0.222 280.116);
   --chart-3: oklch(0.577 0.245 27.325);
