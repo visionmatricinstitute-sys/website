@@ -205,7 +205,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                       </div>
                       {submission?.grade != null && (
                         <div className="text-right flex-shrink-0">
-                          <div className="text-lg font-black font-sans text-accent">{submission.grade}</div>
+                          <div className="text-lg font-black font-sans text-foreground">{submission.grade}</div>
                           {submission.feedback && (
                             <p className="text-xs text-muted-foreground font-serif max-w-[200px]">{submission.feedback}</p>
                           )}

@@ -163,7 +163,7 @@ export default function DataCenterCareerGuidePage() {
                       <a
                         key={item.id}
                         href={`#${item.id}`}
-                        className="text-sm text-accent hover:underline font-body"
+                        className="text-sm text-foreground underline underline-offset-4 hover:no-underline font-body"
                       >
                         {item.label}
                       </a>
@@ -411,13 +411,13 @@ export default function DataCenterCareerGuidePage() {
             <FadeIn className="mt-16 pt-8 border-t border-border">
               <h2 className="text-lg font-bold font-sans text-foreground mb-4">Related Resources</h2>
               <div className="grid sm:grid-cols-3 gap-4">
-                <Link href="/programs/electrical-design-data-center" className="text-sm text-accent hover:underline font-body">
+                <Link href="/programs/electrical-design-data-center" className="text-sm text-foreground underline underline-offset-4 hover:no-underline font-body">
                   Electrical Design – Data Center Specialist Program →
                 </Link>
-                <Link href="/engineers-toolkit" className="text-sm text-accent hover:underline font-body">
+                <Link href="/engineers-toolkit" className="text-sm text-foreground underline underline-offset-4 hover:no-underline font-body">
                   Free Engineering Calculators & Toolkit →
                 </Link>
-                <Link href="/#courses" className="text-sm text-accent hover:underline font-body">
+                <Link href="/#courses" className="text-sm text-foreground underline underline-offset-4 hover:no-underline font-body">
                   All Courses →
                 </Link>
               </div>
