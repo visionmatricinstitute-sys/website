@@ -1,8 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle2 } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
+import { COURSE_FEE } from "@/lib/program-data"
 
 const FAQS = [
+  // Pricing answer below intentionally spells out the real, current fee per course rather than
+  // "message us" — see FOUNDER-ACTION-ITEMS.md #10/#20 for where these figures were confirmed.
   {
     question: "Are classes live or pre-recorded?",
     answer:
@@ -25,7 +28,7 @@ const FAQS = [
   {
     question: "How much do courses cost?",
     answer:
-      "Fees vary by course. Message us on WhatsApp or fill out the admission form and our team will share current pricing for the course you're interested in.",
+      `Electrical Design – Data Center Specialist (our flagship program) is ${COURSE_FEE}, AutoCAD is ₹10,000, and BIM (Revit MEP) is ₹30,000. Fees may be revised, so message us on WhatsApp or fill out the admission form to confirm current pricing before you enrol.`,
   },
   {
     question: "Do I need my own laptop and software?",
