@@ -9,7 +9,7 @@ const PILLARS = [
     title: "Practitioner-Led",
     icon: Award,
     description:
-      "Content is authored and taught by engineers with 25+ years in Tier III and Tier IV design. Every hour reflects live-project reality, not textbook theory.",
+      "Content is authored and taught by engineers with 10+ years in Tier III and Tier IV design. Every hour reflects live-project reality, not textbook theory.",
   },
   {
     number: "02",
