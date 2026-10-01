@@ -35,15 +35,16 @@
   /*
    * The brand red above reads at 4.98:1 white-on-fill (passes AA normal
    * text) on light/ivory surfaces. Against the --navy dark sections it's
-   * 3.59:1 (#d32f2f on #0f172a) -- clears the 3:1 large-text/UI minimum on
-   * its own, unlike the navy accent it replaced (1.57:1, hence that accent
-   * needing this on-dark variant in the first place). Kept a dedicated
-   * on-dark value anyway for a comfortable margin on small text/icons:
-   * Tailwind's red-500 (#ef4444) is 4.74:1 against navy and 3.76:1
-   * white-on-fill (precisely recomputed via a one-off WCAG luminance script,
-   * not scratchpad/contrast.pl -- that file wasn't run for this change).
+   * 3.59:1 (#d32f2f on #0f172a), which clears the 3:1 UI-component minimum.
+   * --accent-on-dark is only used as a button fill with white text (see the
+   * "accent-on-dark" variant in components/ui/button.tsx), so the fill must
+   * keep white text at >= 4.5:1: a lighter red like #ef4444 reads better on
+   * navy (4.74:1) but only gives 3.76:1 white-on-fill, which fails AA for
+   * normal-size button text. Kept as its own token so it can diverge later.
+   * Ratios recomputed with a one-off WCAG luminance script, not
+   * scratchpad/contrast.pl.
    */
-  --accent-on-dark: #ef4444;
+  --accent-on-dark: #d32f2f;
   --destructive: #d32f2f;
   --destructive-foreground: #ffffff;
   --border: #e5ded2;
