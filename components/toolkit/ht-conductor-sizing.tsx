@@ -53,11 +53,21 @@ type Inputs = {
   thermalBackfill: boolean
 }
 
+// The example load (5,600 kW) is chosen so the built-in demonstration lands on a cable size
+// (240 mm²) that satisfies ampacity, voltage drop AND the short-circuit withstand check at the
+// default 25 kA / 1 s fault rating below — see docs/toolkit-review-2026-09-27.md for the worked
+// numbers. 25 kA/1s reflects a commonly specified 11 kV switchgear withstand rating in Indian
+// practice, so it is kept as-is; a smaller example load (previously 2,000 kW) rounds up to a
+// 35 mm² cable that fails the short-circuit check by design — real MV cables are very often
+// undersized for fault withstand if picked by ampacity alone, which is the genuine, important
+// lesson the check demonstrates, but a first-load default that fails is a poor first impression,
+// so the default now demonstrates a design that passes (with a "limited headroom" note, since
+// the example is realistically, not artificially, well-utilised).
 const DEFAULT_INPUTS: Inputs = {
   projectName: "",
   cableTag: "",
   systemVoltageKv: 11,
-  loadKw: 2000,
+  loadKw: 5600,
   powerFactor: 0.9,
   efficiency: 97,
   parallelRuns: 1,

@@ -8,6 +8,9 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { Download, Loader2 } from "lucide-react"
+import { TurnstileWidget } from "@/components/turnstile-widget"
+
+const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
 
 const ROLE_OPTIONS = [
   "Student / Final-year fresher",
@@ -31,6 +34,7 @@ export function LeadMagnetForm({
   const [form, setForm] = useState(EMPTY_FORM)
   const [submitting, setSubmitting] = useState(false)
   const [unlocked, setUnlocked] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   function updateField<K extends keyof typeof EMPTY_FORM>(field: K, value: (typeof EMPTY_FORM)[K]) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -43,13 +47,17 @@ export function LeadMagnetForm({
       toast.error("Please share your name and email.")
       return
     }
+    if (captchaRequired && !captchaToken) {
+      toast.error("Please complete the verification check.")
+      return
+    }
 
     setSubmitting(true)
     try {
       const response = await fetch("/api/lead-magnet", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, magnet }),
+        body: JSON.stringify({ ...form, magnet, captchaToken }),
       })
 
       const data = await response.json()
@@ -62,6 +70,7 @@ export function LeadMagnetForm({
       toast.success("You're in! Your download is ready below.")
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.")
+      setCaptchaToken(null)
     } finally {
       setSubmitting(false)
     }
@@ -136,9 +145,11 @@ export function LeadMagnetForm({
             </Select>
           </div>
 
+          <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+
           <Button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || (captchaRequired && !captchaToken)}
             className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
             size="lg"
           >

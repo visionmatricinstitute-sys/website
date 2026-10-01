@@ -28,6 +28,12 @@ export function DashboardShell({
                 <Link href="/admin/courses" className="hover:text-navy-foreground transition-colors">
                   Courses
                 </Link>
+                <Link href="/admin/students" className="hover:text-navy-foreground transition-colors">
+                  Students
+                </Link>
+                <Link href="/admin/enrollments" className="hover:text-navy-foreground transition-colors">
+                  Enrollments
+                </Link>
                 <Link href="/admin/live-classes" className="hover:text-navy-foreground transition-colors">
                   Live Classes
                 </Link>
@@ -40,8 +46,17 @@ export function DashboardShell({
                 <Link href="/admin/quizzes" className="hover:text-navy-foreground transition-colors">
                   Quizzes
                 </Link>
+                <Link href="/admin/certificates" className="hover:text-navy-foreground transition-colors">
+                  Certificates
+                </Link>
               </div>
             )}
+            <Link
+              href="/dashboard/profile"
+              className="text-sm text-navy-foreground/70 hover:text-navy-foreground transition-colors hidden sm:inline"
+            >
+              Profile
+            </Link>
             <Link href="/" className="text-sm text-navy-foreground/70 hover:text-navy-foreground transition-colors hidden sm:inline">
               Back to website
             </Link>

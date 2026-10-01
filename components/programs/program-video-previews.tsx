@@ -9,9 +9,10 @@ export function ProgramVideoPreviews() {
       <div className="container mx-auto px-4">
         <FadeIn className="text-center mb-12 max-w-2xl mx-auto">
           <Badge className="bg-accent/10 text-accent mb-4 hover:bg-accent/10">Inside the Program</Badge>
-          <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Watch a session preview</h2>
+          <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Watch a module preview</h2>
           <p className="text-muted-foreground font-serif leading-relaxed">
-            Real clips from live instructor-led sessions — see what a class actually looks like before you enrol.
+            AI-generated summaries covering what each module teaches — a quick preview of the program content before
+            you enrol. These are not recordings of live class sessions.
           </p>
         </FadeIn>
 
@@ -29,8 +30,11 @@ export function ProgramVideoPreviews() {
                     loading="lazy"
                   />
                 </div>
-                <CardContent className="p-4">
+                <CardContent className="p-4 space-y-2">
                   <h3 className="text-sm font-semibold text-foreground">{video.title}</h3>
+                  <Badge variant="secondary" className="text-xs font-normal">
+                    AI-generated summary, not a live class recording
+                  </Badge>
                 </CardContent>
               </Card>
             </FadeIn>

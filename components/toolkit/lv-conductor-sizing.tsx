@@ -46,11 +46,19 @@ type Inputs = {
   faultDuration: number
 }
 
+// The example load (250 kW) is chosen so the built-in demonstration lands on a cable size
+// (120 mm²) that genuinely satisfies ampacity, voltage drop, breaker coordination AND the
+// short-circuit withstand check at the default fault level/duration below — see the review in
+// docs/toolkit-review-2026-09-27.md for the worked numbers. A smaller example load (previously
+// 100 kW) rounds up to a 25 mm² cable that fails the short-circuit check by design: real cables
+// picked by ampacity alone are not automatically big enough for a given fault level, which is
+// the whole point of that check — but a first-load default that fails is a poor first impression
+// of a tool that is otherwise correct, so the default now demonstrates a design that passes.
 const DEFAULT_INPUTS: Inputs = {
   projectName: "",
   cableTag: "",
   systemVoltage: 415,
-  connectedLoadKw: 100,
+  connectedLoadKw: 250,
   diversityFactor: 0.8,
   powerFactor: 0.9,
   cableLength: 50,

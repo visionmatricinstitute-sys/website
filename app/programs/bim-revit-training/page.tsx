@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { SimpleProgramPage } from "@/components/programs/simple-program-page"
+import { ProgramCurriculum } from "@/components/programs/program-curriculum"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
 const title = "BIM Training with Revit MEP"
@@ -114,7 +115,10 @@ export default function BimRevitTrainingPage() {
           ]}
           faqs={faqs}
           whatsappMessage="Hi, I'm interested in the BIM Training (Revit MEP) course."
+          price="₹30,000"
+          checkoutSlug="bim-revit-training"
         />
+        <ProgramCurriculum />
         <section className="py-12 bg-background border-t border-border">
           <div className="container mx-auto px-4 text-center">
             <p className="text-sm text-muted-foreground font-serif">
