@@ -25,6 +25,10 @@ import {
 /* ---------------- Reference data (indicative, see disclaimer) ---------------- */
 
 const STANDARD_LIBRARIES: Record<string, { label: string; values: number[] }> = {
+  small: {
+    label: "Small & Rack/Tower Series (1-200 kVA)",
+    values: [1, 2, 3, 6, 10, 15, 20, 30, 40, 60, 80, 100, 120, 160, 200],
+  },
   standard: {
     label: "Standard Series (10-2000 kVA)",
     values: [10, 20, 30, 40, 60, 80, 100, 120, 160, 200, 250, 300, 400, 500, 600, 800, 1000, 1200, 1600, 2000],
@@ -32,6 +36,10 @@ const STANDARD_LIBRARIES: Record<string, { label: string; values: number[] }> = 
   modular25: {
     label: "Modular Frame (25 kVA power modules, up to 800 kVA)",
     values: Array.from({ length: 32 }, (_, i) => (i + 1) * 25),
+  },
+  largeFrame: {
+    label: "Large Frame / Monolithic (250-3000 kVA)",
+    values: [250, 300, 400, 500, 600, 800, 1000, 1200, 1500, 2000, 2500, 3000],
   },
 }
 
@@ -913,6 +921,13 @@ export function UpsSelectionCalculator() {
                 systems), IEC 60364 (electrical installations of buildings) and TIA-942 redundancy/tier concepts.
                 They do not replace manufacturer datasheets, discharge-curve battery sizing, harmonics/inrush studies
                 or a stamped electrical design.
+              </p>
+              <p>
+                <strong>Standard rating libraries:</strong> the four catalogues reflect the broad kVA-step
+                conventions used across the UPS market — small single-phase tower/rack units, general-purpose
+                three-phase frames, block-buildable modular power modules, and large transformer-based monolithic
+                frames used at data-center scale — not any single manufacturer's exact model line. Confirm the
+                actual available ratings against your chosen vendor's datasheet before finalizing a selection.
               </p>
             </div>
           </CardContent>

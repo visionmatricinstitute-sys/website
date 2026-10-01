@@ -25,6 +25,12 @@ export function DashboardShell({
             <span className="text-sm text-navy-foreground/80 font-serif hidden sm:inline">{studentName}</span>
             {isAdmin && (
               <div className="hidden lg:flex items-center gap-3 text-sm text-navy-foreground/70">
+                <Link href="/admin/students" className="hover:text-navy-foreground transition-colors">
+                  Students
+                </Link>
+                <Link href="/admin/enrollments" className="hover:text-navy-foreground transition-colors">
+                  Enrollments
+                </Link>
                 <Link href="/admin/live-classes" className="hover:text-navy-foreground transition-colors">
                   Live Classes
                 </Link>
@@ -39,6 +45,9 @@ export function DashboardShell({
                 </Link>
                 <Link href="/admin/announcements" className="hover:text-navy-foreground transition-colors">
                   Announcements
+                </Link>
+                <Link href="/admin/certificates" className="hover:text-navy-foreground transition-colors">
+                  Certificates
                 </Link>
               </div>
             )}
