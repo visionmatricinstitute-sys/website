@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -8,13 +9,18 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { FadeIn } from "@/components/motion/fade-in"
-import { ArrowRight, CheckCircle2 } from "lucide-react"
+import { ArrowRight, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react"
 import { DC_CAREER_FAQS, CAREER_PROGRESSION } from "@/lib/guide-data"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "How to Become a Data Center Electrical Design Engineer in India (2026 Guide)"
 const description =
   "A complete guide to the data center electrical design career path in India: what the role involves, the tools and standards you need, real salary ranges, certifications, and how to get started."
+
+const heroImageSrc = "/data-center-electrical-engineer-career.jpg"
+const heroImageAlt =
+  "Data center electrical design engineer's desk with dual monitors showing a single-line diagram and BIM model, a hard hat, and printed drawings"
 
 export const metadata: Metadata = {
   title,
@@ -29,10 +35,10 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/electrical-design-data-center.jpg",
+        url: heroImageSrc,
         width: 1200,
         height: 630,
-        alt: title,
+        alt: heroImageAlt,
       },
     ],
   },
@@ -40,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/electrical-design-data-center.jpg"],
+    images: [heroImageSrc],
   },
 }
 
@@ -49,7 +55,7 @@ const articleJsonLd = {
   "@type": "Article",
   headline: title,
   description,
-  image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
+  image: `https://www.visionmatrixinstitute.com${heroImageSrc}`,
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
   publisher: {
     "@type": "Organization",
@@ -60,6 +66,8 @@ const articleJsonLd = {
   dateModified: "2026-07-14",
   mainEntityOfPage: "https://www.visionmatrixinstitute.com/blog/how-to-become-a-data-center-electrical-design-engineer-in-india",
 }
+
+const { prev, next } = getAdjacentPosts("how-to-become-a-data-center-electrical-design-engineer-in-india")
 
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
@@ -100,16 +108,44 @@ export default function DataCenterCareerGuidePage() {
       <main>
         <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
           <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
-          <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent/25 blur-[110px]" />
+          <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent-tint/20 blur-[110px]" />
+
+          {prev && (
+            <Link
+              href={`/blog/${prev.slug}`}
+              aria-label={`Previous article: ${prev.title}`}
+              className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/30 transition-colors z-10"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Link>
+          )}
+          {next && (
+            <Link
+              href={`/blog/${next.slug}`}
+              aria-label={`Next article: ${next.title}`}
+              className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/30 transition-colors z-10"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Link>
+          )}
+
           <div className="relative container mx-auto px-4 max-w-3xl">
-            <Badge className="bg-accent/10 text-accent mb-6 hover:bg-accent/10">Career Guide</Badge>
-            <h1 className="text-3xl lg:text-5xl font-black font-sans text-white leading-tight mb-4">
+            <Badge className="bg-accent-tint/10 text-accent-tint mb-6 hover:bg-accent-tint/10">Career Guide</Badge>
+            <h1 className="text-3xl lg:text-5xl font-serif font-medium text-white leading-tight mb-4">
               How to Become a Data Center Electrical Design Engineer in India (2026 Guide)
             </h1>
-            <p className="text-lg text-white/70 font-serif leading-relaxed">
+            <p className="text-lg text-white/70 font-body leading-relaxed">
               A complete, practical guide to one of electrical engineering's fastest-growing specializations —
               what the role involves, the tools and standards you need, real salary data, and how to get started.
             </p>
+          </div>
+        </section>
+
+        <section className="bg-background">
+          <div className="container mx-auto px-4 max-w-3xl -mt-10 lg:-mt-14 relative">
+            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border">
+              <Image src={heroImageSrc} alt={heroImageAlt} fill className="object-cover" priority />
+            </div>
           </div>
         </section>
 
@@ -127,7 +163,7 @@ export default function DataCenterCareerGuidePage() {
                       <a
                         key={item.id}
                         href={`#${item.id}`}
-                        className="text-sm text-accent hover:underline font-serif"
+                        className="text-sm text-accent hover:underline font-body"
                       >
                         {item.label}
                       </a>
@@ -137,7 +173,7 @@ export default function DataCenterCareerGuidePage() {
               </Card>
             </FadeIn>
 
-            <article className="space-y-12 text-foreground font-serif leading-relaxed [&_h2]:font-sans [&_h2]:font-black [&_h2]:text-foreground [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:mb-4 [&_h3]:font-sans [&_h3]:font-bold [&_h3]:text-foreground [&_h3]:text-lg [&_h3]:mb-2 [&_h3]:mt-6 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:space-y-2 [&_li]:list-disc [&_li]:ml-5">
+            <article className="space-y-12 text-foreground font-body leading-relaxed [&_h2]:font-serif [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:mb-4 [&_h3]:font-sans [&_h3]:font-bold [&_h3]:text-foreground [&_h3]:text-lg [&_h3]:mb-2 [&_h3]:mt-6 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:space-y-2 [&_li]:list-disc [&_li]:ml-5">
               <FadeIn>
                 <h2 id="what-is-the-role">What Does a Data Center Electrical Design Engineer Do?</h2>
                 <p>
@@ -301,7 +337,7 @@ export default function DataCenterCareerGuidePage() {
                       </Badge>
                       <div>
                         <div className="font-semibold font-sans text-foreground text-sm">{step.role}</div>
-                        <div className="text-sm text-muted-foreground font-serif">{step.focus}</div>
+                        <div className="text-sm text-muted-foreground font-body">{step.focus}</div>
                       </div>
                     </div>
                   ))}
@@ -327,15 +363,15 @@ export default function DataCenterCareerGuidePage() {
               <Card className="bg-navy text-navy-foreground border-none overflow-hidden relative">
                 <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
                 <CardContent className="relative p-8 text-center">
-                  <h2 className="text-2xl font-black font-sans text-white mb-3">
+                  <h2 className="text-2xl font-serif font-medium text-white mb-3">
                     Ready to Start Your Data Center Electrical Design Career?
                   </h2>
-                  <p className="text-navy-foreground/75 font-serif mb-6 max-w-xl mx-auto">
+                  <p className="text-navy-foreground/75 font-body mb-6 max-w-xl mx-auto">
                     Our Electrical Design Engineer – Data Center Specialist program covers everything in this
                     guide, taught by practitioners and anchored in current IEC, IEEE, and Uptime Institute
                     standards.
                   </p>
-                  <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <Button asChild size="lg" variant="accent-on-dark">
                     <Link href="/programs/electrical-design-data-center">
                       Explore the Program
                       <ArrowRight className="ml-2 h-5 w-5" />
@@ -348,7 +384,7 @@ export default function DataCenterCareerGuidePage() {
             {/* FAQ */}
             <section id="faq" className="mt-16">
               <FadeIn className="mb-8">
-                <h2 className="text-2xl lg:text-3xl font-black font-sans text-foreground">
+                <h2 className="text-2xl lg:text-3xl font-serif font-medium text-foreground">
                   Frequently Asked Questions
                 </h2>
               </FadeIn>
@@ -361,7 +397,7 @@ export default function DataCenterCareerGuidePage() {
                           <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
                           <div>
                             <h3 className="font-semibold font-sans text-foreground mb-1.5">{faq.question}</h3>
-                            <p className="text-sm text-muted-foreground font-serif leading-relaxed">{faq.answer}</p>
+                            <p className="text-sm text-muted-foreground font-body leading-relaxed">{faq.answer}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -375,13 +411,13 @@ export default function DataCenterCareerGuidePage() {
             <FadeIn className="mt-16 pt-8 border-t border-border">
               <h2 className="text-lg font-bold font-sans text-foreground mb-4">Related Resources</h2>
               <div className="grid sm:grid-cols-3 gap-4">
-                <Link href="/programs/electrical-design-data-center" className="text-sm text-accent hover:underline font-serif">
+                <Link href="/programs/electrical-design-data-center" className="text-sm text-accent hover:underline font-body">
                   Electrical Design – Data Center Specialist Program →
                 </Link>
-                <Link href="/engineers-toolkit" className="text-sm text-accent hover:underline font-serif">
+                <Link href="/engineers-toolkit" className="text-sm text-accent hover:underline font-body">
                   Free Engineering Calculators & Toolkit →
                 </Link>
-                <Link href="/#courses" className="text-sm text-accent hover:underline font-serif">
+                <Link href="/#courses" className="text-sm text-accent hover:underline font-body">
                   All Courses →
                 </Link>
               </div>

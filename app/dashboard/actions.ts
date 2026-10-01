@@ -114,3 +114,22 @@ export async function signOut() {
   await supabase.auth.signOut()
   redirect("/login")
 }
+
+// Lets the certificate's own student turn public display of their name on or
+// off. The database function only updates a valid certificate that belongs to
+// the signed-in user.
+export async function setCertificateNameConsent(certificateId: string, consent: boolean) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  const { error } = await supabase.rpc("set_certificate_name_consent", {
+    p_certificate_id: certificateId,
+    p_consent: consent,
+  })
+  if (error) throw new Error(error.message)
+
+  revalidatePath("/dashboard")
+}

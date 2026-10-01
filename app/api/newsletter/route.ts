@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/service"
+import { verifyCaptcha, clientIp } from "@/lib/turnstile"
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>
@@ -12,6 +13,11 @@ export async function POST(request: Request) {
   const email = String(body.email ?? "").trim()
   if (!email) {
     return NextResponse.json({ error: "Email is required." }, { status: 400 })
+  }
+
+  const captchaOk = await verifyCaptcha(body.captchaToken, clientIp(request))
+  if (!captchaOk) {
+    return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 400 })
   }
 
   const supabase = createServiceClient()
