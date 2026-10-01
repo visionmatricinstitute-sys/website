@@ -60,7 +60,7 @@ export function ToolPageShell({ slug, title, description, children }: ToolPageSh
           </div>
           <Link
             href="/engineers-toolkit"
-            className="inline-flex items-center gap-1.5 mt-6 text-sm font-semibold text-accent hover:underline"
+            className="inline-flex items-center gap-1.5 mt-6 text-sm font-semibold text-foreground underline underline-offset-4 hover:no-underline"
           >
             View all tools in the Engineer's Toolkit
             <ChevronRight className="h-4 w-4" />

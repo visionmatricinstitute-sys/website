@@ -21,11 +21,11 @@ export function ProgramToolsOutcomes() {
               <FadeIn key={cat.title} delay={index * 0.08}>
                 <Card className="h-full">
                   <CardContent className="p-6">
-                    <h3 className="text-sm font-bold uppercase tracking-wide text-accent mb-4">{cat.title}</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-wide text-foreground mb-4">{cat.title}</h3>
                     <ul className="space-y-2">
                       {cat.tools.map((tool) => (
                         <li key={tool} className="text-sm text-foreground font-serif flex items-center gap-2">
-                          <span className="text-accent">▸</span>
+                          <span className="text-foreground">▸</span>
                           {tool}
                         </li>
                       ))}

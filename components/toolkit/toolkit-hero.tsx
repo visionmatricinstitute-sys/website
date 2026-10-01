@@ -20,7 +20,7 @@ export function ToolkitHero() {
               </div>
               <h1 className="text-4xl lg:text-6xl font-black font-sans text-foreground leading-tight text-balance">
                 Practical tools for the
-                <span className="text-accent block">engineers we train</span>
+                <span className="text-foreground block">engineers we train</span>
               </h1>
               <p className="text-lg text-muted-foreground font-serif leading-relaxed max-w-lg">
                 A companion workspace for our CAD, BIM and technical students — sizing calculators, formula

@@ -34,12 +34,12 @@
   --accent-tint: #00a8ff;
   /*
    * The brand red above reads at 4.98:1 white-on-fill (passes AA normal
-   * text) on light/ivory surfaces. Against the --navy dark sections it's
-   * 3.59:1 (#d32f2f on #0f172a), which clears the 3:1 UI-component minimum.
+   * text) on light/ivory surfaces. Against the --navy dark sections (now brand
+   * charcoal, #1c1b1a, Founder 2026-10-01) it's 3.45:1 (#d32f2f on #1c1b1a), which clears the 3:1 UI-component minimum.
    * --accent-on-dark is only used as a button fill with white text (see the
    * "accent-on-dark" variant in components/ui/button.tsx), so the fill must
    * keep white text at >= 4.5:1: a lighter red like #ef4444 reads better on
-   * navy (4.74:1) but only gives 3.76:1 white-on-fill, which fails AA for
+   * dark (~4.6:1) but only gives 3.76:1 white-on-fill, which fails AA for
    * normal-size button text. Kept as its own token so it can diverge later.
    * Ratios recomputed with a one-off WCAG luminance script, not
    * scratchpad/contrast.pl.
@@ -56,7 +56,7 @@
   --chart-4: oklch(0.205 0 0);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.75rem;
-  --navy: #0f172a;
+  --navy: #1c1b1a;
   --navy-foreground: #ffffff;
   --sidebar: oklch(0.97 0 0);
   --sidebar-foreground: oklch(0.205 0 0);

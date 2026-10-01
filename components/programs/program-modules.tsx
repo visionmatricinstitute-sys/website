@@ -30,7 +30,7 @@ export function ProgramModules() {
                 <tbody>
                   {PROGRAM_MODULES.map((m) => (
                     <tr key={m.number} className="border-b border-border last:border-0 hover:bg-muted/40 transition-colors">
-                      <td className="px-4 py-3 font-mono text-accent font-semibold">{m.number}</td>
+                      <td className="px-4 py-3 font-mono text-foreground font-semibold">{m.number}</td>
                       <td className="px-4 py-3 font-medium text-foreground font-sans">{m.title}</td>
                       <td className="px-4 py-3 text-muted-foreground">{m.hours}</td>
                       <td className="px-4 py-3 text-muted-foreground font-serif">{m.focus}</td>

@@ -73,7 +73,7 @@ export default function BlogIndexPage() {
                           <Badge className="bg-accent/10 text-accent hover:bg-accent/10">{post.category}</Badge>
                           <h2 className="text-xl font-bold font-sans text-foreground">{post.title}</h2>
                           <p className="text-sm text-muted-foreground font-body leading-relaxed">{post.description}</p>
-                          <span className="inline-flex items-center gap-1.5 text-sm text-accent font-semibold">
+                          <span className="inline-flex items-center gap-1.5 text-sm text-foreground font-semibold">
                             Read article <ArrowRight className="h-4 w-4" />
                           </span>
                         </div>
