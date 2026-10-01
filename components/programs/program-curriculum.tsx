@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { PlayCircle, Clock, Layers } from "lucide-react"
+import { Lock, Clock, Layers } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 import {
   BIM_CURRICULUM,
@@ -68,7 +68,7 @@ export function ProgramCurriculum() {
                                 key={lesson.number}
                                 className="flex items-start gap-2.5 text-sm text-muted-foreground font-serif"
                               >
-                                <PlayCircle className="h-4 w-4 text-muted-foreground/50 shrink-0 mt-0.5" />
+                                <Lock className="h-3.5 w-3.5 text-muted-foreground/50 shrink-0 mt-1" />
                                 <span>
                                   <span className="font-mono text-xs text-muted-foreground/70 mr-1.5">
                                     {lesson.number}
