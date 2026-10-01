@@ -9,9 +9,9 @@ import { ToolkitStandardsSection } from "@/components/toolkit/toolkit-standards-
 import { ToolkitLibrarySection } from "@/components/toolkit/toolkit-library-section"
 import { ToolkitLinksSection } from "@/components/toolkit/toolkit-links-section"
 
-const title = "Engineer's Toolkit | Vision Matrix Institute"
+const title = "Data Center Calculation Tools & DC Calculator Suite | Engineer's Toolkit"
 const description =
-  "Free electrical engineering calculators (cable sizing, transformer, UPS, generator, breaker, short-circuit, power factor, lighting, grounding), a standards reference library, and curated resources for engineering students."
+  "Free data center electrical calculation tools — cable/conductor sizing, transformer, UPS, generator, breaker, short-circuit, power factor, lighting, grounding, battery runtime, PUE/WUE/CUE, cooling load and motor starting dip — each calculator on its own page, plus a standards reference library."
 
 export const metadata: Metadata = {
   title,

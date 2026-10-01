@@ -6,6 +6,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { ArticleShell } from "@/components/blog/article-shell"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "Data Center Tier Classification Explained (Tier I–IV)"
 const description =
@@ -74,6 +75,8 @@ const faqJsonLd = {
   mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
 }
 
+const { prev, next } = getAdjacentPosts("data-center-tier-classification-explained")
+
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
   { name: "Blog", path: "/blog" },
@@ -95,6 +98,8 @@ export default function TierClassificationPost() {
           faqs={faqs}
           whatsappMessage="Hi, I read the Tier Classification article and want to know more about the Electrical Design course."
           heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
+          prevPost={prev}
+          nextPost={next}
         >
           <div>
             <h2 id="one-question">Tier classification answers one question</h2>
@@ -168,7 +173,7 @@ export default function TierClassificationPost() {
         </ArticleShell>
         <section className="py-12 bg-background border-t border-border">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-sm text-muted-foreground font-serif">
+            <p className="text-sm text-muted-foreground font-body">
               Read more:{" "}
               <Link href="/blog" className="text-accent font-semibold hover:underline">
                 All articles

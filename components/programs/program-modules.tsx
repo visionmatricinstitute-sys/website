@@ -11,7 +11,7 @@ export function ProgramModules() {
         <FadeIn className="text-center mb-12">
           <Badge className="bg-accent/10 text-accent mb-4 hover:bg-accent/10">02 · What You Will Master</Badge>
           <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">
-            14 modules. One integrated competence stack.
+            {PROGRAM_MODULES.length} modules. One integrated competence stack.
           </h2>
         </FadeIn>
 

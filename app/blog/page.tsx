@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -9,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { FadeIn } from "@/components/motion/fade-in"
 import { ArrowRight } from "lucide-react"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { blogPosts as posts } from "@/lib/blog-posts"
 
 const title = "Blog"
 const description =
@@ -33,93 +35,6 @@ const breadcrumbs = breadcrumbJsonLd([
   { name: "Blog", path: "/blog" },
 ])
 
-const posts = [
-  {
-    slug: "single-line-diagrams-explained",
-    category: "Technical Basics",
-    title: "Single-Line Diagrams Explained (SLD)",
-    description:
-      "A single-line diagram is the one drawing every electrical engineer, contractor, and inspector on a data center project actually works from — and it deliberately leaves almost everything out. Here's what it keeps, what the symbols mean, and how to actually read one.",
-  },
-  {
-    slug: "pdu-power-distribution-unit-explained",
-    category: "Technical Basics",
-    title: "PDU (Power Distribution Unit) Explained",
-    description:
-      "Somewhere between the UPS output and a server's power cord, one piece of equipment does the actual job of splitting bulk power into the dozens of individually protected circuits a data hall needs. Here's what a PDU really does — and the two very different things people mean by that name.",
-  },
-  {
-    slug: "ups-topologies-explained",
-    category: "Technical Basics",
-    title: "UPS Topologies Explained: Standby, Line-Interactive, Double-Conversion",
-    description:
-      "Not every UPS protects a server the same way, and the difference isn't marketing — it's how many milliseconds of interruption actually reach the load. Here's the three real UPS topologies, and the separate question of how many UPS units a design actually needs.",
-  },
-  {
-    slug: "redundancy-n-n1-2n-explained",
-    category: "Technical Basics",
-    title: "Data Center Redundancy Explained: N, N+1, 2N, 2(N+1)",
-    description:
-      "N+1 and 2N both get called \"redundant\" — they are not remotely the same thing, and mixing them up in a design review or an interview is a fast way to lose credibility. Here's what each notation actually means.",
-  },
-  {
-    slug: "pue-power-usage-effectiveness-explained",
-    category: "Technical Basics",
-    title: "PUE (Power Usage Effectiveness) Explained",
-    description:
-      "PUE is the single number every data center operator quotes — and the single number most people can recite without being able to say what it actually penalizes. Here's the real formula, what drives it, and why 1.0 is a number you'll never see.",
-  },
-  {
-    slug: "hot-aisle-cold-aisle-containment-explained",
-    category: "Technical Basics",
-    title: "Hot Aisle / Cold Aisle Containment Explained",
-    description:
-      "Every data center layout diagram shows alternating hot and cold aisles, but the reason isn't decoration — it's the cheapest, most effective way to stop a facility from cooling its own exhaust air. Here's how it actually works.",
-  },
-  {
-    slug: "data-center-tier-classification-explained",
-    category: "Technical Basics",
-    title: "Data Center Tier Classification Explained (Tier I–IV)",
-    description:
-      "Tier I–IV isn't a marketing label — it's a specific engineering answer to one question: what happens when a component fails? Here's what actually separates each tier, the real numbers behind them, and the two systems people mix up.",
-  },
-  {
-    slug: "how-to-become-a-data-center-electrical-design-engineer-in-india",
-    category: "Career Guide",
-    title: "How to Become a Data Center Electrical Design Engineer in India (2026 Guide)",
-    description:
-      "A complete guide to the data center electrical design career path in India: what the role involves, the tools and standards you need, real salary ranges, certifications, and how to get started.",
-  },
-  {
-    slug: "cable-sizing-basics-for-data-center-electrical-design",
-    category: "Technical Basics",
-    title: "Cable Sizing Basics for Data Center Electrical Design",
-    description:
-      "The four factors that actually decide a cable size in data center electrical design — current rating, voltage drop, derating, and short-circuit withstand — explained simply.",
-  },
-  {
-    slug: "ups-vs-diesel-generator-data-center-backup-power",
-    category: "Technical Basics",
-    title: "UPS vs Diesel Generator: Which One Handles a Power Outage?",
-    description:
-      "They're not competing solutions — a UPS and a diesel generator solve two different problems in a data center power outage. Here's what each one actually does, and why you almost always need both.",
-  },
-  {
-    slug: "mv-lv-power-distribution-architecture-explained",
-    category: "Technical Basics",
-    title: "MV/LV Power Distribution Architecture, Explained",
-    description:
-      "Why data center power comes in at medium voltage and gets stepped down in stages, and how radial, ring, and 2N distribution architectures trade off cost against resilience.",
-  },
-  {
-    slug: "earthing-and-bonding-basics-for-data-centers",
-    category: "Technical Basics",
-    title: "Earthing & Bonding Basics for Data Centers",
-    description:
-      "Earthing and bonding are two different jobs that get lumped together — one is about safety, the other is about keeping sensitive equipment from seeing electrical noise. Here's the difference and why data centers care more than most buildings.",
-  },
-]
-
 export default function BlogIndexPage() {
   return (
     <div className="min-h-screen">
@@ -128,17 +43,17 @@ export default function BlogIndexPage() {
       <main>
         <section className="relative bg-navy py-20 lg:py-28 overflow-hidden">
           <div className="absolute inset-0 bg-grid-lines [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]" />
-          <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent/25 blur-[110px]" />
+          <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-accent-tint/20 blur-[110px]" />
           <div className="relative container mx-auto px-4 max-w-3xl">
-            <h1 className="text-3xl lg:text-5xl font-black font-sans text-white leading-tight mb-4">Blog</h1>
-            <p className="text-lg text-white/70 font-serif leading-relaxed">
+            <h1 className="text-3xl lg:text-5xl font-serif font-medium text-white leading-tight mb-4">Blog</h1>
+            <p className="text-lg text-white/70 font-body leading-relaxed">
               Technical explainers and career guidance on data center electrical design — written by the same
               team that teaches our courses.
             </p>
             <p className="mt-4">
               <Link
                 href="/resources/data-center-design-basics-checklist"
-                className="text-accent font-semibold hover:underline"
+                className="text-accent-tint font-semibold hover:underline"
               >
                 Free download: Data Center Design Basics Checklist →
               </Link>
@@ -151,14 +66,27 @@ export default function BlogIndexPage() {
             {posts.map((post, index) => (
               <FadeIn key={post.slug} delay={index * 0.05}>
                 <Link href={`/blog/${post.slug}`}>
-                  <Card className="hover:shadow-lg transition-shadow">
-                    <CardContent className="p-6 space-y-3">
-                      <Badge className="bg-accent/10 text-accent hover:bg-accent/10">{post.category}</Badge>
-                      <h2 className="text-xl font-bold font-sans text-foreground">{post.title}</h2>
-                      <p className="text-sm text-muted-foreground font-serif leading-relaxed">{post.description}</p>
-                      <span className="inline-flex items-center gap-1.5 text-sm text-accent font-semibold">
-                        Read article <ArrowRight className="h-4 w-4" />
-                      </span>
+                  <Card className="hover:shadow-lg transition-shadow overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="flex flex-col sm:flex-row">
+                        <div className="order-2 sm:order-1 flex-1 p-6 space-y-3">
+                          <Badge className="bg-accent/10 text-accent hover:bg-accent/10">{post.category}</Badge>
+                          <h2 className="text-xl font-bold font-sans text-foreground">{post.title}</h2>
+                          <p className="text-sm text-muted-foreground font-body leading-relaxed">{post.description}</p>
+                          <span className="inline-flex items-center gap-1.5 text-sm text-accent font-semibold">
+                            Read article <ArrowRight className="h-4 w-4" />
+                          </span>
+                        </div>
+                        <div className="order-1 sm:order-2 relative w-full sm:w-48 md:w-56 aspect-[16/9] sm:aspect-square shrink-0">
+                          <Image
+                            src={post.image}
+                            alt={post.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 640px) 100vw, 224px"
+                          />
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </Link>
