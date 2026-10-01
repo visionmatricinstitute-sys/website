@@ -6,10 +6,15 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { DemoCta } from "@/components/demo-cta"
 import { ArticleShell } from "@/components/blog/article-shell"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
+import { getAdjacentPosts } from "@/lib/blog-posts"
 
 const title = "Cable Sizing Basics for Data Center Electrical Design"
 const description =
   "The four factors that actually decide a cable size in data center electrical design — current rating, voltage drop, derating, and short-circuit withstand — explained simply."
+
+const heroImageSrc = "/data-center-cable-sizing.jpg"
+const heroImageAlt =
+  "Color-coded power and control cables in galvanized steel cable trays entering switchgear panels in a data center electrical room"
 
 export const metadata: Metadata = {
   title,
@@ -20,9 +25,9 @@ export const metadata: Metadata = {
     url: "/blog/cable-sizing-basics-for-data-center-electrical-design",
     title,
     description,
-    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
+    images: [{ url: heroImageSrc, width: 1200, height: 630, alt: heroImageAlt }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
+  twitter: { card: "summary_large_image", title, description, images: [heroImageSrc] },
 }
 
 const faqs = [
@@ -48,7 +53,7 @@ const jsonLd = {
   "@type": "Article",
   headline: title,
   description,
-  image: "https://www.visionmatrixinstitute.com/electrical-design-data-center.jpg",
+  image: `https://www.visionmatrixinstitute.com${heroImageSrc}`,
   author: { "@type": "Organization", name: "Vision Matrix Institute" },
   publisher: {
     "@type": "Organization",
@@ -65,6 +70,8 @@ const faqJsonLd = {
   "@type": "FAQPage",
   mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
 }
+
+const { prev, next } = getAdjacentPosts("cable-sizing-basics-for-data-center-electrical-design")
 
 const breadcrumbs = breadcrumbJsonLd([
   { name: "Home", path: "/" },
@@ -86,6 +93,9 @@ export default function CableSizingBasicsPost() {
           description="A cable that 'works' and a cable that's correctly sized are not the same thing. Here are the four checks every data center electrical designer runs before picking a size."
           faqs={faqs}
           whatsappMessage="Hi, I read the cable sizing article and want to know more about the Electrical Design course."
+          heroImage={{ src: heroImageSrc, alt: heroImageAlt }}
+          prevPost={prev}
+          nextPost={next}
         >
           <div>
             <h2 id="why-it-matters">Why cable sizing isn't just "pick a big enough wire"</h2>
@@ -149,7 +159,7 @@ export default function CableSizingBasicsPost() {
         </ArticleShell>
         <section className="py-12 bg-background border-t border-border">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-sm text-muted-foreground font-serif">
+            <p className="text-sm text-muted-foreground font-body">
               Read more:{" "}
               <Link href="/blog" className="text-accent font-semibold hover:underline">
                 All articles

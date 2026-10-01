@@ -20,6 +20,12 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+        accent:
+          "bg-accent text-white shadow-lg shadow-accent/20 hover:bg-accent/90",
+        "accent-on-dark":
+          "bg-accent-on-dark text-white shadow-lg shadow-accent-on-dark/30 hover:bg-accent-on-dark/90",
+        whatsapp:
+          "bg-green-700 text-white shadow-xs hover:bg-green-800",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

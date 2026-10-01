@@ -9,6 +9,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Loader2, GraduationCap } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { TurnstileWidget } from "@/components/turnstile-widget"
+
+const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
+
+// Only ever follow a same-origin relative path. Rejects absolute URLs and
+// protocol-relative ones (//evil.com), which the browser's own origin parsing
+// would otherwise treat as "go to this other host."
+function safeRedirect(target: string | null): string {
+  if (!target || !target.startsWith("/") || target.startsWith("//")) return "/dashboard"
+  return target
+}
 
 export function LoginForm() {
   const router = useRouter()
@@ -17,6 +28,7 @@ export function LoginForm() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -24,15 +36,20 @@ export function LoginForm() {
     setSubmitting(true)
 
     const supabase = createClient()
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+      options: { captchaToken: captchaToken ?? undefined },
+    })
 
     if (signInError) {
       setError(signInError.message)
+      setCaptchaToken(null)
       setSubmitting(false)
       return
     }
 
-    router.push(searchParams.get("redirect") || "/dashboard")
+    router.push(safeRedirect(searchParams.get("redirect")))
     router.refresh()
   }
 
@@ -74,7 +91,14 @@ export function LoginForm() {
             <p className="text-sm text-destructive bg-destructive/10 rounded-md px-3 py-2">{error}</p>
           )}
 
-          <Button type="submit" disabled={submitting} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg">
+          <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+
+          <Button
+            type="submit"
+            disabled={submitting || (captchaRequired && !captchaToken)}
+            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+            size="lg"
+          >
             {submitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing in...

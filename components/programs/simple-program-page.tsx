@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, MessageCircle, Clock, BarChart3, Video } from "lucide-react"
+import { CheckCircle2, MessageCircle, Clock, BarChart3, Video, CreditCard } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
 import { MagneticButton } from "@/components/motion/magnetic-button"
 import Link from "next/link"
@@ -25,6 +25,11 @@ export interface SimpleProgramPageProps {
   outcomes: string[]
   faqs: SimpleProgramFaq[]
   whatsappMessage: string
+  /** Displayed fee, e.g. "₹10,000" — only pass this once the course has a real
+   *  price set in the `courses` table (checkoutSlug), otherwise omit both and
+   *  the page falls back to WhatsApp/Apply Now only. */
+  price?: string
+  checkoutSlug?: string
 }
 
 export function SimpleProgramPage({
@@ -39,7 +44,10 @@ export function SimpleProgramPage({
   outcomes,
   faqs,
   whatsappMessage,
+  price,
+  checkoutSlug,
 }: SimpleProgramPageProps) {
+  const canCheckout = Boolean(price && checkoutSlug)
   const waHref = `https://wa.me/919930259997?text=${encodeURIComponent(whatsappMessage)}`
 
   return (
@@ -63,19 +71,30 @@ export function SimpleProgramPage({
             <p className="text-lg text-white/70 font-serif leading-relaxed max-w-2xl mb-8">{description}</p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <MagneticButton>
-                <Button
-                  size="lg"
-                  className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30"
-                  onClick={() => window.open(waHref, "_blank")}
-                >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Enquire on WhatsApp
-                </Button>
-              </MagneticButton>
+              {canCheckout ? (
+                <MagneticButton>
+                  <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30">
+                    <Link href={`/checkout/${checkoutSlug}`}>
+                      <CreditCard className="mr-2 h-5 w-5" />
+                      Enroll & Pay {price}
+                    </Link>
+                  </Button>
+                </MagneticButton>
+              ) : (
+                <MagneticButton>
+                  <Button
+                    size="lg"
+                    className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30"
+                    onClick={() => window.open(waHref, "_blank")}
+                  >
+                    <MessageCircle className="mr-2 h-5 w-5" />
+                    Enquire on WhatsApp
+                  </Button>
+                </MagneticButton>
+              )}
               <MagneticButton>
                 <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent">
-                  <Link href="/#admission">Apply Now</Link>
+                  <Link href="/#admission">Apply Without Paying Yet</Link>
                 </Button>
               </MagneticButton>
             </div>
@@ -186,17 +205,38 @@ export function SimpleProgramPage({
         <div className="relative container mx-auto px-4 text-center">
           <FadeIn>
             <h2 className="text-3xl lg:text-5xl font-black font-sans text-white mb-4">Ready to get started?</h2>
-            <p className="text-white/60 font-serif mb-8">Message us on WhatsApp and we'll answer your questions directly.</p>
-            <MagneticButton>
-              <Button
-                size="lg"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30"
-                onClick={() => window.open(waHref, "_blank")}
-              >
-                <MessageCircle className="mr-2 h-5 w-5" />
-                WhatsApp +91 99302 59997
-              </Button>
-            </MagneticButton>
+            <p className="text-white/60 font-serif mb-8">
+              {canCheckout
+                ? "Enroll and pay securely online, or message us on WhatsApp first if you have questions."
+                : "Message us on WhatsApp and we'll answer your questions directly."}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {canCheckout && (
+                <MagneticButton>
+                  <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30">
+                    <Link href={`/checkout/${checkoutSlug}`}>
+                      <CreditCard className="mr-2 h-5 w-5" />
+                      Enroll & Pay {price}
+                    </Link>
+                  </Button>
+                </MagneticButton>
+              )}
+              <MagneticButton>
+                <Button
+                  size="lg"
+                  variant={canCheckout ? "outline" : "default"}
+                  className={
+                    canCheckout
+                      ? "border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent"
+                      : "bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/30"
+                  }
+                  onClick={() => window.open(waHref, "_blank")}
+                >
+                  <MessageCircle className="mr-2 h-5 w-5" />
+                  WhatsApp +91 99302 59997
+                </Button>
+              </MagneticButton>
+            </div>
           </FadeIn>
         </div>
       </section>

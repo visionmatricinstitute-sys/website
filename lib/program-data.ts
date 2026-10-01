@@ -5,22 +5,29 @@ export interface ProgramModule {
   focus: string
 }
 
+// The 12 modules of the course, as held in the course record (public.course_modules), read 2026-09-26.
+// Keep in step with that table.
 export const PROGRAM_MODULES: ProgramModule[] = [
-  { number: "01", title: "Tier Classification & Reliability", hours: "16h", focus: "Uptime, TIA-942, SPOF, N/N+1/2N" },
-  { number: "02", title: "Electrical Fundamentals", hours: "20h", focus: "AC theory, per-unit, harmonics, earthing basics" },
-  { number: "03", title: "Power Distribution Architectures", hours: "24h", focus: "Radial, ring bus, block, distributed redundancy" },
-  { number: "04", title: "MV Systems & Substations", hours: "24h", focus: "Transformers, MV switchgear, substation design" },
-  { number: "05", title: "UPS Systems & Battery Sizing", hours: "24h", focus: "Static UPS, battery sizing (IEEE 485), STS" },
-  { number: "06", title: "Standby Generation & Fuel Systems", hours: "20h", focus: "Generator sizing, paralleling, day tanks, bulk fuel" },
-  { number: "07", title: "Protection Engineering", hours: "22h", focus: "Relay setting, coordination, ETAP/DIgSILENT" },
-  { number: "08", title: "Short Circuit, Arc Flash & Power Quality", hours: "22h", focus: "IEC 60909, IEEE 1584, IEEE 519 harmonic studies" },
-  { number: "09", title: "Earthing, Bonding & LPS", hours: "18h", focus: "IEEE 80, IEC 62305, TN-S/TN-C-S, SPD selection" },
-  { number: "10", title: "Load Calculations & Cable Sizing", hours: "20h", focus: "Load lists, cable sizing, voltage drop, derating" },
-  { number: "11", title: "LV Switchgear, PDU & Busway Design", hours: "20h", focus: "IEC 61439 Forms, PDU/RPDU, busway systems" },
-  { number: "12", title: "Electrical Rooms & Cable Management", hours: "18h", focus: "Room layouts, containment, trays, coordination" },
-  { number: "13", title: "Documentation, Vendor Engineering", hours: "18h", focus: "Specs, BOQ, TBE, vendor drawings, procurement" },
-  { number: "14", title: "BIM, Testing & Commissioning", hours: "22h", focus: "Revit MEP, Navisworks, FAT/SAT, L1–L5" },
+  { number: "01", title: "Introduction to Data Centers", hours: "8h", focus: "Data center types, market overview, PUE/WUE/CUE, career path" },
+  { number: "02", title: "Electrical Engineering Fundamentals", hours: "16h", focus: "Ohm's/Kirchhoff's Laws, 3-phase power, load schedules, voltage drop" },
+  { number: "03", title: "Electrical Equipment – Part 1", hours: "20h", focus: "MV switchgear, transformers, diesel generators, synchronization" },
+  { number: "04", title: "Data Center Design Standards", hours: "12h", focus: "Uptime Tiers, TIA-942-C, IEC/IS standards, ASHRAE classes" },
+  { number: "05", title: "The Electrical Design Process", hours: "14h", focus: "Design lifecycle, Basis of Design, BOQ, vendor evaluation" },
+  { number: "06", title: "Load Calculations", hours: "20h", focus: "UPS/transformer/DG sizing, cable sizing, fault levels, PFC" },
+  { number: "07", title: "Single-Line Diagrams", hours: "16h", focus: "SLD symbols, redundancy topologies (N+1/2N), UPS topologies" },
+  { number: "08", title: "Electrical Layout Design", hours: "18h", focus: "Substation/UPS/DG room layouts, data hall design, grounding grids" },
+  { number: "09", title: "BIM and Software", hours: "20h", focus: "Revit MEP, Navisworks, ETAP, DIALux, Bluebeam" },
+  { number: "10", title: "Vendor Engineering", hours: "14h", focus: "Vendor landscape, technical bid evaluation, FAT/SAT" },
+  { number: "11", title: "Site Engineering", hours: "18h", focus: "Installation supervision, testing, commissioning, punch list" },
+  { number: "12", title: "Real Data Center Project – Capstone", hours: "30h", focus: "20 MW Tier III colocation project, end to end" },
 ]
+
+// Total hours across the modules above ("8h", "16h", ...). 206 for the current 12 modules.
+export const PROGRAM_TOTAL_HOURS = PROGRAM_MODULES.reduce((sum, m) => sum + (parseInt(m.hours, 10) || 0), 0)
+
+// Displayed course fee. There is one course and one fee (no tiers). Keep in step with
+// courses.price_amount in the database (which is what checkout charges). Fees may be revised.
+export const COURSE_FEE = "₹40,000"
 
 export interface ToolCategory {
   title: string
@@ -193,61 +200,8 @@ export const LEARNING_OUTCOMES: string[] = [
   "Operate confidently in vendor negotiations, FAT floors, and client reviews.",
 ]
 
-export interface InvestmentTier {
-  name: string
-  subtitle: string
-  price: string
-  features: string[]
-  featured?: boolean
-}
-
-export const INVESTMENT_TIERS: InvestmentTier[] = [
-  {
-    name: "Foundation",
-    subtitle: "Self-paced access",
-    price: "Enquire",
-    features: [
-      "Full 14-module content library",
-      "On-demand video lectures",
-      "40+ downloadable calculators & templates",
-      "Capstone project brief",
-      "Digital completion certificate",
-      "6 months of platform access",
-    ],
-  },
-  {
-    name: "Professional",
-    subtitle: "Live cohort · flagship tier",
-    price: "Enquire",
-    featured: true,
-    features: [
-      "Everything in Foundation",
-      "Live cohort with weekly sessions",
-      "Assignment review with feedback",
-      "Capstone review with industry panel",
-      "1-on-1 mentoring (4 sessions)",
-      "12 months of platform access",
-      "Alumni network membership",
-    ],
-  },
-  {
-    name: "Enterprise",
-    subtitle: "Corporate & team training",
-    price: "Custom",
-    features: [
-      "Everything in Professional",
-      "Cohort of 5–25 trainees",
-      "Custom capstone (client project)",
-      "On-site or online delivery",
-      "White-labelled certificates",
-      "24 months of platform access",
-      "Dedicated program manager",
-    ],
-  },
-]
-
 export const ENROLL_STEPS = [
   { number: "01", title: "Reach out", description: "Send us your CV or profile via WhatsApp or email. We respond within one business day." },
-  { number: "02", title: "Discovery call", description: "A 30-minute call to match you with the right cohort and tier for your goals." },
+  { number: "02", title: "Discovery call", description: "A 30-minute call to check the course is the right fit for your goals." },
   { number: "03", title: "Enrol & begin", description: "Complete enrolment, receive onboarding kit, and begin the program in the next cohort." },
 ]

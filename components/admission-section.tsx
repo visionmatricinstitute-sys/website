@@ -9,6 +9,10 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CheckCircle, FileText, CreditCard, GraduationCap, Loader2 } from "lucide-react"
+import { TurnstileWidget } from "@/components/turnstile-widget"
+import { isValidPhone, PHONE_INPUT_PATTERN, PHONE_VALIDATION_MESSAGE } from "@/lib/phone"
+
+const captchaRequired = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
 
 const EMPTY_FORM = {
   firstName: "",
@@ -23,6 +27,7 @@ const EMPTY_FORM = {
 export function AdmissionSection() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [submitting, setSubmitting] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   function updateField(field: keyof typeof EMPTY_FORM, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -35,13 +40,21 @@ export function AdmissionSection() {
       toast.error("Please fill in all required fields.")
       return
     }
+    if (!isValidPhone(form.phone)) {
+      toast.error(PHONE_VALIDATION_MESSAGE)
+      return
+    }
+    if (captchaRequired && !captchaToken) {
+      toast.error("Please complete the verification check.")
+      return
+    }
 
     setSubmitting(true)
     try {
       const response = await fetch("/api/admission", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, captchaToken }),
       })
 
       const data = await response.json()
@@ -52,8 +65,10 @@ export function AdmissionSection() {
 
       toast.success("Application submitted! Our team will contact you within 24 hours.")
       setForm(EMPTY_FORM)
+      setCaptchaToken(null)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.")
+      setCaptchaToken(null)
     } finally {
       setSubmitting(false)
     }
@@ -63,8 +78,8 @@ export function AdmissionSection() {
     <section id="admission" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">Start Your Journey Today</h2>
-          <p className="text-lg text-muted-foreground font-serif max-w-3xl mx-auto leading-relaxed">
+          <h2 className="text-3xl lg:text-5xl font-serif font-medium text-foreground mb-4">Start Your Journey Today</h2>
+          <p className="text-lg text-muted-foreground font-body max-w-3xl mx-auto leading-relaxed">
             Ready to transform your career? Fill out our admission form and take the first step towards a brighter
             future.
           </p>
@@ -82,7 +97,7 @@ export function AdmissionSection() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground mb-2">1. Fill Application Form</h4>
-                  <p className="text-muted-foreground font-serif">
+                  <p className="text-muted-foreground font-body">
                     Complete the online application form with your personal and educational details.
                   </p>
                 </div>
@@ -94,7 +109,7 @@ export function AdmissionSection() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground mb-2">2. Document Verification</h4>
-                  <p className="text-muted-foreground font-serif">
+                  <p className="text-muted-foreground font-body">
                     Submit required documents for verification and eligibility check.
                   </p>
                 </div>
@@ -106,7 +121,7 @@ export function AdmissionSection() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground mb-2">3. Fee Payment</h4>
-                  <p className="text-muted-foreground font-serif">
+                  <p className="text-muted-foreground font-body">
                     Pay the course fee through our secure online payment gateway or connect with an online academic
                     advisor for support.
                   </p>
@@ -119,7 +134,7 @@ export function AdmissionSection() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground mb-2">4. Start Learning</h4>
-                  <p className="text-muted-foreground font-serif">
+                  <p className="text-muted-foreground font-body">
                     Begin your journey with our expert instructors on our modern virtual learning platform.
                   </p>
                 </div>
@@ -134,19 +149,19 @@ export function AdmissionSection() {
               <CardContent className="space-y-3">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-accent" />
-                  <span className="text-sm font-serif">10th/12th Pass Certificate</span>
+                  <span className="text-sm font-body">10th/12th Pass Certificate</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-accent" />
-                  <span className="text-sm font-serif">Valid ID Proof (Aadhar/PAN/Passport)</span>
+                  <span className="text-sm font-body">Valid ID Proof (Aadhar/PAN/Passport)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-accent" />
-                  <span className="text-sm font-serif">Recent Passport Size Photographs</span>
+                  <span className="text-sm font-body">Recent Passport Size Photographs</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-accent" />
-                  <span className="text-sm font-serif">Basic Computer Knowledge (Preferred)</span>
+                  <span className="text-sm font-body">Basic Computer Knowledge (Preferred)</span>
                 </div>
               </CardContent>
             </Card>
@@ -156,7 +171,7 @@ export function AdmissionSection() {
           <Card className="h-fit">
             <CardHeader>
               <CardTitle className="text-2xl font-sans text-foreground">Admission Form</CardTitle>
-              <p className="text-muted-foreground font-serif">
+              <p className="text-muted-foreground font-body">
                 Fill out this form and our team will contact you within 24 hours.
               </p>
             </CardHeader>
@@ -205,6 +220,8 @@ export function AdmissionSection() {
                     placeholder="Enter your phone number"
                     value={form.phone}
                     onChange={(e) => updateField("phone", e.target.value)}
+                    pattern={PHONE_INPUT_PATTERN}
+                    title={PHONE_VALIDATION_MESSAGE}
                     required
                   />
                 </div>
@@ -251,10 +268,13 @@ export function AdmissionSection() {
                   />
                 </div>
 
+                <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+
                 <Button
                   type="submit"
-                  disabled={submitting}
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                  disabled={submitting || (captchaRequired && !captchaToken)}
+                  variant="accent"
+                  className="w-full"
                   size="lg"
                 >
                   {submitting ? (
@@ -267,7 +287,7 @@ export function AdmissionSection() {
                   )}
                 </Button>
 
-                <p className="text-xs text-muted-foreground text-center font-serif">
+                <p className="text-xs text-muted-foreground text-center font-body">
                   By submitting this form, you agree to our Terms & Conditions and Privacy Policy.
                 </p>
               </form>

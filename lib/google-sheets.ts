@@ -4,7 +4,11 @@
 // mint short-lived access tokens on demand.
 
 const SPREADSHEET_ID = "1Wk_0lmKiwDAWszyX18kMV1nDn-fb-PXrh55lVgDU8jg"
-const SHEET_RANGE = "Demo Requests!A1"
+// A separate n8n workflow also writes to a tab literally named "Demo Requests" with its
+// own column layout (Name/Email/Phone/Course/Source/ReceivedAt/Score/Tier/Reasoning) for
+// AI lead scoring. Appending this raw column order into that same tab silently misaligned
+// every row, so this mirror gets its own tab to avoid colliding with it.
+const SHEET_RANGE = "Demo Requests Raw!A1"
 
 async function getAccessToken(): Promise<string> {
   const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID!
@@ -47,6 +51,7 @@ export async function appendDemoRequestToSheet(row: {
   email?: string | null
   heardFrom?: string | null
   courseInterest?: string | null
+  location?: string | null
 }) {
   const accessToken = await getAccessToken()
 
@@ -67,11 +72,50 @@ export async function appendDemoRequestToSheet(row: {
     row.email || "",
     row.heardFrom || "",
     row.courseInterest || "",
+    row.location || "",
     new Date().toISOString(),
   ]
 
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(
     SHEET_RANGE,
+  )}:append?valueInputOption=USER_ENTERED`
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ values: [values] }),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Sheets append failed: ${await res.text()}`)
+  }
+}
+
+export async function appendBrochureRequestToSheet(row: {
+  firstName: string
+  lastName: string
+  mobile: string
+  email: string
+  state?: string | null
+  program?: string | null
+}) {
+  const accessToken = await getAccessToken()
+
+  const values = [
+    row.firstName,
+    row.lastName,
+    row.mobile,
+    row.email,
+    row.state || "",
+    row.program || "",
+    new Date().toISOString(),
+  ]
+
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(
+    "Brochure Requests!A1",
   )}:append?valueInputOption=USER_ENTERED`
 
   const res = await fetch(url, {
