@@ -16,16 +16,16 @@ export function ProgramCurriculum() {
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4 max-w-4xl">
         <FadeIn className="mb-12">
-          <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">Course Content</div>
+          <div className="text-xs font-bold uppercase tracking-widest text-secondary mb-3">Course Content</div>
           <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4 text-balance">
             Explore every module
           </h2>
           <div className="flex items-center gap-6 text-sm text-muted-foreground font-serif">
             <span className="inline-flex items-center gap-1.5">
-              <Layers className="h-4 w-4 text-accent" /> {BIM_CURRICULUM_TOTAL_MODULES} modules
+              <Layers className="h-4 w-4 text-secondary" /> {BIM_CURRICULUM_TOTAL_MODULES} modules
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Clock className="h-4 w-4 text-accent" /> {BIM_CURRICULUM_TOTAL_HOURS} hours
+              <Clock className="h-4 w-4 text-secondary" /> {BIM_CURRICULUM_TOTAL_HOURS} hours
             </span>
             <span className="text-muted-foreground/70">{BIM_CURRICULUM_TOTAL_LESSONS} lessons</span>
           </div>
@@ -45,7 +45,7 @@ export function ProgramCurriculum() {
             <FadeIn key={stage.stage} delay={stageIndex * 0.06}>
               <div className="pt-8 pb-2 first:pt-4">
                 <div className="flex items-baseline gap-3">
-                  <span className="text-xs font-bold uppercase tracking-widest text-accent">{stage.stage}</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-secondary">{stage.stage}</span>
                   <span className="text-sm font-semibold text-foreground font-sans">{stage.title}</span>
                   <span className="text-xs text-muted-foreground font-serif hidden md:inline">{stage.subtitle}</span>
                 </div>
@@ -62,8 +62,8 @@ export function ProgramCurriculum() {
                       <div className="flex flex-1 items-center justify-between gap-4">
                         <span className="flex items-center gap-3">
                           <Lock className="h-4 w-4 text-muted-foreground/40 shrink-0" />
-                          <span className="font-mono text-xs text-accent font-semibold">{module.number}</span>
-                          <span className="font-sans font-bold text-foreground group-hover:text-accent transition-colors">
+                          <span className="font-mono text-xs text-secondary font-semibold">{module.number}</span>
+                          <span className="font-sans font-bold text-foreground group-hover:text-secondary transition-colors">
                             {module.title}
                           </span>
                         </span>
