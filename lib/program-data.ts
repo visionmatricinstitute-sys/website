@@ -19,7 +19,7 @@ export const PROGRAM_MODULES: ProgramModule[] = [
   { number: "09", title: "BIM and Software", hours: "20h", focus: "Revit MEP, Navisworks, ETAP, DIALux, Bluebeam" },
   { number: "10", title: "Vendor Engineering", hours: "14h", focus: "Vendor landscape, technical bid evaluation, FAT/SAT" },
   { number: "11", title: "Site Engineering", hours: "18h", focus: "Installation supervision, testing, commissioning, punch list" },
-  { number: "12", title: "Real Data Center Project – Capstone", hours: "30h", focus: "20 MW Tier III colocation project, end to end" },
+  { number: "12", title: "Real Data Center Project – Capstone", hours: "30h", focus: "10 MW Tier III colocation project, end to end" },
 ]
 
 // Total hours across the modules above ("8h", "16h", ...). 206 for the current 12 modules.
