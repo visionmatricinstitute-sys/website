@@ -18,10 +18,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   const { data: profile } = await supabase.from("profiles").select("full_name, role").eq("id", user.id).single()
 
-  if (profile?.role !== "admin") redirect("/dashboard")
+  if (profile?.role !== "admin" && profile?.role !== "instructor") redirect("/dashboard")
 
   return (
-    <DashboardShell studentName={profile?.full_name || user.email || "Admin"} isAdmin>
+    <DashboardShell
+      studentName={profile?.full_name || user.email || "Admin"}
+      isAdmin={profile?.role === "admin"}
+      isInstructor={profile?.role === "instructor"}
+    >
       {children}
     </DashboardShell>
   )

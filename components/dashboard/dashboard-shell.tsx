@@ -7,10 +7,12 @@ import { signOut } from "@/app/dashboard/actions"
 export function DashboardShell({
   studentName,
   isAdmin,
+  isInstructor,
   children,
 }: {
   studentName: string
   isAdmin?: boolean
+  isInstructor?: boolean
   children: ReactNode
 }) {
   return (
@@ -23,20 +25,33 @@ export function DashboardShell({
           </Link>
           <div className="flex items-center gap-4">
             <span className="text-sm text-navy-foreground/80 font-serif hidden sm:inline">{studentName}</span>
-            {isAdmin && (
+            {(isAdmin || isInstructor) && (
               <div className="hidden lg:flex items-center gap-3 text-sm text-navy-foreground/70">
-                <Link href="/admin/courses" className="hover:text-navy-foreground transition-colors">
-                  Courses
-                </Link>
-                <Link href="/admin/students" className="hover:text-navy-foreground transition-colors">
-                  Students
-                </Link>
-                <Link href="/admin/enrollments" className="hover:text-navy-foreground transition-colors">
-                  Enrollments
-                </Link>
-                <Link href="/admin/live-classes" className="hover:text-navy-foreground transition-colors">
-                  Live Classes
-                </Link>
+                {isAdmin && (
+                  <>
+                    <Link href="/admin/instructors" className="hover:text-navy-foreground transition-colors">
+                      Instructors
+                    </Link>
+                    <Link href="/admin/courses" className="hover:text-navy-foreground transition-colors">
+                      Courses
+                    </Link>
+                    <Link href="/admin/students" className="hover:text-navy-foreground transition-colors">
+                      Students
+                    </Link>
+                    <Link href="/admin/enrollments" className="hover:text-navy-foreground transition-colors">
+                      Enrollments
+                    </Link>
+                    <Link href="/admin/live-classes" className="hover:text-navy-foreground transition-colors">
+                      Live Classes
+                    </Link>
+                    <Link href="/admin/announcements" className="hover:text-navy-foreground transition-colors">
+                      Announcements
+                    </Link>
+                    <Link href="/admin/certificates" className="hover:text-navy-foreground transition-colors">
+                      Certificates
+                    </Link>
+                  </>
+                )}
                 <Link href="/admin/modules" className="hover:text-navy-foreground transition-colors">
                   Modules
                 </Link>
@@ -51,12 +66,6 @@ export function DashboardShell({
                 </Link>
                 <Link href="/admin/quizzes" className="hover:text-navy-foreground transition-colors">
                   Quizzes
-                </Link>
-                <Link href="/admin/announcements" className="hover:text-navy-foreground transition-colors">
-                  Announcements
-                </Link>
-                <Link href="/admin/certificates" className="hover:text-navy-foreground transition-colors">
-                  Certificates
                 </Link>
               </div>
             )}

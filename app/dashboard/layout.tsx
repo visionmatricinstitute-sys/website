@@ -19,7 +19,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const { data: profile } = await supabase.from("profiles").select("full_name, role").eq("id", user.id).single()
 
   return (
-    <DashboardShell studentName={profile?.full_name || user.email || "Student"} isAdmin={profile?.role === "admin"}>
+    <DashboardShell
+      studentName={profile?.full_name || user.email || "Student"}
+      isAdmin={profile?.role === "admin"}
+      isInstructor={profile?.role === "instructor"}
+    >
       {children}
     </DashboardShell>
   )
