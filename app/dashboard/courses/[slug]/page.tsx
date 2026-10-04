@@ -72,11 +72,23 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
 
   const { data: resources } =
     moduleIds.length > 0
-      ? await supabase.from("resources").select("id, module_id, title, file_url, resource_type").in("module_id", moduleIds)
+      ? await supabase
+          .from("resources")
+          .select("id, module_id, title, file_url, file_path, resource_type")
+          .in("module_id", moduleIds)
       : { data: [] }
+  const resourcesWithLinks = await Promise.all(
+    (resources ?? []).map(async (r: any) => {
+      if (r.file_path) {
+        const { data } = await supabase.storage.from("course-resources").createSignedUrl(r.file_path, 3600)
+        return { ...r, link: data?.signedUrl ?? null }
+      }
+      return { ...r, link: r.file_url }
+    }),
+  )
   const resourcesByModule = new Map<string, any[]>()
-  for (const r of resources ?? []) {
-    if (!r.module_id) continue
+  for (const r of resourcesWithLinks) {
+    if (!r.module_id || !r.link) continue
     const list = resourcesByModule.get(r.module_id) ?? []
     list.push(r)
     resourcesByModule.set(r.module_id, list)
@@ -262,7 +274,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                       {moduleResources.map((r: any) => (
                         <a
                           key={r.id}
-                          href={r.file_url}
+                          href={r.link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-2 text-sm hover:text-accent transition-colors"
