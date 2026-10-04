@@ -67,7 +67,7 @@ export function ToolkitCalculatorsSection() {
                 </div>
                 <h3 className="font-bold font-sans text-foreground mb-2">{tool.shortLabel}</h3>
                 <p className="text-sm text-muted-foreground font-body leading-relaxed flex-1">{tool.description}</p>
-                <span className="inline-flex items-center gap-1.5 text-sm text-accent font-semibold mt-4">
+                <span className="inline-flex items-center gap-1.5 text-sm text-foreground font-semibold mt-4">
                   Open calculator
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </span>

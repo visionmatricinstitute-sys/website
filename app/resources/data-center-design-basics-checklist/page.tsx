@@ -169,7 +169,7 @@ export default function ChecklistPage() {
           <div className="container mx-auto px-4 text-center max-w-2xl">
             <p className="text-muted-foreground font-serif mb-4">
               This checklist covers the essentials — our{" "}
-              <Link href="/programs/electrical-design-data-center" className="text-accent font-semibold hover:underline">
+              <Link href="/programs/electrical-design-data-center" className="text-foreground font-semibold underline underline-offset-4 hover:no-underline">
                 Electrical Design – Data Center Specialist
               </Link>{" "}
               program goes through every one of these in full depth, with real deliverables.

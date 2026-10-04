@@ -91,7 +91,7 @@ export function ProgramEnroll() {
               <CardContent className="p-8 space-y-6">
                 <div>
                   <h3 className="text-xl font-bold font-sans text-foreground">Electrical Design – Data Center Specialist</h3>
-                  <div className="text-3xl font-black font-sans text-accent mt-2">{COURSE_FEE}</div>
+                  <div className="text-3xl font-black font-sans text-foreground mt-2">{COURSE_FEE}</div>
                   <p className="text-xs text-muted-foreground font-serif mt-1">Fees may be revised in future.</p>
                 </div>
                 <div className="space-y-2">
@@ -129,7 +129,7 @@ export function ProgramEnroll() {
                 </div>
                 <p className="text-xs text-center text-muted-foreground font-serif">
                   Prefer to talk first?{" "}
-                  <Link href="/#admission" className="text-accent hover:underline">
+                  <Link href="/#admission" className="text-foreground underline underline-offset-4 hover:no-underline">
                     Apply without paying yet
                   </Link>
                 </p>
