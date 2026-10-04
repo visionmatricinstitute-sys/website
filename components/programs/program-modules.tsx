@@ -51,8 +51,7 @@ export function ProgramModules() {
               <div>
                 <div className="text-xs font-bold uppercase tracking-wide text-accent mb-1">Capstone Project</div>
                 <p className="font-serif text-navy-foreground/85 leading-relaxed">
-                  A 10 MW Tier III data center — full electrical design package, defended before an industry
-                  review panel.
+                  A 10 MW Tier III data center — a full electrical design package, documented end to end.
                 </p>
               </div>
             </CardContent>

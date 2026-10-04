@@ -105,7 +105,7 @@ export function ProgramToolsOutcomes() {
             <FadeIn delay={0.1}>
               <Card className="h-full">
                 <CardContent className="p-6">
-                  <h3 className="font-bold font-sans text-foreground mb-4">Certifications this program prepares you for</h3>
+                  <h3 className="font-bold font-sans text-foreground mb-4">Certifications you can pursue next</h3>
                   <div className="space-y-3">
                     {CERTIFICATION_PREP.map((cert) => (
                       <div key={cert.body} className="flex items-start gap-3 border-b border-border last:border-0 pb-3 last:pb-0">
@@ -116,6 +116,9 @@ export function ProgramToolsOutcomes() {
                       </div>
                     ))}
                   </div>
+                  <p className="text-xs text-muted-foreground mt-4 font-serif italic">
+                    These are independent certifications awarded by their own bodies, not by VMI. The program builds relevant skills; it does not guarantee eligibility or a pass.
+                  </p>
                 </CardContent>
               </Card>
             </FadeIn>
