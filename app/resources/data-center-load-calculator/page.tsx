@@ -98,7 +98,7 @@ export default function LoadCalculatorPage() {
                 </p>
                 <p className="text-muted-foreground font-serif">
                   This tool covers Steps 1–5 of a real data center electrical design. Our{" "}
-                  <Link href="/programs/electrical-design-data-center" className="text-accent font-semibold hover:underline">
+                  <Link href="/programs/electrical-design-data-center" className="text-foreground font-semibold underline underline-offset-4 hover:no-underline">
                     Electrical Design – Data Center Specialist
                   </Link>{" "}
                   program covers this end-to-end — SLD preparation, transformer &amp; UPS design, DG systems, cable

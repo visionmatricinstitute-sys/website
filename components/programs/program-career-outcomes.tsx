@@ -70,7 +70,7 @@ export function ProgramCareerOutcomes() {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {INDUSTRIES_HIRING.map((group) => (
                     <div key={group.category}>
-                      <div className="text-xs font-bold uppercase tracking-wide text-accent mb-1.5">{group.category}</div>
+                      <div className="text-xs font-bold uppercase tracking-wide text-foreground mb-1.5">{group.category}</div>
                       <div className="text-sm text-muted-foreground font-serif">{group.companies.join(", ")}</div>
                     </div>
                   ))}
