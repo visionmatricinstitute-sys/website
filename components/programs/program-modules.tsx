@@ -49,7 +49,7 @@ export function ProgramModules() {
                 <Trophy className="h-6 w-6 text-accent" />
               </div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-wide text-accent mb-1">Capstone Project</div>
+                <div className="text-xs font-bold uppercase tracking-wide text-navy-foreground mb-1">Capstone Project</div>
                 <p className="font-serif text-navy-foreground/85 leading-relaxed">
                   A 10 MW Tier III data center — a full electrical design package, documented end to end.
                 </p>
