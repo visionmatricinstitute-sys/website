@@ -29,6 +29,7 @@ export default async function DashboardHomePage() {
   const { data: allCourses } = await supabase
     .from("courses")
     .select("id, slug, title, description, price_amount, price_currency")
+    .eq("status", "published")
   const availableCourses = (allCourses ?? []).filter((c: any) => !enrolledCourseIds.includes(c.id))
 
   const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
@@ -67,8 +68,20 @@ export default async function DashboardHomePage() {
 
   const { data: resources } =
     enrolledCourseIds.length > 0
-      ? await supabase.from("resources").select("id, title, file_url, resource_type").in("course_id", enrolledCourseIds)
+      ? await supabase
+          .from("resources")
+          .select("id, title, file_url, file_path, resource_type")
+          .in("course_id", enrolledCourseIds)
       : { data: [] }
+  const resourcesWithLinks = await Promise.all(
+    (resources ?? []).map(async (r: any) => {
+      if (r.file_path) {
+        const { data } = await supabase.storage.from("course-resources").createSignedUrl(r.file_path, 3600)
+        return { ...r, link: data?.signedUrl ?? null }
+      }
+      return { ...r, link: r.file_url }
+    }),
+  )
 
   const { data: upcomingClasses } =
     enrolledCourseIds.length > 0
@@ -315,17 +328,19 @@ export default async function DashboardHomePage() {
       </section>
 
       {/* Downloads */}
-      {(resources ?? []).length > 0 && (
+      {resourcesWithLinks.filter((r) => r.link).length > 0 && (
         <section className="space-y-4">
           <h2 className="text-lg font-bold font-sans text-foreground flex items-center gap-2">
             <Download className="h-5 w-5 text-accent" /> Downloads
           </h2>
           <Card>
             <CardContent className="divide-y divide-border py-0">
-              {(resources ?? []).map((res: any) => (
+              {resourcesWithLinks
+                .filter((r) => r.link)
+                .map((res: any) => (
                 <a
                   key={res.id}
-                  href={res.file_url}
+                  href={res.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 py-4 hover:text-accent transition-colors"

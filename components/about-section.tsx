@@ -59,7 +59,7 @@ export function AboutSection() {
               and AutoCAD — the specific technical skills employers are hiring for in the data center industry
               today.
             </p>
-            <Link href="/about" className="inline-block text-accent font-semibold hover:underline mb-10">
+            <Link href="/about" className="inline-block text-foreground font-semibold underline underline-offset-4 hover:no-underline mb-10">
               Read our full story →
             </Link>
           </FadeIn>

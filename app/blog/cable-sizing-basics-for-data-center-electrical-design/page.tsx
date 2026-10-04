@@ -161,11 +161,11 @@ export default function CableSizingBasicsPost() {
           <div className="container mx-auto px-4 text-center">
             <p className="text-sm text-muted-foreground font-body">
               Read more:{" "}
-              <Link href="/blog" className="text-accent font-semibold hover:underline">
+              <Link href="/blog" className="text-foreground font-semibold underline underline-offset-4 hover:no-underline">
                 All articles
               </Link>{" "}
               or explore the{" "}
-              <Link href="/programs/electrical-design-data-center" className="text-accent font-semibold hover:underline">
+              <Link href="/programs/electrical-design-data-center" className="text-foreground font-semibold underline underline-offset-4 hover:no-underline">
                 Electrical Design – Data Center Specialist
               </Link>{" "}
               program, where cable sizing is one full module.
