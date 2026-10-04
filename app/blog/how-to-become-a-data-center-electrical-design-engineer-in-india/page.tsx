@@ -130,7 +130,7 @@ export default function DataCenterCareerGuidePage() {
           )}
 
           <div className="relative container mx-auto px-4 max-w-3xl">
-            <Badge className="bg-accent-tint/10 text-accent-tint mb-6 hover:bg-accent-tint/10">Career Guide</Badge>
+            <Badge className="bg-white/10 text-navy-foreground mb-6 hover:bg-white/10">Career Guide</Badge>
             <h1 className="text-3xl lg:text-5xl font-serif font-medium text-white leading-tight mb-4">
               How to Become a Data Center Electrical Design Engineer in India (2026 Guide)
             </h1>

@@ -92,7 +92,7 @@ export function ArticleShell({
           className="relative container mx-auto px-4 max-w-3xl"
         >
           <motion.div variants={item}>
-            <Badge className="bg-accent-tint/10 text-accent-tint mb-6 hover:bg-accent-tint/10">{category}</Badge>
+            <Badge className="bg-white/10 text-navy-foreground mb-6 hover:bg-white/10">{category}</Badge>
           </motion.div>
           <motion.h1 variants={item} className="text-3xl lg:text-5xl font-serif font-medium text-white leading-tight mb-4">
             {title}

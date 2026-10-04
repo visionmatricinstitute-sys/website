@@ -53,7 +53,7 @@ export default function BlogIndexPage() {
             <p className="mt-4">
               <Link
                 href="/resources/data-center-design-basics-checklist"
-                className="text-accent-tint font-semibold hover:underline"
+                className="text-navy-foreground font-semibold underline underline-offset-4 hover:no-underline"
               >
                 Free download: Data Center Design Basics Checklist →
               </Link>

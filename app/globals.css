@@ -13,9 +13,10 @@
    * an earlier "Premium redesign" pass -- that was a deviation from the real
    * brand color, not a deliberate choice to keep. Both now use the real brand
    * red (matching --secondary, the color already used for the logo mark).
-   * The old bright blue (#00a8ff) survives only as --accent-tint, for
-   * decorative low-opacity chip/icon backgrounds — never for text or solid
-   * fills (it fails AA there).
+   * --accent-tint was the old bright blue (#00a8ff); it is now the brand red too
+   * (Founder, 2026-10-04), used for glows, icons and the large hero headline on
+   * the charcoal sections. Small text on dark sections uses white instead
+   * (red on charcoal is 3.45:1, fine only for large text and icons).
    */
   --background: #faf8f4;
   --foreground: #1c1b1a;
@@ -31,7 +32,7 @@
   --muted-foreground: #6b6259;
   --accent: #d32f2f;
   --accent-foreground: #ffffff;
-  --accent-tint: #00a8ff;
+  --accent-tint: #d32f2f;
   /*
    * The brand red above reads at 4.98:1 white-on-fill (passes AA normal
    * text) on light/ivory surfaces. Against the --navy dark sections (now brand

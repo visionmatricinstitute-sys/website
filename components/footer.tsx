@@ -184,7 +184,7 @@ export function Footer() {
                 <Mail className="h-5 w-5 text-navy-foreground/80" />
                 <a
                   href="mailto:info@visionmatrixinstitute.com"
-                  className="text-navy-foreground/80 rounded-sm transition-colors hover:text-accent-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-tint focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+                  className="text-navy-foreground/80 rounded-sm transition-colors hover:text-navy-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-tint focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                 >
                   info@visionmatrixinstitute.com
                 </a>
