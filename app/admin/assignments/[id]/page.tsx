@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Download } from "lucide-react"
-import { gradeSubmission } from "../actions"
+import { Download, Save, Trash2 } from "lucide-react"
+import { gradeSubmission, updateAssignment, deleteAssignment } from "../actions"
 
 export default async function AdminAssignmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -48,6 +48,41 @@ export default async function AdminAssignmentDetailPage({ params }: { params: Pr
           <p className="text-sm text-muted-foreground font-serif mt-2">{assignment.description}</p>
         )}
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans text-base">Edit Assignment</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <form action={updateAssignment.bind(null, id)} className="space-y-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="title">Title</Label>
+              <Input id="title" name="title" required defaultValue={assignment.title} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="description">Description</Label>
+              <Input id="description" name="description" defaultValue={assignment.description ?? ""} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="dueAt">Due Date</Label>
+              <Input
+                id="dueAt"
+                name="dueAt"
+                type="datetime-local"
+                defaultValue={assignment.due_at ? new Date(assignment.due_at).toISOString().slice(0, 16) : ""}
+              />
+            </div>
+            <Button type="submit" size="sm" variant="outline" className="gap-1.5 bg-transparent">
+              <Save className="h-3.5 w-3.5" /> Save Changes
+            </Button>
+          </form>
+          <form action={deleteAssignment.bind(null, id)}>
+            <Button type="submit" size="sm" variant="ghost" className="gap-1.5 text-destructive hover:text-destructive">
+              <Trash2 className="h-3.5 w-3.5" /> Delete Assignment
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
 
       <div className="space-y-3">
         <h2 className="text-lg font-bold font-sans text-foreground">Submissions</h2>
