@@ -111,7 +111,7 @@ export function LoginForm() {
 
         <p className="text-sm text-center text-muted-foreground font-serif mt-6">
           New student?{" "}
-          <Link href="/signup" className="text-accent font-medium hover:underline">
+          <Link href="/signup" className="text-foreground font-medium underline underline-offset-4 hover:no-underline">
             Create an account
           </Link>
         </p>

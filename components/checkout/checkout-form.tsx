@@ -88,7 +88,7 @@ export function CheckoutForm({
       name: "Vision Matrix Institute",
       description: courseTitle,
       prefill: { name: fullName, email, contact: phone },
-      theme: { color: "#0f172a" },
+      theme: { color: "#1c1b1a" },
       handler: async (response: any) => {
         const verifyRes = await fetch("/api/enroll/verify", {
           method: "POST",
@@ -148,7 +148,7 @@ export function CheckoutForm({
         {courseDescription && (
           <p className="text-sm text-muted-foreground font-serif leading-relaxed">{courseDescription}</p>
         )}
-        <div className="text-3xl font-black font-sans text-accent pt-2">
+        <div className="text-3xl font-black font-sans text-foreground pt-2">
           {formatPrice(priceAmount, priceCurrency)}
         </div>
       </CardHeader>
