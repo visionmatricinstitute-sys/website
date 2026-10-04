@@ -137,7 +137,7 @@ export default function DemoPage() {
                 <CardContent className="p-6 lg:p-8">
                   <div className="flex items-center gap-2 mb-2">
                     <CalendarCheck className="h-5 w-5 text-accent" />
-                    <span className="text-sm font-semibold text-accent">Book a FREE Demo Class</span>
+                    <span className="text-sm font-semibold text-foreground">Book a FREE Demo Class</span>
                   </div>
                   <DemoForm />
                 </CardContent>

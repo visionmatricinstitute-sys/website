@@ -76,7 +76,7 @@ export function EnrollButton({
       name: "Vision Matrix Institute",
       description: courseTitle,
       prefill: { name: studentName, email: studentEmail },
-      theme: { color: "#0f172a" },
+      theme: { color: "#1c1b1a" },
       handler: async (response: any) => {
         const verifyRes = await fetch("/api/razorpay/verify", {
           method: "POST",

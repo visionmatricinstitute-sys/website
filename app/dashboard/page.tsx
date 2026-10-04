@@ -4,9 +4,10 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { BookOpen, Award, Download, ArrowRight, FileText, Video } from "lucide-react"
+import { BookOpen, Award, Download, ArrowRight, FileText, Video, Megaphone } from "lucide-react"
 import { JoinClassButton } from "@/components/dashboard/join-class-button"
 import { EnrollButton } from "@/components/dashboard/enroll-button"
+import { markAnnouncementRead } from "./announcement-actions"
 import { CertificateConsentToggle } from "@/components/dashboard/certificate-consent-toggle"
 import { linkedInAddToProfileUrl } from "@/lib/certificates"
 
@@ -28,6 +29,7 @@ export default async function DashboardHomePage() {
   const { data: allCourses } = await supabase
     .from("courses")
     .select("id, slug, title, description, price_amount, price_currency")
+    .eq("status", "published")
   const availableCourses = (allCourses ?? []).filter((c: any) => !enrolledCourseIds.includes(c.id))
 
   const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
@@ -49,6 +51,15 @@ export default async function DashboardHomePage() {
     progressByCourse[course.id] = { completed, total: moduleIds.length }
   }
 
+  const { data: announcements } = await supabase
+    .from("announcements")
+    .select("id, title, body, created_at")
+    .order("created_at", { ascending: false })
+    .limit(10)
+  const { data: reads } = await supabase.from("announcement_reads").select("announcement_id").eq("student_id", user.id)
+  const readIds = new Set((reads ?? []).map((r: any) => r.announcement_id))
+  const unreadAnnouncements = (announcements ?? []).filter((a: any) => !readIds.has(a.id))
+
   const { data: certificates } = await supabase
     .from("certificates")
     .select("id, course_id, certificate_number, course_title, recipient_name, approved_at, status, public_name_consent")
@@ -57,8 +68,20 @@ export default async function DashboardHomePage() {
 
   const { data: resources } =
     enrolledCourseIds.length > 0
-      ? await supabase.from("resources").select("id, title, file_url, resource_type").in("course_id", enrolledCourseIds)
+      ? await supabase
+          .from("resources")
+          .select("id, title, file_url, file_path, resource_type")
+          .in("course_id", enrolledCourseIds)
       : { data: [] }
+  const resourcesWithLinks = await Promise.all(
+    (resources ?? []).map(async (r: any) => {
+      if (r.file_path) {
+        const { data } = await supabase.storage.from("course-resources").createSignedUrl(r.file_path, 3600)
+        return { ...r, link: data?.signedUrl ?? null }
+      }
+      return { ...r, link: r.file_url }
+    }),
+  )
 
   const { data: upcomingClasses } =
     enrolledCourseIds.length > 0
@@ -77,6 +100,30 @@ export default async function DashboardHomePage() {
         <h1 className="text-2xl lg:text-3xl font-black font-sans text-foreground">Welcome back</h1>
         <p className="text-muted-foreground font-serif mt-1">Here's where you left off.</p>
       </div>
+
+      {/* Unread announcements */}
+      {unreadAnnouncements.length > 0 && (
+        <section className="space-y-3">
+          {unreadAnnouncements.map((a: any) => (
+            <Card key={a.id} className="border-accent/40 bg-accent/5">
+              <CardContent className="py-4 flex items-start justify-between gap-4 flex-wrap">
+                <div className="flex items-start gap-3">
+                  <Megaphone className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-semibold text-foreground">{a.title}</div>
+                    <p className="text-sm text-muted-foreground font-serif mt-0.5">{a.body}</p>
+                  </div>
+                </div>
+                <form action={markAnnouncementRead.bind(null, a.id)} className="flex-shrink-0">
+                  <Button type="submit" variant="ghost" size="sm">
+                    Dismiss
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+      )}
 
       {/* Upcoming live classes */}
       {(upcomingClasses ?? []).length > 0 && (
@@ -281,17 +328,19 @@ export default async function DashboardHomePage() {
       </section>
 
       {/* Downloads */}
-      {(resources ?? []).length > 0 && (
+      {resourcesWithLinks.filter((r) => r.link).length > 0 && (
         <section className="space-y-4">
           <h2 className="text-lg font-bold font-sans text-foreground flex items-center gap-2">
             <Download className="h-5 w-5 text-accent" /> Downloads
           </h2>
           <Card>
             <CardContent className="divide-y divide-border py-0">
-              {(resources ?? []).map((res: any) => (
+              {resourcesWithLinks
+                .filter((r) => r.link)
+                .map((res: any) => (
                 <a
                   key={res.id}
-                  href={res.file_url}
+                  href={res.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 py-4 hover:text-accent transition-colors"
