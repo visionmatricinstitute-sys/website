@@ -67,8 +67,8 @@ create policy "Students view their own module progress"
   using (auth.uid() = student_id);
 
 -- ---------------------------------------------------------------------------
--- Grades a quiz attempt (existing submit_quiz_attempt, unchanged) and, if the
--- score clears 60%, marks that module completed — which is what unlocks the
+-- Marks a module completed if the student has a recorded quiz attempt (written by the
+-- existing submit_quiz_attempt, unchanged) that clears 60% — which is what unlocks the
 -- next module's first chapter (see markChapterComplete's sequencing check).
 -- ---------------------------------------------------------------------------
 create or replace function public.complete_module_if_passed(p_quiz_id uuid, p_score numeric)
@@ -80,7 +80,13 @@ as $$
 declare
   v_module_id uuid;
 begin
-  if p_score < 60 then
+  -- p_score is accepted only for compatibility with the existing app call and is
+  -- deliberately ignored: it comes from the client and cannot be trusted. Completion
+  -- is decided from the server-recorded attempt written by submit_quiz_attempt().
+  if not exists (
+    select 1 from public.quiz_attempts
+    where quiz_id = p_quiz_id and student_id = auth.uid() and score >= 60
+  ) then
     return false;
   end if;
 
