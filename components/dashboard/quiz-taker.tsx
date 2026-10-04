@@ -4,15 +4,16 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, Loader2 } from "lucide-react"
+import { CheckCircle2, XCircle, Loader2 } from "lucide-react"
 import { submitQuizAttempt } from "@/app/dashboard/quizzes/[quizId]/actions"
 
 type Question = { id: string; order_index: number; question: string; options: string[] }
+type Result = { score: number; total: number; correct_count: number; passed: boolean }
 
 export function QuizTaker({ quizId, questions }: { quizId: string; questions: Question[] }) {
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const [submitting, setSubmitting] = useState(false)
-  const [result, setResult] = useState<{ score: number; total: number; correct_count: number } | null>(null)
+  const [result, setResult] = useState<Result | null>(null)
 
   async function handleSubmit() {
     if (Object.keys(answers).length < questions.length) {
@@ -32,12 +33,21 @@ export function QuizTaker({ quizId, questions }: { quizId: string; questions: Qu
 
   if (result) {
     return (
-      <Card className="border-accent/40">
+      <Card className={result.passed ? "border-accent/40" : "border-destructive/40"}>
         <CardContent className="py-10 text-center space-y-3">
-          <CheckCircle2 className="h-10 w-10 text-accent mx-auto" />
+          {result.passed ? (
+            <CheckCircle2 className="h-10 w-10 text-accent mx-auto" />
+          ) : (
+            <XCircle className="h-10 w-10 text-destructive mx-auto" />
+          )}
           <div className="text-3xl font-black font-sans text-foreground">{result.score}%</div>
           <p className="text-muted-foreground font-serif">
             {result.correct_count} of {result.total} correct
+          </p>
+          <p className="text-sm font-semibold">
+            {result.passed
+              ? "Passed — the next module is unlocked."
+              : "Below the 60% pass mark — review the chapters and retake the quiz."}
           </p>
         </CardContent>
       </Card>
