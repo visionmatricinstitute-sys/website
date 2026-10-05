@@ -5,7 +5,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Search, UserCog } from "lucide-react"
+import { Label } from "@/components/ui/label"
+import { CardHeader, CardTitle } from "@/components/ui/card"
+import { Search, UserCog, UserPlus } from "lucide-react"
+import { createStudentAccount } from "./actions"
 
 export default async function AdminStudentsPage({
   searchParams,
@@ -16,6 +19,7 @@ export default async function AdminStudentsPage({
   const supabase = await createClient()
 
   const students = await listStudentsWithEmail()
+  const { data: allCourses } = await supabase.from("courses").select("id, title").order("title")
 
   const { data: enrollments } = await supabase.from("enrollments").select("student_id, courses(title)")
   const coursesByStudent = new Map<string, string[]>()
@@ -40,6 +44,49 @@ export default async function AdminStudentsPage({
           {students.length} account{students.length === 1 ? "" : "s"} total.
         </p>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Add a student</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form action={createStudentAccount} className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Full name</Label>
+              <Input id="fullName" name="fullName" required placeholder="e.g. Asha Verma" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" name="email" type="email" required placeholder="student@example.com" />
+            </div>
+            <div className="space-y-2 sm:col-span-2">
+              <Label htmlFor="courseId">Enroll in a course (optional)</Label>
+              <select
+                id="courseId"
+                name="courseId"
+                defaultValue=""
+                className="border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs"
+              >
+                <option value="">Don&apos;t enroll yet</option>
+                {(allCourses ?? []).map((c: any) => (
+                  <option key={c.id} value={c.id}>
+                    {c.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="sm:col-span-2 space-y-2">
+              <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg">
+                <UserPlus className="mr-2 h-4 w-4" /> Create account &amp; send invite
+              </Button>
+              <p className="text-xs text-muted-foreground font-serif">
+                The student gets an email with a link to set their own password. Accounts can't be deleted from here —
+                that would erase the student's progress and certificates.
+              </p>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
 
       <form method="get" className="flex gap-2 max-w-sm">
         <Input name="q" defaultValue={q ?? ""} placeholder="Search name or email" />
