@@ -242,7 +242,9 @@ const CourseCard = ({ course, index = 0 }: { course: any; index?: number }) => {
               variant="outline"
               className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
             >
-              <Link href={course.href}>Learn More</Link>
+              <Link href={course.href}>
+                Learn More<span className="sr-only"> about {course.title}</span>
+              </Link>
             </Button>
           ) : (
             <Button
