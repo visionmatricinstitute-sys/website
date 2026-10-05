@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Save, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react"
-import { updateCourse, setCourseStatus, createModule, deleteModule, moveModule } from "../actions"
+import { ArrowLeft, Save, Plus, Trash2, ArrowUp, ArrowDown, Pencil } from "lucide-react"
+import { ConfirmSubmitButton } from "@/components/admin/confirm-submit-button"
+import { updateCourse, setCourseStatus, createModule, deleteModule, moveModule, updateModule, deleteCourse } from "../actions"
 
 export default async function AdminCourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -154,11 +155,41 @@ export default async function AdminCourseDetailPage({ params }: { params: Promis
                   </div>
                 </div>
                 <form action={deleteModule.bind(null, id, m.id)}>
-                  <button type="submit" className="text-destructive hover:text-destructive/80 flex-shrink-0">
+                  <ConfirmSubmitButton
+                    ariaLabel="Delete module"
+                    message={`Delete module "${m.title}"? Its chapters and quiz are deleted too. This cannot be undone.`}
+                    className="text-destructive hover:text-destructive/80 flex-shrink-0"
+                  >
                     <Trash2 className="h-4 w-4" />
-                  </button>
+                  </ConfirmSubmitButton>
                 </form>
               </CardContent>
+              <details className="border-t border-border">
+                <summary className="cursor-pointer px-6 py-2 text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5">
+                  <Pencil className="h-3 w-3" /> Edit module details
+                </summary>
+                <form action={updateModule.bind(null, id, m.id)} className="px-6 pb-4 flex gap-2 flex-wrap items-end">
+                  <div className="space-y-1 w-24">
+                    <Label className="text-xs">#</Label>
+                    <Input name="moduleNumber" defaultValue={m.module_number ?? ""} />
+                  </div>
+                  <div className="space-y-1 flex-1 min-w-[180px]">
+                    <Label className="text-xs">Title</Label>
+                    <Input name="title" required defaultValue={m.title} />
+                  </div>
+                  <div className="space-y-1 w-24">
+                    <Label className="text-xs">Hours</Label>
+                    <Input name="hours" defaultValue={m.hours ?? ""} />
+                  </div>
+                  <div className="space-y-1 flex-1 min-w-[180px]">
+                    <Label className="text-xs">Focus</Label>
+                    <Input name="focus" defaultValue={m.focus ?? ""} />
+                  </div>
+                  <Button type="submit" size="sm" className="gap-1.5 bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Save className="h-3.5 w-3.5" /> Save
+                  </Button>
+                </form>
+              </details>
             </Card>
           ))}
         </div>
@@ -197,6 +228,27 @@ export default async function AdminCourseDetailPage({ params }: { params: Promis
           </CardContent>
         </Card>
       </div>
+
+      <Card className="border-destructive/40">
+        <CardHeader>
+          <CardTitle className="font-sans text-destructive">Delete this course</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-sm text-muted-foreground font-serif">
+            Permanently deletes the course with its modules, chapters, quizzes and assignments. A course with enrolled
+            students can't be deleted — archive it instead. Type <strong>DELETE</strong> to confirm.
+          </p>
+          <form action={deleteCourse.bind(null, id)} className="flex gap-2 flex-wrap items-center">
+            <Input name="confirm" placeholder="DELETE" className="max-w-[160px]" autoComplete="off" />
+            <ConfirmSubmitButton
+              message="Delete this course permanently? This cannot be undone."
+              className="inline-flex items-center gap-1.5 rounded-md bg-destructive px-3 py-2 text-sm font-medium text-destructive-foreground hover:bg-destructive/90"
+            >
+              <Trash2 className="h-4 w-4" /> Delete course
+            </ConfirmSubmitButton>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }

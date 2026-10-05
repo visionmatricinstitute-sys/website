@@ -33,6 +33,19 @@ export async function createAnnouncement(formData: FormData) {
   revalidatePath("/dashboard")
 }
 
+export async function updateAnnouncement(id: string, formData: FormData) {
+  const supabase = await createClient()
+  const title = String(formData.get("title") || "").trim()
+  const body = String(formData.get("body") || "").trim()
+  if (!title || !body) throw new Error("Title and message are required.")
+
+  const { error } = await supabase.from("announcements").update({ title, body }).eq("id", id)
+  if (error) throw new Error(error.message)
+
+  revalidatePath("/admin/announcements")
+  revalidatePath("/dashboard")
+}
+
 export async function deleteAnnouncement(id: string) {
   const supabase = await createClient()
   const { error } = await supabase.from("announcements").delete().eq("id", id)

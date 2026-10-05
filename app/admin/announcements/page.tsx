@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Megaphone, Trash2 } from "lucide-react"
-import { createAnnouncement, deleteAnnouncement } from "./actions"
+import { Megaphone, Trash2, Pencil, Save } from "lucide-react"
+import { ConfirmSubmitButton } from "@/components/admin/confirm-submit-button"
+import { createAnnouncement, updateAnnouncement, deleteAnnouncement } from "./actions"
 
 export default async function AdminAnnouncementsPage() {
   const supabase = await createClient()
@@ -104,13 +105,29 @@ export default async function AdminAnnouncementsPage() {
                     </Badge>
                   </div>
                   <form action={deleteAnnouncement.bind(null, a.id)}>
-                    <button type="submit" className="text-destructive hover:text-destructive/80">
+                    <ConfirmSubmitButton
+                      ariaLabel="Delete announcement"
+                      message={`Delete the announcement "${a.title}"?`}
+                      className="text-destructive hover:text-destructive/80"
+                    >
                       <Trash2 className="h-4 w-4" />
-                    </button>
+                    </ConfirmSubmitButton>
                   </form>
                 </div>
                 <p className="text-sm text-muted-foreground font-serif">{a.body}</p>
                 <p className="text-xs text-muted-foreground font-mono">{new Date(a.created_at).toLocaleString()}</p>
+                <details>
+                  <summary className="cursor-pointer text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5">
+                    <Pencil className="h-3 w-3" /> Edit
+                  </summary>
+                  <form action={updateAnnouncement.bind(null, a.id)} className="mt-3 space-y-3">
+                    <Input name="title" required defaultValue={a.title} />
+                    <Textarea name="body" required rows={3} defaultValue={a.body} />
+                    <Button type="submit" size="sm" className="gap-1.5 bg-accent hover:bg-accent/90 text-accent-foreground">
+                      <Save className="h-3.5 w-3.5" /> Save
+                    </Button>
+                  </form>
+                </details>
               </CardContent>
             </Card>
           ))
