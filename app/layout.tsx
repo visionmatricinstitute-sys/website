@@ -14,7 +14,7 @@ const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-poppins",
-  weight: ["400", "600", "700", "800", "900"],
+  weight: ["400", "600", "700", "900"], // 800 (font-extrabold) is not used anywhere
 })
 
 const inter = Inter({
@@ -29,7 +29,8 @@ const fraunces = Fraunces({
   display: "swap",
   variable: "--font-fraunces",
   weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  // Italic is not loaded: it is used in only a few small notes and cost three font files on
+  // every page load; the browser synthesises an oblique for those.
 })
 
 const siteUrl =
