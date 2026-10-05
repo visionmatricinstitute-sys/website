@@ -55,20 +55,14 @@ export function DashboardShell({
                     </Link>
                   </>
                 )}
-                <Link href="/admin/modules" className="hover:text-navy-foreground transition-colors">
-                  Modules
+                <Link href="/admin/teacher" className="hover:text-navy-foreground transition-colors">
+                  Teacher
                 </Link>
                 <Link href="/admin/resources" className="hover:text-navy-foreground transition-colors">
                   Resources
                 </Link>
-                <Link href="/admin/chapters" className="hover:text-navy-foreground transition-colors">
-                  Chapters
-                </Link>
                 <Link href="/admin/assignments" className="hover:text-navy-foreground transition-colors">
                   Assignments
-                </Link>
-                <Link href="/admin/quizzes" className="hover:text-navy-foreground transition-colors">
-                  Quizzes
                 </Link>
               </div>
             )}
