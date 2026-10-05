@@ -35,6 +35,44 @@ export async function uploadResource(formData: FormData) {
   revalidatePath("/dashboard")
 }
 
+export async function addResourceLink(formData: FormData) {
+  const supabase = await createClient()
+
+  const target = String(formData.get("target") || "")
+  const [courseId, moduleId] = target.split("::")
+  const title = String(formData.get("title") || "").trim()
+  const rawUrl = String(formData.get("url") || "").trim()
+
+  if (!courseId) throw new Error("Choose a course or module to attach this link to.")
+  if (!title) throw new Error("Link title is required.")
+
+  // Only plain web links: blocks javascript:, data: and other schemes that would run
+  // code or leak content when a student clicks the link.
+  let url: URL
+  try {
+    url = new URL(rawUrl)
+  } catch {
+    throw new Error("Enter a full link starting with https://")
+  }
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    throw new Error("Links must start with http:// or https://")
+  }
+
+  const { error } = await supabase.from("resources").insert({
+    course_id: courseId,
+    module_id: moduleId || null,
+    title,
+    resource_type: "link",
+    file_url: url.toString(),
+    file_path: null,
+    file_name: null,
+  })
+  if (error) throw new Error(error.message)
+
+  revalidatePath("/admin/resources")
+  revalidatePath("/dashboard")
+}
+
 export async function deleteResource(resourceId: string) {
   const supabase = await createClient()
 
