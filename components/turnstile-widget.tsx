@@ -88,10 +88,29 @@ export function TurnstileWidget({
       })
     }
 
-    loadTurnstileScript().then(renderWidget)
+    // Only load Cloudflare's script once the widget is near the viewport — it sits far down
+    // the page, and loading it eagerly costs every visitor (including those who never reach
+    // the form) extra third-party JS and cookies.
+    const node = containerRef.current
+    let observer: IntersectionObserver | undefined
+    if (typeof IntersectionObserver === "undefined") {
+      loadTurnstileScript().then(renderWidget)
+    } else {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            observer?.disconnect()
+            loadTurnstileScript().then(renderWidget)
+          }
+        },
+        { rootMargin: "600px" },
+      )
+      observer.observe(node)
+    }
 
     return () => {
       cancelled = true
+      observer?.disconnect()
       if (widgetIdRef.current && window.turnstile) {
         window.turnstile.remove(widgetIdRef.current)
       }
