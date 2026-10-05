@@ -39,6 +39,7 @@ export async function createQuiz(moduleId: string, title: string, questions: Que
   await logAudit({ actorId: user.id, action: "quiz.created", entityType: "quiz", entityId: quiz.id, metadata: { title } })
 
   revalidatePath("/admin/quizzes")
+  revalidatePath("/admin/teacher")
 }
 
 // Replaces a quiz's title and its full question set in one go. Questions are deleted and
@@ -74,6 +75,7 @@ export async function updateQuizQuestions(quizId: string, title: string, questio
   await logAudit({ actorId: user.id, action: "quiz.updated", entityType: "quiz", entityId: quizId, metadata: { title, questionCount: questions.length } })
 
   revalidatePath("/admin/quizzes")
+  revalidatePath("/admin/teacher")
   revalidatePath(`/admin/quizzes/${quizId}`)
 }
 
@@ -90,5 +92,6 @@ export async function deleteQuiz(quizId: string) {
   await logAudit({ actorId: user.id, action: "quiz.deleted", entityType: "quiz", entityId: quizId })
 
   revalidatePath("/admin/quizzes")
-  redirect("/admin/quizzes")
+  revalidatePath("/admin/teacher")
+  redirect("/admin/teacher")
 }

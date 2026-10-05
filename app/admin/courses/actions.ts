@@ -97,7 +97,7 @@ export async function createModule(courseId: string, formData: FormData) {
   if (error) throw new Error(error.message)
 
   revalidatePath(`/admin/courses/${courseId}`)
-  revalidatePath("/admin/modules")
+  revalidatePath("/admin/teacher")
 }
 
 export async function deleteModule(courseId: string, moduleId: string) {
@@ -106,7 +106,7 @@ export async function deleteModule(courseId: string, moduleId: string) {
   if (error) throw new Error(error.message)
 
   revalidatePath(`/admin/courses/${courseId}`)
-  revalidatePath("/admin/modules")
+  revalidatePath("/admin/teacher")
 }
 
 export async function moveModule(courseId: string, moduleId: string, direction: "up" | "down") {
@@ -129,7 +129,7 @@ export async function moveModule(courseId: string, moduleId: string, direction: 
   await supabase.from("course_modules").update({ order_index: a.order_index }).eq("id", b.id)
 
   revalidatePath(`/admin/courses/${courseId}`)
-  revalidatePath("/admin/modules")
+  revalidatePath("/admin/teacher")
 }
 
 export async function updateModule(courseId: string, moduleId: string, formData: FormData) {
@@ -149,7 +149,7 @@ export async function updateModule(courseId: string, moduleId: string, formData:
   if (error) throw new Error(error.message)
 
   revalidatePath(`/admin/courses/${courseId}`)
-  revalidatePath("/admin/modules")
+  revalidatePath("/admin/teacher")
   revalidatePath("/dashboard")
 }
 

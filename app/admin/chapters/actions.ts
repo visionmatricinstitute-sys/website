@@ -20,7 +20,7 @@ export async function addChapter(moduleId: string, formData: FormData) {
   const { error } = await supabase.from("chapters").insert({ module_id: moduleId, title, video_url: videoUrl, order_index: nextOrder })
   if (error) throw new Error(error.message)
 
-  revalidatePath("/admin/chapters")
+  revalidatePath("/admin/teacher")
 }
 
 export async function updateChapter(chapterId: string, formData: FormData) {
@@ -32,7 +32,7 @@ export async function updateChapter(chapterId: string, formData: FormData) {
   const { error } = await supabase.from("chapters").update({ title, video_url: videoUrl }).eq("id", chapterId)
   if (error) throw new Error(error.message)
 
-  revalidatePath("/admin/chapters")
+  revalidatePath("/admin/teacher")
 }
 
 export async function deleteChapter(chapterId: string) {
@@ -40,7 +40,7 @@ export async function deleteChapter(chapterId: string) {
   const { error } = await supabase.from("chapters").delete().eq("id", chapterId)
   if (error) throw new Error(error.message)
 
-  revalidatePath("/admin/chapters")
+  revalidatePath("/admin/teacher")
 }
 
 export async function moveChapter(moduleId: string, chapterId: string, direction: "up" | "down") {
@@ -62,5 +62,5 @@ export async function moveChapter(moduleId: string, chapterId: string, direction
   await supabase.from("chapters").update({ order_index: b.order_index }).eq("id", a.id)
   await supabase.from("chapters").update({ order_index: a.order_index }).eq("id", b.id)
 
-  revalidatePath("/admin/chapters")
+  revalidatePath("/admin/teacher")
 }
