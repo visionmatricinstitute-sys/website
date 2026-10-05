@@ -1,6 +1,7 @@
 import { Card, CardContent, cardFeatured } from "@/components/ui/card"
 import { FadeIn } from "@/components/motion/fade-in"
 import { INTRO_VIDEO } from "@/lib/video-data"
+import { YoutubeFacade } from "@/components/youtube-facade"
 
 export function IntroVideoSection() {
   return (
@@ -9,14 +10,7 @@ export function IntroVideoSection() {
         <FadeIn className="max-w-lg mx-auto">
           <Card className={`overflow-hidden ${cardFeatured}`}>
             <div className="aspect-video">
-              <iframe
-                src={`https://www.youtube.com/embed/${INTRO_VIDEO.id}`}
-                title={INTRO_VIDEO.title}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-              />
+              <YoutubeFacade id={INTRO_VIDEO.id} title={INTRO_VIDEO.title} thumbnailUrl={INTRO_VIDEO.thumbnailUrl} />
             </div>
             <CardContent className="p-4 text-center">
               <h2 className="text-sm font-semibold text-foreground">{INTRO_VIDEO.title}</h2>
