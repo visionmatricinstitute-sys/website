@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { UploadCloud, FileText, Trash2 } from "lucide-react"
-import { uploadResource, deleteResource } from "./actions"
+import { UploadCloud, FileText, Trash2, Link2 } from "lucide-react"
+import { uploadResource, addResourceLink, deleteResource } from "./actions"
 
 const RESOURCE_TYPES = ["pdf", "doc", "xlsx", "pptx", "zip", "image", "other"]
 
@@ -36,8 +36,8 @@ export default async function AdminResourcesPage() {
       <div>
         <h1 className="text-2xl lg:text-3xl font-black font-sans text-foreground">Resources</h1>
         <p className="text-muted-foreground font-serif mt-1">
-          Attach downloadable course material (PDF, Excel, etc.) to a course or a specific module. Only enrolled
-          students can access uploaded files.
+          Attach downloadable course material (PDF, Excel, etc.) or a link (Google Drive, a website, anything with a URL)
+          to a course or a specific module. Only enrolled students can access uploaded files.
         </p>
       </div>
 
@@ -103,6 +103,56 @@ export default async function AdminResourcesPage() {
             </div>
             <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg">
               <UploadCloud className="mr-2 h-4 w-4" /> Upload
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-sans">Add a Link</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form action={addResourceLink} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="link-target">Attach to</Label>
+              <select
+                id="link-target"
+                name="target"
+                required
+                defaultValue=""
+                className="file:text-foreground border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] md:text-sm"
+              >
+                <option value="" disabled>
+                  Select a course or module
+                </option>
+                {(courses ?? []).map((c: any) => (
+                  <optgroup key={c.id} label={c.title}>
+                    <option value={`${c.id}::`}>{c.title} (whole course)</option>
+                    {(c.course_modules ?? []).map((m: any) => (
+                      <option key={m.id} value={`${c.id}::${m.id}`}>
+                        {m.module_number ? `${m.module_number} — ` : ""}
+                        {m.title}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="link-title">Title</Label>
+              <Input id="link-title" name="title" required placeholder="e.g. Cable Sizing Worksheet (Google Drive)" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="link-url">Link</Label>
+              <Input id="link-url" name="url" type="url" required placeholder="https://drive.google.com/..." />
+              <p className="text-xs text-muted-foreground font-serif">
+                Anyone with the link can open it, so set sharing on the document accordingly. Students see it only
+                inside the course.
+              </p>
+            </div>
+            <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg">
+              <Link2 className="mr-2 h-4 w-4" /> Add Link
             </Button>
           </form>
         </CardContent>

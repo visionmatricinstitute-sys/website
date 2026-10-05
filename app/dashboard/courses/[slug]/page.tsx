@@ -252,6 +252,10 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                             </div>
                           )}
 
+                          {chapterUnlocked && !ch.video_url && (
+                            <p className="pl-6 text-xs text-muted-foreground font-serif italic">Video coming soon.</p>
+                          )}
+
                           {chapterUnlocked && !chapterDone && (
                             <form action={markChapterComplete.bind(null, ch.id, course.slug)} className="pl-6">
                               <Button type="submit" variant="outline" size="sm">
