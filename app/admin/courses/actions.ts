@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
+import { logAudit } from "@/lib/audit-log"
 
 function slugify(input: string) {
   return input
@@ -129,4 +130,66 @@ export async function moveModule(courseId: string, moduleId: string, direction: 
 
   revalidatePath(`/admin/courses/${courseId}`)
   revalidatePath("/admin/modules")
+}
+
+export async function updateModule(courseId: string, moduleId: string, formData: FormData) {
+  const supabase = await createClient()
+  const title = String(formData.get("title") || "").trim()
+  if (!title) throw new Error("Module title is required.")
+
+  const { error } = await supabase
+    .from("course_modules")
+    .update({
+      module_number: String(formData.get("moduleNumber") || "").trim() || null,
+      title,
+      hours: String(formData.get("hours") || "").trim() || null,
+      focus: String(formData.get("focus") || "").trim() || null,
+    })
+    .eq("id", moduleId)
+  if (error) throw new Error(error.message)
+
+  revalidatePath(`/admin/courses/${courseId}`)
+  revalidatePath("/admin/modules")
+  revalidatePath("/dashboard")
+}
+
+export async function deleteCourse(courseId: string, formData: FormData) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  const { data: course } = await supabase.from("courses").select("id, title, slug").eq("id", courseId).single()
+  if (!course) throw new Error("Course not found.")
+
+  const confirmation = String(formData.get("confirm") || "").trim()
+  if (confirmation !== "DELETE") throw new Error('Type DELETE (in capitals) to confirm deleting this course.')
+
+  // A course with enrolled students holds their progress and certificates — deleting it would
+  // wipe all of that. Archive it instead, or remove the enrollments deliberately first.
+  const { count: enrolled } = await supabase
+    .from("enrollments")
+    .select("id", { count: "exact", head: true })
+    .eq("course_id", courseId)
+  if ((enrolled ?? 0) > 0) {
+    throw new Error(
+      `This course has ${enrolled} enrolled student${enrolled === 1 ? "" : "s"}. Archive it instead, or remove their enrollments first.`,
+    )
+  }
+
+  const { error } = await supabase.from("courses").delete().eq("id", courseId)
+  if (error) throw new Error(error.message)
+
+  await logAudit({
+    actorId: user.id,
+    action: "course.delete",
+    entityType: "course",
+    entityId: courseId,
+    metadata: { title: course.title, slug: course.slug },
+  })
+
+  revalidatePath("/admin/courses")
+  revalidatePath("/dashboard")
+  redirect("/admin/courses")
 }

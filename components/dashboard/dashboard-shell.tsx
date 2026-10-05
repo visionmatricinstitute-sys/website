@@ -50,6 +50,9 @@ export function DashboardShell({
                     <Link href="/admin/certificates" className="hover:text-navy-foreground transition-colors">
                       Certificates
                     </Link>
+                    <Link href="/admin/audit-log" className="hover:text-navy-foreground transition-colors">
+                      Audit log
+                    </Link>
                   </>
                 )}
                 <Link href="/admin/modules" className="hover:text-navy-foreground transition-colors">

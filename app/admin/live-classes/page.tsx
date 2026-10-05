@@ -4,8 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Video, ExternalLink } from "lucide-react"
-import { scheduleLiveClass } from "./actions"
+import { Video, ExternalLink, Trash2, Pencil, Save } from "lucide-react"
+import { ConfirmSubmitButton } from "@/components/admin/confirm-submit-button"
+import { scheduleLiveClass, updateLiveClass, deleteLiveClass } from "./actions"
 
 export default async function AdminLiveClassesPage() {
   const supabase = await createClient()
@@ -20,7 +21,7 @@ export default async function AdminLiveClassesPage() {
 
   const { data: classes } = await supabase
     .from("live_classes")
-    .select("id, title, scheduled_start, duration_minutes, join_url, start_url, courses(title)")
+    .select("id, title, description, scheduled_start, duration_minutes, join_url, start_url, courses(title)")
     .order("scheduled_start", { ascending: false })
 
   return (
@@ -101,12 +102,44 @@ export default async function AdminLiveClassesPage() {
                     {c.courses?.title} &middot; {new Date(c.scheduled_start).toLocaleString()} &middot; {c.duration_minutes} min
                   </div>
                 </div>
-                <Button asChild variant="outline" size="sm" className="flex-shrink-0 gap-1.5 bg-transparent">
-                  <a href={c.start_url} target="_blank" rel="noopener noreferrer">
-                    Host Link <ExternalLink className="h-3.5 w-3.5" />
-                  </a>
-                </Button>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <Button asChild variant="outline" size="sm" className="gap-1.5 bg-transparent">
+                    <a href={c.start_url} target="_blank" rel="noopener noreferrer">
+                      Host Link <ExternalLink className="h-3.5 w-3.5" />
+                    </a>
+                  </Button>
+                  <form action={deleteLiveClass.bind(null, c.id)}>
+                    <ConfirmSubmitButton
+                      ariaLabel="Delete session"
+                      message={`Delete the session "${c.title}" from VMI? (Cancel the Zoom meeting in Zoom separately.)`}
+                      className="text-destructive hover:text-destructive/80"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </ConfirmSubmitButton>
+                  </form>
+                </div>
               </CardContent>
+              <details className="border-t border-border">
+                <summary className="cursor-pointer px-6 py-2 text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5">
+                  <Pencil className="h-3 w-3" /> Edit title &amp; description
+                </summary>
+                <form action={updateLiveClass.bind(null, c.id)} className="px-6 pb-4 flex gap-2 flex-wrap items-end">
+                  <div className="space-y-1 flex-1 min-w-[180px]">
+                    <Label className="text-xs">Title</Label>
+                    <Input name="title" required defaultValue={c.title} />
+                  </div>
+                  <div className="space-y-1 flex-1 min-w-[220px]">
+                    <Label className="text-xs">Description</Label>
+                    <Input name="description" defaultValue={c.description ?? ""} />
+                  </div>
+                  <Button type="submit" size="sm" className="gap-1.5 bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Save className="h-3.5 w-3.5" /> Save
+                  </Button>
+                </form>
+                <p className="px-6 pb-3 text-xs text-muted-foreground font-serif">
+                  To change the date or time, delete this session and schedule a new one (the Zoom meeting is created at scheduling time).
+                </p>
+              </details>
             </Card>
           ))
         )}

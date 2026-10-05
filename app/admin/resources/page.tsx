@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { UploadCloud, FileText, Trash2, Link2 } from "lucide-react"
-import { uploadResource, addResourceLink, deleteResource } from "./actions"
+import { UploadCloud, FileText, Trash2, Link2, Pencil, Save } from "lucide-react"
+import { ConfirmSubmitButton } from "@/components/admin/confirm-submit-button"
+import { uploadResource, addResourceLink, updateResource, deleteResource } from "./actions"
 
 const RESOURCE_TYPES = ["pdf", "doc", "xlsx", "pptx", "zip", "image", "other"]
 
@@ -184,11 +185,50 @@ export default async function AdminResourcesPage() {
                   </div>
                 </div>
                 <form action={deleteResource.bind(null, r.id)}>
-                  <button type="submit" className="text-destructive hover:text-destructive/80 flex-shrink-0">
+                  <ConfirmSubmitButton
+                    ariaLabel="Delete resource"
+                    message={`Delete "${r.title}"? Students will no longer see it.`}
+                    className="text-destructive hover:text-destructive/80 flex-shrink-0"
+                  >
                     <Trash2 className="h-4 w-4" />
-                  </button>
+                  </ConfirmSubmitButton>
                 </form>
               </CardContent>
+              <details className="border-t border-border">
+                <summary className="cursor-pointer px-6 py-2 text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5">
+                  <Pencil className="h-3 w-3" /> Edit
+                </summary>
+                <form action={updateResource.bind(null, r.id)} className="px-6 pb-4 flex gap-2 flex-wrap items-end">
+                  <div className="space-y-1 flex-1 min-w-[180px]">
+                    <Label className="text-xs">Title</Label>
+                    <Input name="title" required defaultValue={r.title} />
+                  </div>
+                  {r.file_path ? (
+                    <div className="space-y-1 w-32">
+                      <Label className="text-xs">Type</Label>
+                      <select
+                        name="resourceType"
+                        defaultValue={r.resource_type ?? "other"}
+                        className="border-input flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm"
+                      >
+                        {RESOURCE_TYPES.map((t) => (
+                          <option key={t} value={t}>
+                            {t.toUpperCase()}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : (
+                    <div className="space-y-1 flex-1 min-w-[220px]">
+                      <Label className="text-xs">Link</Label>
+                      <Input name="url" type="url" required defaultValue={r.file_url ?? ""} />
+                    </div>
+                  )}
+                  <Button type="submit" size="sm" className="gap-1.5 bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Save className="h-3.5 w-3.5" /> Save
+                  </Button>
+                </form>
+              </details>
             </Card>
           ))
         )}
