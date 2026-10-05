@@ -8,18 +8,18 @@ export interface ProgramModule {
 // The 12 modules of the course, as held in the course record (public.course_modules), read 2026-09-26.
 // Keep in step with that table.
 export const PROGRAM_MODULES: ProgramModule[] = [
-  { number: "01", title: "Introduction to Data Centers", hours: "8h", focus: "Data center types, market overview, PUE/WUE/CUE, career path" },
+  { number: "01", title: "Data Center Fundamentals", hours: "8h", focus: "Data center types, market overview, PUE/WUE/CUE, career path" },
   { number: "02", title: "Electrical Engineering Fundamentals", hours: "16h", focus: "Ohm's/Kirchhoff's Laws, 3-phase power, load schedules, voltage drop" },
-  { number: "03", title: "Electrical Equipment – Part 1", hours: "20h", focus: "MV switchgear, transformers, diesel generators, synchronization" },
+  { number: "03", title: "Electrical Equipment Deep Dive", hours: "20h", focus: "MV switchgear, transformers, diesel generators, synchronization" },
   { number: "04", title: "Data Center Design Standards", hours: "12h", focus: "Uptime Tiers, TIA-942-C, IEC/IS standards, ASHRAE classes" },
-  { number: "05", title: "The Electrical Design Process", hours: "14h", focus: "Design lifecycle, Basis of Design, BOQ, vendor evaluation" },
-  { number: "06", title: "Load Calculations", hours: "20h", focus: "UPS/transformer/DG sizing, cable sizing, fault levels, PFC" },
+  { number: "05", title: "Electrical Design Process", hours: "14h", focus: "Design lifecycle, Basis of Design, BOQ, vendor evaluation" },
+  { number: "06", title: "Load Calculations & Cable Sizing", hours: "20h", focus: "UPS/transformer/DG sizing, cable sizing, fault levels, PFC" },
   { number: "07", title: "Single-Line Diagrams", hours: "16h", focus: "SLD symbols, redundancy topologies (N+1/2N), UPS topologies" },
   { number: "08", title: "Electrical Layout Design", hours: "18h", focus: "Substation/UPS/DG room layouts, data hall design, grounding grids" },
-  { number: "09", title: "BIM and Software", hours: "20h", focus: "Revit MEP, Navisworks, ETAP, DIALux, Bluebeam" },
+  { number: "09", title: "BIM & Software", hours: "20h", focus: "Revit MEP, Navisworks, ETAP, DIALux, Bluebeam" },
   { number: "10", title: "Vendor Engineering", hours: "14h", focus: "Vendor landscape, technical bid evaluation, FAT/SAT" },
-  { number: "11", title: "Site Engineering", hours: "18h", focus: "Installation supervision, testing, commissioning, punch list" },
-  { number: "12", title: "Real Data Center Project – Capstone", hours: "30h", focus: "10 MW Tier III data center project, end to end" },
+  { number: "11", title: "Site Engineering & ETAP", hours: "18h", focus: "Installation supervision, testing, commissioning, punch list" },
+  { number: "12", title: "Capstone Project", hours: "30h", focus: "10 MW Tier III data center project, end to end" },
 ]
 
 // Total hours across the modules above ("8h", "16h", ...). 206 for the current 12 modules.
