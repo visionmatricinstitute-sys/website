@@ -57,8 +57,10 @@ create policy "Instructors see their own course assignments"
 -- ---------------------------------------------------------------------------
 -- Scoped instructor access — additive alongside each table's existing admin policy
 -- ---------------------------------------------------------------------------
-create policy "Instructors manage their own courses"
-  on public.courses for all
+-- UPDATE only (not ALL): a FOR ALL policy would also let an instructor delete their assigned
+-- course, cascading to its modules and enrollments. Course creation/deletion stays admin-only.
+create policy "Instructors edit their own courses"
+  on public.courses for update
   using (exists (select 1 from public.course_instructors ci where ci.instructor_id = auth.uid() and ci.course_id = courses.id))
   with check (exists (select 1 from public.course_instructors ci where ci.instructor_id = auth.uid() and ci.course_id = courses.id));
 
