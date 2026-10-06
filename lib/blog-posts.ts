@@ -8,6 +8,30 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "ups-selection-criteria-what-to-specify",
+    category: "Electrical Design",
+    title: "UPS Selection Criteria: What to Specify",
+    description:
+      "A checklist of what to specify when selecting a UPS for a data center: capacity and power factor, topology, efficiency, redundancy, batteries, harmonics, bypass, monitoring and service.",
+    image: "/data-center-ups-topologies.jpg",
+  },
+  {
+    slug: "overcurrent-relay-settings-idmt-worked-example",
+    category: "Electrical Design",
+    title: "Overcurrent Relay Settings: IDMT Curve Worked Example",
+    description:
+      "How to set an overcurrent relay: pickup current, time multiplier and the IEC standard inverse curve, with a worked example of operating time at a fault and how grading margins work.",
+    image: "/data-center-protection-relay.jpg",
+  },
+  {
+    slug: "current-transformer-ratio-burden-selection-example",
+    category: "Electrical Design",
+    title: "Current Transformer (CT) Selection: Ratio, Burden and Class",
+    description:
+      "How to select a current transformer: ratio, 1 A or 5 A secondary, accuracy class, burden and lead resistance, with a worked burden example and common mistakes.",
+    image: "/data-center-ct-pt-relay.jpg",
+  },
+  {
     slug: "neutral-conductor-sizing-harmonics-data-centers",
     category: "Electrical Design",
     title: "Neutral Conductor Sizing with Harmonics in Data Centers",
