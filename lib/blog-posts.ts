@@ -8,6 +8,46 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "data-center-capstone-project-10-mw-tier-iii",
+    category: "Courses",
+    title: "Capstone Project: Designing a 10 MW Tier III Data Center",
+    description:
+      "What a full data center design project involves, from load and tier target to single-line diagram, sizing, layouts and testing, and how the VMI program ends with a 10 MW Tier III capstone.",
+    image: "/electrical-design-data-center.jpg",
+  },
+  {
+    slug: "data-center-construction-phases-explained",
+    category: "Construction",
+    title: "Data Center Construction Phases Explained",
+    description:
+      "The usual phases of a data center project from concept to handover: planning, design, procurement, construction, installation, commissioning and operations, with the electrical deliverables in each.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "generator-commissioning-checklist",
+    category: "Construction",
+    title: "Generator Commissioning Checklist",
+    description:
+      "A checklist for commissioning a standby diesel generator set: pre-start checks, fuel and cooling, start and transfer time, load bank and step-load tests, paralleling and ATS integration.",
+    image: "/data-center-ups-vs-generator.jpg",
+  },
+  {
+    slug: "ups-commissioning-and-load-bank-testing",
+    category: "Construction",
+    title: "UPS Commissioning and Load Bank Testing",
+    description:
+      "What UPS commissioning covers: installation checks, load bank steps, transfer to battery and bypass, battery discharge, parallel load sharing and alarms, with notes on doing it safely.",
+    image: "/data-center-ups-topologies.jpg",
+  },
+  {
+    slug: "switchgear-testing-and-commissioning-checklist",
+    category: "Construction",
+    title: "Switchgear Testing and Commissioning Checklist",
+    description:
+      "A practical checklist for testing and commissioning MV and LV switchgear: visual and mechanical checks, insulation and contact resistance, protection tests, interlocks and energisation.",
+    image: "/data-center-protection-relay.jpg",
+  },
+  {
     slug: "ups-selection-criteria-what-to-specify",
     category: "Electrical Design",
     title: "UPS Selection Criteria: What to Specify",
