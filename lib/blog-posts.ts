@@ -8,6 +8,62 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "liquid-cooling-direct-to-chip-vs-immersion",
+    category: "AI Data Centers",
+    title: "Liquid Cooling Explained: Direct-to-Chip vs Immersion",
+    description:
+      "Why liquid cooling is used, how direct-to-chip and immersion cooling work, how they differ, and what each means for data center power and mechanical design.",
+    image: "/data-center-hot-cold-aisle.jpg",
+  },
+  {
+    slug: "fat-sat-ist-testing-data-center-explained",
+    category: "Construction",
+    title: "FAT, SAT and IST in Data Center Projects Explained",
+    description:
+      "What factory acceptance testing (FAT), site acceptance testing (SAT) and integrated systems testing (IST) each prove, in what order they happen, and who signs them off.",
+    image: "/data-center-protection-relay.jpg",
+  },
+  {
+    slug: "data-center-commissioning-levels-explained",
+    category: "Construction",
+    title: "Data Center Commissioning Levels (L1 to L5) Explained",
+    description:
+      "The commonly used five levels of data center commissioning, from factory testing to integrated systems testing, what each proves, who is involved, and why the last level matters most.",
+    image: "/data-center-protection-relay.jpg",
+  },
+  {
+    slug: "wue-water-usage-effectiveness-explained",
+    category: "Sustainability",
+    title: "WUE (Water Usage Effectiveness) Explained with a Calculation",
+    description:
+      "What WUE measures, the formula in litres per kilowatt-hour, a worked calculation with stated assumptions, and how it relates to PUE and cooling design.",
+    image: "/data-center-pue-explained.jpg",
+  },
+  {
+    slug: "chilled-water-vs-air-cooled-data-center-cooling",
+    category: "Cooling",
+    title: "Chilled Water vs Air-Cooled Cooling for Data Centers",
+    description:
+      "How water-cooled (chilled water with cooling towers) and air-cooled chiller systems compare for data centers: efficiency, water use, climate, maintenance and electrical load.",
+    image: "/data-center-hot-cold-aisle.jpg",
+  },
+  {
+    slug: "crah-vs-crac-data-center-cooling-units",
+    category: "Cooling",
+    title: "CRAH vs CRAC: Data Center Cooling Units Compared",
+    description:
+      "What CRAH and CRAC units are, how they differ in how they remove heat, where each fits, and the electrical and operational trade-offs.",
+    image: "/data-center-hot-cold-aisle.jpg",
+  },
+  {
+    slug: "data-center-cooling-systems-explained",
+    category: "Cooling",
+    title: "Data Center Cooling Systems Explained",
+    description:
+      "How data center cooling works: heat removal paths, air-cooled and water-cooled approaches, CRAH and CRAC units, chillers, containment and liquid cooling, and how cooling choices tie back to electrical load.",
+    image: "/data-center-hot-cold-aisle.jpg",
+  },
+  {
     slug: "hyperscale-vs-colocation-data-centers",
     category: "Technical Basics",
     title: "Hyperscale vs Colocation Data Centers",
