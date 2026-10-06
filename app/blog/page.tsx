@@ -12,6 +12,14 @@ import { ArrowRight } from "lucide-react"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 import { blogPosts as posts } from "@/lib/blog-posts"
 
+const featured = posts.slice(0, 6)
+const groups = Object.entries(
+  posts.reduce<Record<string, typeof posts>>((acc, post) => {
+    ;(acc[post.category] ??= []).push(post)
+    return acc
+  }, {}),
+).sort((a, b) => b[1].length - a[1].length)
+
 const title = "Blog"
 const description =
   "Technical articles on data center electrical design, tier classification, redundancy, PUE, hot/cold aisle containment, single-line diagrams, PDUs, UPS topologies, cable sizing, backup power, distribution architecture, and earthing — from Vision Matrix Institute."
@@ -63,8 +71,8 @@ export default function BlogIndexPage() {
 
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4 max-w-3xl space-y-6">
-            {posts.map((post, index) => (
-              <FadeIn key={post.slug} delay={index * 0.05}>
+            {featured.map((post, index) => (
+              <FadeIn key={post.slug} delay={Math.min(index, 5) * 0.05}>
                 <Link href={`/blog/${post.slug}`}>
                   <Card className="hover:shadow-lg transition-shadow overflow-hidden">
                     <CardContent className="p-0">
@@ -91,6 +99,31 @@ export default function BlogIndexPage() {
                   </Card>
                 </Link>
               </FadeIn>
+            ))}
+          </div>
+        </section>
+
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4 max-w-3xl space-y-10">
+            <h2 className="text-2xl lg:text-3xl font-black font-sans text-foreground">All articles by topic</h2>
+            {groups.map(([category, items]) => (
+              <div key={category}>
+                <h3 className="text-lg font-bold font-sans text-foreground mb-3">
+                  {category} <span className="text-sm font-normal text-muted-foreground">({items.length})</span>
+                </h3>
+                <ul className="space-y-1.5">
+                  {items.map((post) => (
+                    <li key={post.slug}>
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="text-sm text-foreground underline underline-offset-4 hover:no-underline"
+                      >
+                        {post.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
         </section>
