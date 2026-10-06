@@ -9,9 +9,9 @@ export const TOOLKIT_TOOLS: ToolkitTool[] = [
   {
     slug: "conductor-sizing-calculator",
     shortLabel: "Conductor Sizing",
-    title: "Cable & Conductor Sizing Calculator (HT / LV / Busduct / Earthing)",
+    title: "HV & LV Cable Sizing Calculator (Busduct and Earth Conductor)",
     description:
-      "Four independent IEC/IS-aligned sizing tools in one place — HT cables, LV cables, busducts and earthing conductors — each checking ampacity, voltage drop, and short-circuit withstand rather than giving a rough estimate.",
+      "Free HV (HT) and LV cable sizing calculator, plus busduct and earth cable size calculation. Four IEC/IS-aligned tools in one place, each checking ampacity, voltage drop and short-circuit withstand rather than giving a rough estimate.",
   },
   {
     slug: "transformer-sizing-calculator",
@@ -23,14 +23,14 @@ export const TOOLKIT_TOOLS: ToolkitTool[] = [
   {
     slug: "ups-selection-calculator",
     shortLabel: "UPS Selection",
-    title: "UPS Sizing & Selection Calculator for Data Centers",
+    title: "UPS Sizing Calculator for Data Centers (UPS Selection)",
     description:
       "Size a UPS system across Single, N, N+1, Distributed, 2N and 2(N+1) redundancy philosophies, with losses, battery charging load, and standard kVA rating libraries.",
   },
   {
     slug: "generator-sizing-calculator",
     shortLabel: "Generator (DG) Sizing",
-    title: "Diesel Generator (DG) Sizing Calculator",
+    title: "Generator Sizing Calculator (Diesel DG Set)",
     description:
       "Size a standby diesel generator set per ISO 8528, sized on the larger of steady-state running load and the voltage-dip-limited starting requirement of the largest motor.",
   },

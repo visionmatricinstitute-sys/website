@@ -8,9 +8,9 @@ import { SimpleProgramPage } from "@/components/programs/simple-program-page"
 import { ProgramCurriculum } from "@/components/programs/program-curriculum"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 
-const title = "BIM Training with Revit MEP"
+const title = "Revit Training Institute: BIM Training with Revit MEP"
 const description =
-  "Advanced BIM training with Revit MEP focusing on building information modeling for construction and engineering projects. Live online, instructor-led."
+  "Revit and BIM training institute for electrical and MEP engineers: Revit MEP, electrical modelling for data centers, Navisworks clash detection and Dynamo. Live online, instructor-led."
 
 export const metadata: Metadata = {
   title,
