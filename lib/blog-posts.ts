@@ -8,6 +8,22 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "ups-sizing-data-center-worked-example",
+    category: "Electrical Design",
+    title: "UPS Sizing for a Data Center: A Worked Example",
+    description:
+      "Step-by-step UPS sizing for a 1,200 kW critical load: losses, battery charging, growth margin, power factor, and how N, N+1 and 2N module choices change normal and post-failure loading. All assumptions are stated.",
+    image: "/data-center-ups-topologies.jpg",
+  },
+  {
+    slug: "voltage-drop-calculation-formula-examples",
+    category: "Electrical Design",
+    title: "Voltage Drop Calculation: Formula and Worked Examples",
+    description:
+      "The voltage drop formula for single-phase and three-phase LV cables, a worked example with every assumption stated, how to fix a cable that fails the limit, and a free calculator.",
+    image: "/data-center-cable-sizing.jpg",
+  },
+  {
     slug: "single-line-diagrams-explained",
     category: "Technical Basics",
     title: "Single-Line Diagrams Explained (SLD)",
