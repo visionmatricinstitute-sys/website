@@ -8,6 +8,94 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "data-center-glossary-terms-engineers-use",
+    category: "Technical",
+    title: "Data Center Glossary: Terms Engineers Use",
+    description:
+      "A plain-language glossary of data center and electrical design terms, from availability and ATS to white space and WUE, with links to detailed guides.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "data-center-electrical-design-course-what-to-look-for",
+    category: "Courses",
+    title: "Data Center Electrical Design Course: What to Look For",
+    description:
+      "How to judge a data center electrical design course: curriculum, calculations, drawings and software, a project, instructors, delivery and what you can show afterwards.",
+    image: "/electrical-design-data-center.jpg",
+  },
+  {
+    slug: "data-center-site-selection-power-availability",
+    category: "Technical",
+    title: "Data Center Site Selection: Power Availability and Other Factors",
+    description:
+      "The factors that decide where a data center is built: power availability and quality, connectivity, water, climate, hazards, land and permits, and how to compare sites.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "lithium-ion-vs-vrla-batteries-for-ups",
+    category: "Electrical Design",
+    title: "Lithium-ion vs VRLA Batteries for UPS",
+    description:
+      "How lithium-ion and valve-regulated lead-acid (VRLA) batteries compare for UPS use: footprint, life, cost, maintenance, temperature and safety considerations.",
+    image: "/data-center-ups-topologies.jpg",
+  },
+  {
+    slug: "battery-energy-storage-in-data-centers",
+    category: "Electrical Design",
+    title: "Battery Energy Storage in Data Centers",
+    description:
+      "What battery energy storage systems (BESS) can do in a data center beyond UPS backup, the engineering and safety questions, and where it makes sense.",
+    image: "/data-center-ups-topologies.jpg",
+  },
+  {
+    slug: "renewable-energy-for-data-centers",
+    category: "Sustainability",
+    title: "Renewable Energy for Data Centers",
+    description:
+      "How data centers source renewable energy: on-site generation, power purchase agreements, certificates and storage, and the engineering questions each raises.",
+    image: "/data-center-ups-vs-generator.jpg",
+  },
+  {
+    slug: "green-data-centers-efficiency-levers",
+    category: "Sustainability",
+    title: "Green Data Centers: Efficiency Levers",
+    description:
+      "The main ways a data center can reduce its energy, water and carbon impact: efficient cooling, power chain, load management, heat reuse and cleaner supply, with the standard metrics.",
+    image: "/data-center-pue-explained.jpg",
+  },
+  {
+    slug: "data-center-architecture-spaces-layers-and-layout",
+    category: "Technical",
+    title: "Data Center Architecture: Spaces, Layers and Layout",
+    description:
+      "How a data center is organised physically: the white space, power and cooling rooms, support spaces, and how the architectural layout follows the power and cooling paths.",
+    image: "/data-center-redundancy-explained.jpg",
+  },
+  {
+    slug: "what-is-dcim-and-do-you-need-it",
+    category: "Technical",
+    title: "What Is DCIM and Do You Need It?",
+    description:
+      "What data center infrastructure management (DCIM) software does, how it relates to building and power monitoring systems, and how to decide whether a facility needs it.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "how-to-read-a-data-center-electrical-drawing-set",
+    category: "Technical",
+    title: "How to Read a Data Center Electrical Drawing Set",
+    description:
+      "A practical order for reading an electrical drawing set: title blocks and legends, the single-line diagram, layouts, schedules and specifications, and how to cross-check them.",
+    image: "/data-center-single-line-diagram.jpg",
+  },
+  {
+    slug: "etap-for-data-center-design-where-it-fits",
+    category: "Technical",
+    title: "ETAP for Data Center Design: Where It Fits",
+    description:
+      "What ETAP is used for in data center electrical design: short-circuit, load flow, protection coordination and arc-flash studies, and how studies connect to the single-line diagram.",
+    image: "/data-center-single-line-diagram.jpg",
+  },
+  {
     slug: "site-engineer-in-data-center-projects",
     category: "Career Guide",
     title: "Site Engineer in Data Center Projects",
