@@ -8,6 +8,86 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "electrical-load-schedule-how-to-build-one",
+    category: "Electrical Design",
+    title: "Electrical Load Schedule: How to Build One",
+    description:
+      "What an electrical load schedule contains, how to calculate connected and demand load, how it feeds transformer and generator sizing, and common mistakes.",
+    image: "/data-center-single-line-diagram.jpg",
+  },
+  {
+    slug: "data-center-lighting-design-lux-calculation-example",
+    category: "Electrical Design",
+    title: "Data Center Lighting Design: Lux Level Calculation Example",
+    description:
+      "How to estimate the number of luminaires for a room with the lumen method, with a worked example using stated assumptions, and the other lighting design checks.",
+    image: "/data-center-cable-sizing.jpg",
+  },
+  {
+    slug: "arc-flash-basics-data-center-engineers",
+    category: "Electrical Design",
+    title: "Arc Flash Basics for Data Center Engineers",
+    description:
+      "What arc flash is, how incident energy is estimated, how it ties to protection settings, and the main ways to reduce the hazard.",
+    image: "/data-center-protection-relay.jpg",
+  },
+  {
+    slug: "harmonics-in-data-centers-sources-and-mitigation",
+    category: "Electrical Design",
+    title: "Harmonics in Data Centers: Sources and Mitigation",
+    description:
+      "Where harmonics come from in a data center, what they do to transformers, neutrals and capacitors, and the common ways to limit them.",
+    image: "/data-center-ct-pt-relay.jpg",
+  },
+  {
+    slug: "load-flow-study-explained-data-center",
+    category: "Electrical Design",
+    title: "Load Flow Study Explained for Data Center Electrical Design",
+    description:
+      "What a load flow (power flow) study calculates, the inputs it needs, the scenarios to run in a data center, and how to read the results.",
+    image: "/data-center-single-line-diagram.jpg",
+  },
+  {
+    slug: "protection-coordination-basics-data-center",
+    category: "Electrical Design",
+    title: "Protection Coordination Basics for Data Center Engineers",
+    description:
+      "What protection coordination (discrimination) is, how time-current curves are used, why selectivity matters in a data center, and the common mistakes.",
+    image: "/data-center-protection-relay.jpg",
+  },
+  {
+    slug: "lightning-protection-data-center-basics",
+    category: "Electrical Design",
+    title: "Lightning Protection for Data Centers: Basics",
+    description:
+      "How lightning protection for a data center is designed: risk assessment, external protection, bonding and surge protective devices, with the common mistakes.",
+    image: "/data-center-earthing-bonding.jpg",
+  },
+  {
+    slug: "data-center-earthing-design-tn-s-bonding",
+    category: "Electrical Design",
+    title: "Data Center Earthing Design: Systems, Bonding and Testing",
+    description:
+      "The main earthing system types, why bonding matters as much as earthing in a data center, how earth electrodes are tested, and the mistakes to avoid.",
+    image: "/data-center-earthing-bonding.jpg",
+  },
+  {
+    slug: "lv-switchgear-and-mcc-basics-data-center",
+    category: "Electrical Design",
+    title: "LV Switchgear and MCC Basics for Data Centers",
+    description:
+      "What LV switchgear and motor control centres are, how main and distribution boards are arranged, the key ratings and the checks for a data center design.",
+    image: "/data-center-mv-lv-distribution.jpg",
+  },
+  {
+    slug: "mv-switchgear-data-center-ratings-and-selection",
+    category: "Electrical Design",
+    title: "MV Switchgear in Data Centers: Ratings and Selection",
+    description:
+      "What medium-voltage switchgear does in a data center, the ratings that define it, air-insulated vs gas-insulated construction, and the selection checks that matter.",
+    image: "/data-center-mv-lv-distribution.jpg",
+  },
+  {
     slug: "liquid-cooling-direct-to-chip-vs-immersion",
     category: "AI Data Centers",
     title: "Liquid Cooling Explained: Direct-to-Chip vs Immersion",
