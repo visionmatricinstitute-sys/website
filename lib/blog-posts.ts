@@ -8,6 +8,78 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "site-engineer-in-data-center-projects",
+    category: "Career Guide",
+    title: "Site Engineer in Data Center Projects",
+    description:
+      "What a data center site engineer does day to day: installation supervision, inspection, quality control, coordination and handover support.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
+    slug: "commissioning-engineer-data-center-role-and-skills",
+    category: "Career Guide",
+    title: "Data Center Commissioning Engineer: Role and Skills",
+    description:
+      "What a data center commissioning engineer does, the skills the role needs, a typical week on a project, and how to move into it from design or site work.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
+    slug: "fresher-electrical-engineer-first-year-in-data-centers",
+    category: "Career Guide",
+    title: "Fresher Electrical Engineer: Starting in Data Centers",
+    description:
+      "A practical guide for new electrical engineering graduates: what to learn first, what roles to look for, and how to build evidence of skill before the first job.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
+    slug: "mep-engineer-to-data-center-engineer-transition-guide",
+    category: "Career Guide",
+    title: "MEP Engineer to Data Center Engineer: A Transition Guide",
+    description:
+      "How an MEP engineer from buildings can move into data centers: what carries over, what is new, and a practical plan to fill the gap.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
+    slug: "data-center-certifications-what-is-worth-it",
+    category: "Career Guide",
+    title: "Data Center Certifications: What Is Worth It",
+    description:
+      "An overview of the kinds of data center certifications available to engineers, what each type proves, and how to decide which to pursue, without endorsing a single credential.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
+    slug: "data-center-engineer-interview-questions-electrical",
+    category: "Career Guide",
+    title: "Data Center Electrical Engineer Interview Questions and Answers",
+    description:
+      "Common technical interview questions for data center electrical roles with concise, correct answers: redundancy, UPS, generators, earthing, protection and calculations.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
+    slug: "data-center-jobs-uae-saudi-arabia-electrical-engineers",
+    category: "Career Guide",
+    title: "Data Center Jobs in the UAE and Saudi Arabia for Electrical Engineers",
+    description:
+      "What roles exist on Gulf data center projects, the kinds of employers, what they typically look for, and how to prepare an application, without quoting job counts or pay.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
+    slug: "data-center-engineer-skills-roadmap",
+    category: "Career Guide",
+    title: "Data Center Engineer Skills Roadmap",
+    description:
+      "The skills a data center electrical engineer builds, in order: fundamentals, power chain, calculations, drawings, studies, software and communication.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
+    slug: "data-center-electrical-engineer-salary-india",
+    category: "Career Guide",
+    title: "Data Center Electrical Engineer Salary in India: What Drives It",
+    description:
+      "What determines a data center electrical engineer's pay in India, the factors that move it, and how to check current ranges honestly rather than trusting a single number.",
+    image: "/data-center-electrical-engineer-career.jpg",
+  },
+  {
     slug: "autocad-electrical-drawing-for-beginners",
     category: "BIM / Revit",
     title: "AutoCAD Electrical Drawing for Beginners",
