@@ -91,6 +91,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       })),
     },
     {
+      url: `${siteUrl}/data-center-design`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+      images: [`${siteUrl}/hero-data-center.jpg`],
+    },
+    {
       url: `${siteUrl}/programs/autocad-training`,
       lastModified: new Date(),
       changeFrequency: "weekly",
