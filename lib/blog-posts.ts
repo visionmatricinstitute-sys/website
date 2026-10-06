@@ -8,6 +8,54 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "what-is-a-data-center-components-and-how-it-works",
+    category: "Technical Basics",
+    title: "What Is a Data Center? Components and How It Works",
+    description:
+      "A plain explanation of what a data center is, the main systems inside one (IT, power, cooling, fire and security), how they work together, and the common types.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "sts-vs-ats-data-center-transfer-switches",
+    category: "Electrical Design",
+    title: "STS vs ATS: Transfer Switches in a Data Center",
+    description:
+      "What a static transfer switch (STS) and an automatic transfer switch (ATS) each do, how they differ in speed and role, where each sits in a data center power chain, and how to choose between them.",
+    image: "/data-center-redundancy-explained.jpg",
+  },
+  {
+    slug: "short-circuit-calculation-basics-lv-systems",
+    category: "Electrical Design",
+    title: "Short Circuit Calculation Basics for LV Systems",
+    description:
+      "How to estimate the prospective short-circuit current at an LV switchboard from transformer rating and impedance, with a worked example, why motors and cables change the answer, and what the result is used for.",
+    image: "/data-center-ct-pt-relay.jpg",
+  },
+  {
+    slug: "power-factor-correction-capacitor-bank-sizing",
+    category: "Electrical Design",
+    title: "Power Factor Correction: Sizing the Capacitor Bank",
+    description:
+      "How to size a power factor correction capacitor bank in kvar, with a worked example, what changes in a data center with UPS and drives, and the harmonic resonance risk to check before installing.",
+    image: "/data-center-mv-lv-distribution.jpg",
+  },
+  {
+    slug: "data-center-load-calculation-it-load-to-utility-demand",
+    category: "Electrical Design",
+    title: "Data Center Load Calculation: From IT Load to Utility Demand",
+    description:
+      "How to move from IT load to total facility load and utility demand: PUE-based estimate, load categories, demand and diversity, and transformer sizing, with a worked example and stated assumptions.",
+    image: "/data-center-mv-lv-distribution.jpg",
+  },
+  {
+    slug: "generator-sizing-data-center-worked-example",
+    category: "Electrical Design",
+    title: "Generator Sizing for a Data Center: A Worked Example",
+    description:
+      "Step-by-step diesel generator sizing for a data center: UPS input load, cooling and auxiliary load, margin, kVA rating, and N+1 set count, with every assumption stated and the failure case checked.",
+    image: "/data-center-ups-topologies.jpg",
+  },
+  {
     slug: "ups-sizing-data-center-worked-example",
     category: "Electrical Design",
     title: "UPS Sizing for a Data Center: A Worked Example",
