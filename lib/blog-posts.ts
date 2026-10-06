@@ -8,6 +8,46 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "hyperscale-vs-colocation-data-centers",
+    category: "Technical Basics",
+    title: "Hyperscale vs Colocation Data Centers",
+    description:
+      "How hyperscale and colocation data centers differ in ownership, customers, design approach and procurement, and what each means for electrical engineers.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "types-of-data-centers-enterprise-colocation-hyperscale-edge",
+    category: "Technical Basics",
+    title: "Types of Data Centers: Enterprise, Colocation, Hyperscale and Edge",
+    description:
+      "The main types of data centers, who owns and uses each, how their design priorities differ, and what that means for the electrical and mechanical engineer.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "busduct-vs-cable-data-center-power-distribution",
+    category: "Electrical Design",
+    title: "Busduct vs Cable for Data Center Power Distribution",
+    description:
+      "How busduct (busway) and cables compare for data center distribution: capacity, flexibility, installation, fault performance and cost drivers, and when each is usually chosen.",
+    image: "/data-center-mv-lv-distribution.jpg",
+  },
+  {
+    slug: "cable-tray-sizing-fill-calculation-example",
+    category: "Electrical Design",
+    title: "Cable Tray Sizing: Fill Calculation Example",
+    description:
+      "How to estimate the cable tray width for a bundle of power cables from cable diameters, fill ratio and usable depth, with a worked example and the other checks (weight, spacing, derating) that also govern tray selection.",
+    image: "/data-center-cable-sizing.jpg",
+  },
+  {
+    slug: "ups-battery-sizing-autonomy-time-worked-example",
+    category: "Electrical Design",
+    title: "UPS Battery Sizing and Autonomy Time: A First-Pass Worked Example",
+    description:
+      "How to estimate the battery energy a UPS needs for a given autonomy time: load per module, inverter efficiency, aging and design factors, with a worked example and why final sizing uses the manufacturer's discharge tables.",
+    image: "/data-center-ups-topologies.jpg",
+  },
+  {
     slug: "what-is-a-data-center-components-and-how-it-works",
     category: "Technical Basics",
     title: "What Is a Data Center? Components and How It Works",
