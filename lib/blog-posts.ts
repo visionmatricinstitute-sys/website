@@ -8,6 +8,102 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "autocad-electrical-drawing-for-beginners",
+    category: "BIM / Revit",
+    title: "AutoCAD Electrical Drawing for Beginners",
+    description:
+      "The basics of producing electrical drawings in AutoCAD: layers, symbols and blocks, scales and layouts, and good habits for a drawing set.",
+    image: "/autocad-training.png",
+  },
+  {
+    slug: "revit-mep-course-syllabus-and-outcomes",
+    category: "Courses",
+    title: "Revit MEP Course for Data Centers: Syllabus and Outcomes",
+    description:
+      "What to look for in a Revit electrical course, and the syllabus of the VMI BIM and Revit training: twelve modules from BIM fundamentals to a final data center project.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "revit-vs-autocad-for-electrical-design",
+    category: "BIM / Revit",
+    title: "Revit vs AutoCAD for Electrical Design",
+    description:
+      "How Revit and AutoCAD differ for electrical design work: model versus drawing, coordination, documentation and effort, and when each is the better fit.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "as-built-bim-data-centers",
+    category: "BIM / Revit",
+    title: "As-Built BIM for Data Centers",
+    description:
+      "What an as-built BIM model is, why it matters for operations, how to capture changes during construction, and the common gaps.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "bim-coordination-meeting-process",
+    category: "BIM / Revit",
+    title: "BIM Coordination Meeting Process",
+    description:
+      "How BIM coordination meetings are run: preparation, agenda, clash review, assigning actions and following up, with tips to keep them productive.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "lod-bim-level-of-development-explained",
+    category: "BIM / Revit",
+    title: "LOD in BIM: LOD 100 to 500 Explained",
+    description:
+      "What Level of Development means in BIM, how LOD 100 to 500 are usually described, how it differs from level of information, and how to use it in a project.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "dynamo-for-electrical-engineers-revit",
+    category: "BIM / Revit",
+    title: "Dynamo for Electrical Engineers",
+    description:
+      "What Dynamo is, the kinds of repetitive Revit tasks it can automate for electrical work, and a sensible way to start.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "navisworks-clash-detection-workflow",
+    category: "BIM / Revit",
+    title: "Navisworks Clash Detection Workflow",
+    description:
+      "How clash detection works in Navisworks: federating models, setting clash tests, reviewing and grouping results, assigning fixes and tracking resolution.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "revit-electrical-families-creating-and-managing",
+    category: "BIM / Revit",
+    title: "Revit Electrical Families: Creating and Managing",
+    description:
+      "What Revit families are, how electrical equipment families are structured, what makes a good one, and how to manage a library.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "cable-tray-modeling-in-revit",
+    category: "BIM / Revit",
+    title: "Cable Tray Modeling in Revit",
+    description:
+      "How cable trays are modelled in Revit: tray types and fittings, routing and elevations, clearances, and checking fill and weight outside the model.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "revit-electrical-basics-for-engineers",
+    category: "BIM / Revit",
+    title: "Revit Electrical Basics for Engineers",
+    description:
+      "The basic elements of electrical modelling in Revit: equipment, circuits, panels, schedules, containment and views, and how they fit into a project workflow.",
+    image: "/bim-training.jpg",
+  },
+  {
+    slug: "data-center-bim-why-it-matters",
+    category: "BIM / Revit",
+    title: "Data Center BIM: Why It Matters",
+    description:
+      "What BIM adds to data center projects: coordination, clash detection, quantities, documentation and handover data, and where electrical engineers fit in.",
+    image: "/bim-training.jpg",
+  },
+  {
     slug: "ai-vs-traditional-data-center-electrical-design",
     category: "AI Data Centers",
     title: "AI vs Traditional Data Center Electrical Design",
