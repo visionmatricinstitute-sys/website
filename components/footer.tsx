@@ -116,6 +116,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/data-center-design" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
+                  Data Center Design Guide
+                </Link>
+              </li>
+              <li>
                 <Link href="/blog" className="text-navy-foreground/80 hover:text-navy-foreground transition-colors">
                   Blog
                 </Link>
