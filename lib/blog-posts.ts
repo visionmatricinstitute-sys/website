@@ -8,6 +8,38 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "neutral-conductor-sizing-harmonics-data-centers",
+    category: "Electrical Design",
+    title: "Neutral Conductor Sizing with Harmonics in Data Centers",
+    description:
+      "Why the neutral can carry more current than the phases in a three-phase four-wire system with non-linear loads, a worked example, and how to size and protect the neutral.",
+    image: "/data-center-cable-sizing.jpg",
+  },
+  {
+    slug: "transformer-cable-sizing-parallel-cables-example",
+    category: "Electrical Design",
+    title: "Transformer Cable Sizing: LV Secondary Cables in Parallel",
+    description:
+      "How to size the cables from a distribution transformer to its LV switchboard: full-load current, parallel runs, short-circuit withstand and voltage drop, with a worked example.",
+    image: "/data-center-cable-sizing.jpg",
+  },
+  {
+    slug: "earth-conductor-sizing-adiabatic-equation-example",
+    category: "Electrical Design",
+    title: "Earth Cable Size Calculation: The Adiabatic Equation Explained",
+    description:
+      "How to size an earthing (protective) conductor with the adiabatic equation S = I√t / k, with a worked example, where k comes from, and what the calculation does not cover.",
+    image: "/data-center-cable-sizing.jpg",
+  },
+  {
+    slug: "hv-cable-sizing-calculation-worked-example",
+    category: "Electrical Design",
+    title: "HV Cable Sizing Calculation: A Worked Example",
+    description:
+      "How to size an HV (11 kV) cable: design current, derating, voltage drop and short-circuit withstand, with a worked example showing why the fault level often decides the conductor size.",
+    image: "/data-center-cable-sizing.jpg",
+  },
+  {
     slug: "data-center-glossary-terms-engineers-use",
     category: "Technical",
     title: "Data Center Glossary: Terms Engineers Use",
