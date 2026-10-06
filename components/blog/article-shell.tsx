@@ -119,8 +119,13 @@ export function ArticleShell({
       )}
 
       <section className="py-16 bg-background">
-        <div className="container mx-auto px-4 max-w-3xl space-y-10 font-body text-foreground leading-relaxed [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-serif [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:mb-4 [&_h2]:mt-2 [&_p]:text-muted-foreground [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1.5 [&_ul]:text-muted-foreground [&_li]:leading-relaxed">
+        <div className="container mx-auto px-4 max-w-3xl space-y-10 font-body text-foreground leading-relaxed [&_h2]:text-2xl [&_h2]:lg:text-3xl [&_h2]:font-serif [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:mb-4 [&_h2]:mt-2 [&_p]:text-muted-foreground [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ol]:mb-4 [&_table]:mb-4 [&_ul]:space-y-1.5 [&_ul]:text-muted-foreground [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-1.5 [&_ol]:text-muted-foreground [&_li]:leading-relaxed [&_p_a]:text-foreground [&_p_a]:underline [&_p_a]:underline-offset-4 [&_li_a]:text-foreground [&_li_a]:underline [&_li_a]:underline-offset-4 [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:text-sm [&_table]:border-collapse [&_th]:text-left [&_th]:font-semibold [&_th]:text-foreground [&_th]:border-b [&_th]:border-border [&_th]:py-2 [&_th]:pr-4 [&_td]:align-top [&_td]:py-2 [&_td]:pr-4 [&_td]:border-b [&_td]:border-border [&_td]:text-muted-foreground [&_h3]:text-lg [&_h3]:font-semibold">
           {children}
+
+          <p className="text-xs text-muted-foreground/80 border-t border-border pt-4">
+            Written by the Vision Matrix Institute editorial team. Worked examples use stated, illustrative assumptions;
+            check them against your project data, the applicable standards and manufacturer datasheets before use.
+          </p>
 
           <section id="faq" className="pt-6">
             <FadeIn className="mb-8">
