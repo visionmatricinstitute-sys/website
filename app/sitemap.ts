@@ -676,6 +676,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [`${siteUrl}/data-center-cable-sizing.jpg`],
     },
     {
+      url: `${siteUrl}/blog/current-transformer-ratio-burden-selection-example`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-ct-pt-relay.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/overcurrent-relay-settings-idmt-worked-example`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-protection-relay.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/ups-selection-criteria-what-to-specify`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-ups-topologies.jpg`],
+    },
+    {
       url: `${siteUrl}/blog/single-line-diagrams-explained`,
       lastModified: new Date("2026-08-26"),
       changeFrequency: "monthly",
