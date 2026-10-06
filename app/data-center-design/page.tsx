@@ -196,6 +196,21 @@ export default function DataCenterDesignPage() {
               </Link>
               .
             </p>
+            <h2 id="free-resources">Free resources</h2>
+            <ul>
+              <li>
+                <Link href="/resources/data-center-design-basics-checklist">Data Center Design Basics Checklist</Link>
+              </li>
+              <li>
+                <Link href="/resources/data-center-commissioning-handover-checklist">Commissioning and Handover Checklist</Link>
+              </li>
+              <li>
+                <Link href="/resources/data-center-engineering-career-roadmap">Data Center Engineering Career Roadmap</Link>
+              </li>
+              <li>
+                <Link href="/engineers-toolkit">Engineer&apos;s Toolkit: free calculators</Link>
+              </li>
+            </ul>
           </div>
         </ArticleShell>
       </main>

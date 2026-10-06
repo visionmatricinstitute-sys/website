@@ -98,6 +98,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [`${siteUrl}/hero-data-center.jpg`],
     },
     {
+      url: `${siteUrl}/resources/data-center-engineering-career-roadmap`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/resources/data-center-commissioning-handover-checklist`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${siteUrl}/programs/autocad-training`,
       lastModified: new Date(),
       changeFrequency: "weekly",
