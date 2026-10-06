@@ -8,6 +8,94 @@ export interface BlogPostSummary {
 
 export const blogPosts: BlogPostSummary[] = [
   {
+    slug: "ai-vs-traditional-data-center-electrical-design",
+    category: "AI Data Centers",
+    title: "AI vs Traditional Data Center Electrical Design",
+    description:
+      "How electrical design differs for AI data centers: load size and profile, density, redundancy choices, power quality, and what stays the same.",
+    image: "/data-center-single-line-diagram.jpg",
+  },
+  {
+    slug: "800-vdc-data-center-power-explained",
+    category: "AI Data Centers",
+    title: "800 VDC Data Center Power Explained",
+    description:
+      "What the proposed move towards 800 V DC power distribution in data centers means, why higher voltage helps, and what is still uncertain.",
+    image: "/data-center-ups-vs-generator.jpg",
+  },
+  {
+    slug: "gpu-cluster-infrastructure-for-electrical-engineers",
+    category: "AI Data Centers",
+    title: "GPU Cluster Infrastructure for Electrical Engineers",
+    description:
+      "What a GPU cluster is, how it is built from servers, racks and networks, and what each layer means for the electrical and cooling design.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "high-density-racks-power-distribution-implications",
+    category: "AI Data Centers",
+    title: "High-Density Racks: Power Distribution Implications",
+    description:
+      "What changes in power distribution when racks draw far more power: feeder and busway sizing, PDUs, three-phase distribution, cable and heat issues, and redundancy.",
+    image: "/data-center-pdu-explained.jpg",
+  },
+  {
+    slug: "ai-data-centers-explained",
+    category: "AI Data Centers",
+    title: "AI Data Centers Explained",
+    description:
+      "What makes an AI data center different from a traditional one: GPU clusters, rack density, networking, cooling and power, and what it means for engineers.",
+    image: "/hero-data-center.jpg",
+  },
+  {
+    slug: "nfpa-75-and-76-fire-protection-it-spaces",
+    category: "Standards",
+    title: "NFPA 75 and NFPA 76: Fire Protection for IT and Telecom Spaces",
+    description:
+      "What NFPA 75 and NFPA 76 cover for the protection of IT equipment and telecommunications facilities, and how fire detection and suppression are usually arranged in a data hall.",
+    image: "/data-center-hot-cold-aisle.jpg",
+  },
+  {
+    slug: "ashrae-thermal-guidelines-data-centers-explained",
+    category: "Standards",
+    title: "ASHRAE Thermal Guidelines for Data Centers Explained",
+    description:
+      "What the ASHRAE TC 9.9 thermal guidelines define, the equipment classes and the recommended and allowable ranges, and why they matter to cooling design.",
+    image: "/data-center-hot-cold-aisle.jpg",
+  },
+  {
+    slug: "is-3043-earthing-code-summary",
+    category: "Standards",
+    title: "IS 3043 Earthing Code Summary for Engineers",
+    description:
+      "A plain summary of what the Indian earthing code of practice IS 3043 covers, how it relates to IEC practice, and how to use it in a data center design.",
+    image: "/data-center-earthing-bonding.jpg",
+  },
+  {
+    slug: "iec-60364-data-center-electrical-installations",
+    category: "Standards",
+    title: "IEC 60364 for Data Center Electrical Installations",
+    description:
+      "What the IEC 60364 series covers for low-voltage installations, how it applies to data center design, and how it relates to national codes such as those used in India.",
+    image: "/data-center-mv-lv-distribution.jpg",
+  },
+  {
+    slug: "uptime-institute-tier-certification-what-it-covers",
+    category: "Standards",
+    title: "Uptime Institute Tier Certification: What It Covers",
+    description:
+      "What Uptime Institute Tier certification is, the stages it covers, what it does and does not assess, and what it means for design teams.",
+    image: "/data-center-tier-classification.jpg",
+  },
+  {
+    slug: "tia-942-explained-rated-1-to-rated-4",
+    category: "Standards",
+    title: "TIA-942 Explained: Rated-1 to Rated-4",
+    description:
+      "What the TIA-942 data center standard covers, how its four Rated levels work, how it relates to the Uptime tiers, and how engineers use it.",
+    image: "/data-center-tier-classification.jpg",
+  },
+  {
     slug: "electrical-load-schedule-how-to-build-one",
     category: "Electrical Design",
     title: "Electrical Load Schedule: How to Build One",
