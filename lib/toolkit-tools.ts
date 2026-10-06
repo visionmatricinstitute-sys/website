@@ -98,6 +98,13 @@ export const TOOLKIT_TOOLS: ToolkitTool[] = [
       "Estimate the voltage dip at the point of common coupling during motor starting for DOL, star-delta, soft-starter and VFD starting methods.",
   },
   {
+    slug: "voltage-drop-calculator",
+    shortLabel: "Voltage Drop",
+    title: "Voltage Drop Calculator (LV Cable, Single & Three Phase)",
+    description:
+      "Calculate LV cable voltage drop in volts and percent from current, length, conductor size, material and power factor, and check it against your allowed limit.",
+  },
+  {
     slug: "quick-electrical-formulas-calculator",
     shortLabel: "Quick Formulas",
     title: "Quick Electrical Formulas Calculator",

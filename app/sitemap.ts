@@ -125,6 +125,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${siteUrl}/blog/ups-sizing-data-center-worked-example`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-ups-topologies.jpg`],
+    },
+    {
+      url: `${siteUrl}/blog/voltage-drop-calculation-formula-examples`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${siteUrl}/data-center-cable-sizing.jpg`],
+    },
+    {
       url: `${siteUrl}/blog/single-line-diagrams-explained`,
       lastModified: new Date("2026-08-26"),
       changeFrequency: "monthly",
