@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     "question": "What are the levels of data center commissioning?",
-    "answer": "A common scheme uses five levels: L1 factory witness testing of equipment, L2 delivery and inspection on site, L3 installation checks and pre-functional testing, L4 functional performance testing of each system, and L5 integrated systems testing. Names and exact scope vary between organisations and projects."
+    "answer": "A common scheme uses five levels: L1 factory witness testing of equipment, L2 installation verification of each component on site (delivery, inspection, correct installation), L3 start-up and pre-functional checks, L4 functional performance testing of each system, and L5 integrated systems testing. Names and exact scope vary between organisations and projects."
   },
   {
     "question": "What is integrated systems testing?",
@@ -104,8 +104,8 @@ export default function Post() {
               <thead><tr><th>Level</th><th>Focus</th></tr></thead>
               <tbody>
                 <tr><td>L1</td><td>Factory witness testing: equipment is tested at the manufacturer before shipping</td></tr>
-                <tr><td>L2</td><td>Delivery and inspection: equipment received and checked on site for damage and compliance</td></tr>
-                <tr><td>L3</td><td>Installation and pre-functional checks: correct installation, wiring, labelling, start-up</td></tr>
+                <tr><td>L2</td><td>Installation verification: equipment received, inspected for damage and compliance, and checked as correctly installed on site</td></tr>
+                <tr><td>L3</td><td>Start-up and pre-functional checks: equipment energised and started, wiring, labelling and basic operation verified</td></tr>
                 <tr><td>L4</td><td>Functional performance testing: each system operates as specified</td></tr>
                 <tr><td>L5</td><td>Integrated systems testing: all systems tested together under failure scenarios</td></tr>
               </tbody>
