@@ -44,7 +44,7 @@ const faqs = [
   },
   {
     "question": "Which course does VMI offer?",
-    "answer": "The Electrical Design – Data Center Specialist program, delivered live online with a capstone project, plus separate BIM and Revit and AutoCAD programs. See the program page for the curriculum and fee."
+    "answer": "The Electrical Design – Data Center Specialist program, which ends with a capstone project, plus separate BIM and Revit and AutoCAD programs. See the program page for the curriculum and fee."
   }
 ]
 
@@ -122,7 +122,7 @@ export default function Post() {
             <h2 id="vmi">VMI's program</h2>
             <p>
               The <Link href="/programs/electrical-design-data-center">Electrical Design – Data Center Specialist program</Link>{" "}
-              is delivered live online and ends with a capstone design of a 10 MW Tier III data center. Compare it against the
+              ends with a capstone design of a 10 MW Tier III data center. Compare it against the
               checklist above, and see the free <Link href="/resources/data-center-engineering-career-roadmap">career roadmap</Link>
               to judge your starting point.
             </p>
