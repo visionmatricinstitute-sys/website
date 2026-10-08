@@ -16,7 +16,7 @@ export const PROGRAM_MODULES: ProgramModule[] = [
   { number: "06", title: "Load Calculations & Cable Sizing", hours: "20h", focus: "UPS/transformer/DG sizing, cable sizing, fault levels, PFC" },
   { number: "07", title: "Single-Line Diagrams", hours: "16h", focus: "SLD symbols, redundancy topologies (N+1/2N), UPS topologies" },
   { number: "08", title: "Electrical Layout Design", hours: "18h", focus: "Substation/UPS/DG room layouts, data hall design, grounding grids" },
-  { number: "09", title: "BIM & Software", hours: "20h", focus: "Revit MEP, Navisworks, ETAP, DIALux, Bluebeam" },
+  { number: "09", title: "BIM & Software", hours: "20h", focus: "Navisworks, ETAP, DIALux, Bluebeam" },
   { number: "10", title: "Vendor Engineering", hours: "14h", focus: "Vendor landscape, technical bid evaluation, FAT/SAT" },
   { number: "11", title: "Site Engineering & ETAP", hours: "18h", focus: "Installation supervision, testing, commissioning, punch list" },
   { number: "12", title: "Capstone Project", hours: "30h", focus: "10 MW Tier III data center project, end to end" },
@@ -35,10 +35,10 @@ export interface ToolCategory {
 }
 
 export const TOOL_CATEGORIES: ToolCategory[] = [
-  { title: "Design & Drawing", tools: ["AutoCAD Electrical", "Revit MEP", "Navisworks", "Bluebeam", "BIM 360"] },
-  { title: "Analysis & Studies", tools: ["ETAP", "SKM PowerTools", "DIgSILENT PowerFactory", "EasyPower", "CDEGS"] },
-  { title: "Lighting", tools: ["Dialux evo", "Relux"] },
-  { title: "Programme & Docs", tools: ["Primavera P6", "MS Project", "Excel (advanced)", "SEL AcSELerator"] },
+  { title: "Design & Drawing", tools: ["AutoCAD Electrical", "Navisworks", "Bluebeam"] },
+  { title: "Analysis & Studies", tools: ["ETAP"] },
+  { title: "Lighting", tools: ["Dialux evo"] },
+  { title: "Programme & Docs", tools: ["Excel (advanced)"] },
 ]
 
 export const DELIVERABLES: string[] = [
@@ -130,7 +130,7 @@ export const COHORTS: Cohort[] = [
 export const PREREQUISITES: string[] = [
   "Diploma or degree in Electrical, Electronics, or Instrumentation engineering.",
   "Comfort with basic AC circuit theory, single-line diagrams, and Excel.",
-  "A laptop capable of running AutoCAD, Revit MEP, and ETAP (software licences guided during onboarding).",
+  "A laptop capable of running AutoCAD and ETAP (software licences guided during onboarding).",
   "Willingness to produce every deliverable — this is a practice-first program.",
 ]
 

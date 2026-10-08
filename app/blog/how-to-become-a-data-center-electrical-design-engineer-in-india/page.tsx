@@ -246,16 +246,15 @@ export default function DataCenterCareerGuidePage() {
                   practice fall into four categories:
                 </p>
                 <h3>Design &amp; Drawing</h3>
-                <p>AutoCAD Electrical, Revit MEP, Navisworks, Bluebeam Revu, and BIM 360 for coordination workflows.</p>
+                <p>AutoCAD Electrical for drawings, Navisworks for coordination and Bluebeam Revu for markups and document review.</p>
                 <h3>Analysis &amp; Studies</h3>
                 <p>
-                  ETAP and SKM PowerTools for load flow, short-circuit, arc-flash, and protection coordination
-                  studies; DIgSILENT PowerFactory for MV transient and dynamic simulation on larger projects.
+                  ETAP for load flow, short-circuit, arc-flash, and protection coordination studies.
                 </p>
                 <h3>Lighting</h3>
                 <p>Dialux evo for illuminance calculations and lighting layout verification.</p>
                 <h3>Programme &amp; Documentation</h3>
-                <p>Primavera P6 or MS Project for scheduling, and advanced Excel for the calculation sheets that underpin every study.</p>
+                <p>Advanced Excel for the calculation sheets that underpin every study.</p>
               </FadeIn>
 
               <FadeIn>
