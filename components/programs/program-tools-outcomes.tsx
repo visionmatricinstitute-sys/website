@@ -12,7 +12,7 @@ export function ProgramToolsOutcomes() {
           <FadeIn className="text-center mb-12">
             <Badge className="bg-accent/10 text-accent mb-4 hover:bg-accent/10">03 · Tools &amp; Deliverables</Badge>
             <h2 className="text-3xl lg:text-5xl font-black font-sans text-foreground mb-4">
-              Every tool an electrical designer touches.
+              The tools you work in.
             </h2>
           </FadeIn>
 

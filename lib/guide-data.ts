@@ -17,7 +17,7 @@ export const DC_CAREER_FAQS: FaqItem[] = [
   {
     question: "What software do data center electrical design engineers use?",
     answer:
-      "The core toolkit includes AutoCAD Electrical for schematic and single-line drawing production, Revit MEP for 3D BIM modelling, ETAP or SKM PowerTools for load flow, short-circuit, arc-flash, and protection coordination studies, Dialux evo for lighting design, and Navisworks for BIM clash detection. Advanced Excel skills for calculation sheets are equally important in daily practice.",
+      "The core toolkit includes AutoCAD Electrical for schematic and single-line drawing production, ETAP for load flow, short-circuit, arc-flash, and protection coordination studies, Dialux evo for lighting design, and Navisworks for BIM clash detection. Advanced Excel skills for calculation sheets are equally important in daily practice.",
   },
   {
     question: "What is the salary range for this specialization in India?",
