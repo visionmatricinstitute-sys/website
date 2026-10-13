@@ -208,13 +208,12 @@ export default function DataCenterCareerGuidePage() {
                   consequence is why owners pay a premium for engineers who can demonstrably get it right.
                 </p>
                 <p>
-                  The demand signal is strong and public. India alone is projected to add over 1,000 MW of data
-                  center capacity by 2027, global hyperscale build-out has crossed 40 GW of cumulative IT load,
-                  and the AI compute boom is pushing rack densities from a legacy 5-20 kW toward 100+ kW —
-                  forcing a full redesign of electrical topologies industry-wide. Major EPC firms, consultancies,
-                  and hyperscale operators have publicly reported hiring shortfalls specifically for
-                  data-center-experienced electrical engineers, which is what pushes compensation for this
-                  specialization meaningfully above general MEP roles.
+                  The demand signal is public. Government and industry figures show India's installed data-center
+                  capacity growing several-fold since 2020, AI workloads are pushing the highest rack power
+                  densities in new builds well above what most halls today were designed for, and industry surveys
+                  consistently report that operators find it hard to hire qualified candidates, with electrical
+                  among the most-cited skills gaps. Treat this as a sign of scarce skills, not a promise of jobs
+                  or pay.
                 </p>
               </FadeIn>
 

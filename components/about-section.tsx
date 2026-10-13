@@ -52,7 +52,8 @@ export function AboutSection() {
             <p className="text-muted-foreground font-body leading-relaxed mb-4">
               Vision Matrix Institute has been at the forefront of online data center skills training, delivering
               live, instructor-led classes to students wherever they are. Our modern virtual classrooms, experienced
-              faculty, and industry-aligned curriculum ensure that our students are job-ready from day one.
+              faculty, and industry-aligned curriculum are built around real design deliverables: single-line
+              diagrams, cable schedules and BIM models. We don't guarantee a job or a specific placement outcome.
             </p>
             <p className="text-muted-foreground font-body leading-relaxed mb-6">
               We specialize in data center electrical design, BIM (Building Information Modeling) with Revit MEP,
