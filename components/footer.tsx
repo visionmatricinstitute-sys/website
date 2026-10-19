@@ -224,6 +224,15 @@ export function Footer() {
         {/* Copyright */}
         <div className="border-t border-navy-foreground/20 mt-8 pt-8 text-center">
           <p className="text-navy-foreground/60 font-body">© 2025 Vision Matrix Institute. All rights reserved.</p>
+          <p className="mt-2 text-sm font-body">
+            <Link href="/terms" className="text-navy-foreground/60 hover:text-navy-foreground hover:underline">
+              Terms &amp; Conditions
+            </Link>
+            <span className="mx-2 text-navy-foreground/40">|</span>
+            <Link href="/privacy" className="text-navy-foreground/60 hover:text-navy-foreground hover:underline">
+              Privacy Policy
+            </Link>
+          </p>
         </div>
       </div>
     </footer>
