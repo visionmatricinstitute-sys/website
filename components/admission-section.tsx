@@ -153,10 +153,6 @@ export function AdmissionSection() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-accent" />
-                  <span className="text-sm font-body">Valid ID Proof (Aadhar/PAN/Passport)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-accent" />
                   <span className="text-sm font-body">Recent Passport Size Photographs</span>
                 </div>
                 <div className="flex items-center gap-2">
