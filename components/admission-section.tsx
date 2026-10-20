@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useState, type FormEvent } from "react"
 import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -284,7 +285,15 @@ export function AdmissionSection() {
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center font-body">
-                  By submitting this form, you agree to our Terms & Conditions and Privacy Policy.
+                  By submitting this form, you agree to our{" "}
+                  <Link href="/terms" className="underline hover:text-foreground">
+                    Terms &amp; Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy" className="underline hover:text-foreground">
+                    Privacy Policy
+                  </Link>
+                  .
                 </p>
               </form>
             </CardContent>
