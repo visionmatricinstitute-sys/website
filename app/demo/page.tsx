@@ -60,7 +60,7 @@ const FEATURES = [
   {
     icon: TrendingUp,
     title: "Explore Career Opportunities",
-    description: "Resume guidance, interview prep and placement support.",
+    description: "Resume guidance, interview prep and job-search guidance.",
   },
 ]
 
@@ -68,7 +68,7 @@ const QUICK_FACTS = [
   { icon: Globe, title: "100% Online", description: "Live virtual classes, accessible anywhere." },
   { icon: Video, title: "Live Instructor-Led", description: "Real-time sessions, not recordings." },
   { icon: CheckCircle2, title: "Free, No Obligation", description: "No payment required to attend." },
-  { icon: Briefcase, title: "Placement Support", description: "Resume, interview prep, job guidance." },
+  { icon: Briefcase, title: "Career Guidance", description: "Resume, interview prep, job-search tips." },
 ]
 
 export default function DemoPage() {
