@@ -16,8 +16,8 @@ const PILLARS = [
   },
   {
     icon: Trophy,
-    title: "Placement Support",
-    text: "Resume guidance, interview preparation, and placement assistance to help job-ready graduates connect with employers.",
+    title: "Career Guidance",
+    text: "Resume guidance, interview preparation and job-search guidance to help you apply for roles with confidence.",
   },
 ]
 

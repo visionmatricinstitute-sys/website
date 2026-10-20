@@ -48,9 +48,9 @@ const faqs = [
     answer: "Yes — you receive a Vision Matrix Institute certificate of completion once you finish the course.",
   },
   {
-    question: "Is placement support included?",
+    question: "Is career guidance included?",
     answer:
-      "We provide resume guidance, interview preparation, and placement assistance to help job-ready graduates connect with employers.",
+      "We provide resume guidance, interview preparation and job-search guidance to help you apply for roles with confidence. We don't place students with employers or guarantee a job.",
   },
 ]
 
