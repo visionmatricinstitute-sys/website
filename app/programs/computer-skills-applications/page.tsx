@@ -22,13 +22,13 @@ export const metadata: Metadata = {
     url: "/programs/computer-skills-applications",
     title,
     description,
-    images: [{ url: "/computer-training-ms-office.png", width: 1200, height: 630, alt: title }],
+    images: [{ url: "/og/computer-training-ms-office.jpg", width: 1200, height: 630, alt: title }],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/computer-training-ms-office.png"],
+    images: ["/og/computer-training-ms-office.jpg"],
   },
 }
 

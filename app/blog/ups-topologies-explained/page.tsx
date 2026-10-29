@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ogImagePath } from "@/lib/og-image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
     url: "/blog/ups-topologies-explained",
     title,
     description,
-    images: [{ url: heroImageSrc, width: 1200, height: 630, alt: heroImageAlt }],
+    images: [{ url: ogImagePath(heroImageSrc), width: 1200, height: 630, alt: heroImageAlt }],
   },
-  twitter: { card: "summary_large_image", title, description, images: [heroImageSrc] },
+  twitter: { card: "summary_large_image", title, description, images: [ogImagePath(heroImageSrc)] },
 }
 
 const faqs = [

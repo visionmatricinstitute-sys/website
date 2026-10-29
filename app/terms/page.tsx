@@ -10,7 +10,14 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/terms" },
-  openGraph: { type: "website", url: "/terms", title, description },
+  openGraph: {
+    type: "website",
+    url: "/terms",
+    title,
+    description,
+    images: [{ url: "/og/hero-data-center.jpg", width: 1200, height: 630, alt: "Vision Matrix Institute" }],
+  },
+  twitter: { card: "summary_large_image", title, description, images: ["/og/hero-data-center.jpg"] },
 }
 
 export default function TermsPage() {

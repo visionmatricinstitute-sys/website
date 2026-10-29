@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     url: "/resources/data-center-load-calculator",
     title,
     description,
-    images: [{ url: "/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
+    images: [{ url: "/og/electrical-design-data-center.jpg", width: 1200, height: 630, alt: title }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/electrical-design-data-center.jpg"] },
+  twitter: { card: "summary_large_image", title, description, images: ["/og/electrical-design-data-center.jpg"] },
 }
 
 const whatsInside = [

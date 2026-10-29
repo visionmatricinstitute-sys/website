@@ -34,9 +34,9 @@ export const metadata: Metadata = {
     url: "/demo",
     title: socialTitle,
     description,
-    images: [{ url: "/demo-class-hero.webp", width: 1200, height: 630, alt: socialTitle }],
+    images: [{ url: "/og/demo-class-hero.jpg", width: 1200, height: 630, alt: socialTitle }],
   },
-  twitter: { card: "summary_large_image", title: socialTitle, description, images: ["/demo-class-hero.webp"] },
+  twitter: { card: "summary_large_image", title: socialTitle, description, images: ["/og/demo-class-hero.jpg"] },
 }
 
 const breadcrumbs = breadcrumbJsonLd([

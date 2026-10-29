@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     url: "/about",
     title,
     description,
-    images: [{ url: "/hero-data-center.jpg", width: 1600, height: 894, alt: title }],
+    images: [{ url: "/og/hero-data-center.jpg", width: 1200, height: 630, alt: title }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/hero-data-center.jpg"] },
+  twitter: { card: "summary_large_image", title, description, images: ["/og/hero-data-center.jpg"] },
 }
 
 const breadcrumbs = breadcrumbJsonLd([

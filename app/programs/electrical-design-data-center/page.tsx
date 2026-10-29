@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/electrical-design-data-center.jpg",
+        url: "/og/electrical-design-data-center.jpg",
         width: 1200,
         height: 630,
         alt: "Electrical Design Engineer - Data Center Specialist Program",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/electrical-design-data-center.jpg"],
+    images: ["/og/electrical-design-data-center.jpg"],
   },
 }
 
