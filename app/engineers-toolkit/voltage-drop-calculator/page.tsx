@@ -18,13 +18,13 @@ export const metadata: Metadata = {
     url: `/engineers-toolkit/${tool.slug}`,
     title: tool.title,
     description: tool.description,
-    images: [{ url: "/engineers-toolkit-hero.jpg", width: 1200, height: 630, alt: tool.title }],
+    images: [{ url: "/og/engineers-toolkit-hero.jpg", width: 1200, height: 630, alt: tool.title }],
   },
   twitter: {
     card: "summary_large_image",
     title: tool.title,
     description: tool.description,
-    images: ["/engineers-toolkit-hero.jpg"],
+    images: ["/og/engineers-toolkit-hero.jpg"],
   },
 }
 

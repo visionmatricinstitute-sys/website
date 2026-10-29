@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ogImagePath } from "@/lib/og-image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -20,8 +21,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: path },
-  openGraph: { type: "website", url: path, title, description, images: [{ url: heroImage, width: 1200, height: 630, alt: title }] },
-  twitter: { card: "summary_large_image", title, description, images: [heroImage] },
+  openGraph: { type: "website", url: path, title, description, images: [{ url: ogImagePath(heroImage), width: 1200, height: 630, alt: title }] },
+  twitter: { card: "summary_large_image", title, description, images: [ogImagePath(heroImage)] },
 }
 
 const sections: { heading: string; note?: string; items: { text: string; href?: string }[] }[] = [

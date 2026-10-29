@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ogImagePath } from "@/lib/og-image"
 import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: heroImageSrc,
+        url: ogImagePath(heroImageSrc),
         width: 1200,
         height: 630,
         alt: heroImageAlt,
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: [heroImageSrc],
+    images: [ogImagePath(heroImageSrc)],
   },
 }
 

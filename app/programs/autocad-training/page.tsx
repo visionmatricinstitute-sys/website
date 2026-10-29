@@ -22,13 +22,13 @@ export const metadata: Metadata = {
     url: "/programs/autocad-training",
     title,
     description,
-    images: [{ url: "/autocad-training.png", width: 1200, height: 630, alt: title }],
+    images: [{ url: "/og/autocad-training.jpg", width: 1200, height: 630, alt: title }],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/autocad-training.png"],
+    images: ["/og/autocad-training.jpg"],
   },
 }
 
