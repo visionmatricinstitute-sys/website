@@ -8,6 +8,7 @@ import { DemoCta } from "@/components/demo-cta"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { FadeIn } from "@/components/motion/fade-in"
+import { ogImagePath } from "@/lib/og-image"
 import { ArrowRight } from "lucide-react"
 import { breadcrumbJsonLd } from "@/lib/breadcrumb-schema"
 import { blogPosts as posts } from "@/lib/blog-posts"
@@ -87,9 +88,11 @@ export default function BlogIndexPage() {
                         </div>
                         <div className="order-1 sm:order-2 relative w-full sm:w-48 md:w-56 aspect-[16/9] sm:aspect-square shrink-0">
                           <Image
-                            src={post.image}
+                            src={index < 2 ? ogImagePath(post.image) : post.image}
                             alt={post.title}
                             fill
+                            priority={index < 2}
+                            unoptimized={index < 2}
                             className="object-cover"
                             sizes="(max-width: 640px) 100vw, 224px"
                           />
