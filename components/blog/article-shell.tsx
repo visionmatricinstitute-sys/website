@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CheckCircle2, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react"
 import { FadeIn } from "@/components/motion/fade-in"
+import { ogImagePath } from "@/lib/og-image"
 
 const container = {
   hidden: {},
@@ -110,7 +111,7 @@ export function ArticleShell({
                 opacity-0 start state kept it out of Largest Contentful Paint until JavaScript had
                 loaded and hydrated (LCP was about 5.8 s on mobile). It must be visible on first paint. */}
             <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border">
-              <Image src={heroImage.src} alt={heroImage.alt} fill sizes="(min-width: 768px) 768px, 100vw" className="object-cover" priority />
+              <Image src={ogImagePath(heroImage.src)} alt={heroImage.alt} fill unoptimized className="object-cover" priority />
             </div>
           </div>
         </section>

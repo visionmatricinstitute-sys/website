@@ -145,7 +145,7 @@ export default function DataCenterCareerGuidePage() {
         <section className="bg-background">
           <div className="container mx-auto px-4 max-w-3xl -mt-10 lg:-mt-14 relative">
             <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border">
-              <Image src={heroImageSrc} alt={heroImageAlt} fill className="object-cover" priority />
+              <Image src={ogImagePath(heroImageSrc)} alt={heroImageAlt} fill unoptimized className="object-cover" priority />
             </div>
           </div>
         </section>

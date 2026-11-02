@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
+import { ogImagePath } from "@/lib/og-image"
 import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/motion/magnetic-button"
 import { staggerContainer, staggerItem } from "@/components/motion/stagger"
@@ -46,10 +47,11 @@ export function HeroSection() {
           </video>
         ) : (
           <Image
-            src={HERO_POSTER}
+            src={ogImagePath(HERO_POSTER)}
             alt="Vision Matrix Institute — data center electrical infrastructure and monitoring systems"
             fill
             priority
+            unoptimized
             sizes="100vw"
             className="object-cover"
           />
