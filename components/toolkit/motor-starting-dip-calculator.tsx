@@ -34,25 +34,25 @@ export function MotorStartingDipCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Motor Rating (kW)</Label>
-              <Input type="number" value={motorKw} onChange={(e) => setMotorKw(Number(e.target.value))} />
+              <Label htmlFor="motor-starting-dip-f0">Motor Rating (kW)</Label>
+              <Input id="motor-starting-dip-f0" type="number" value={motorKw} onChange={(e) => setMotorKw(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Motor Efficiency (%)</Label>
-              <Input type="number" value={efficiency} onChange={(e) => setEfficiency(Number(e.target.value))} />
+              <Label htmlFor="motor-starting-dip-f1">Motor Efficiency (%)</Label>
+              <Input id="motor-starting-dip-f1" type="number" value={efficiency} onChange={(e) => setEfficiency(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Rated Power Factor</Label>
-              <Input type="number" step="0.01" value={pfRated} onChange={(e) => setPfRated(Number(e.target.value))} />
+              <Label htmlFor="motor-starting-dip-f2">Rated Power Factor</Label>
+              <Input id="motor-starting-dip-f2" type="number" step="0.01" value={pfRated} onChange={(e) => setPfRated(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Source Fault Level (MVA)</Label>
-              <Input type="number" value={sourceScMva} onChange={(e) => setSourceScMva(Number(e.target.value))} />
+              <Label htmlFor="motor-starting-dip-f3">Source Fault Level (MVA)</Label>
+              <Input id="motor-starting-dip-f3" type="number" value={sourceScMva} onChange={(e) => setSourceScMva(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5 col-span-2">
-              <Label>Starting Method</Label>
+              <Label htmlFor="motor-starting-dip-f4">Starting Method</Label>
               <Select value={startMethod} onValueChange={(v) => setStartMethod(v as typeof startMethod)}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="motor-starting-dip-f4" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

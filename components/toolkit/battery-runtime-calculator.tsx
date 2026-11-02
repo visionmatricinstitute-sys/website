@@ -35,28 +35,28 @@ export function BatteryRuntimeCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Load (kW)</Label>
-              <Input type="number" value={loadKw} onChange={(e) => setLoadKw(Number(e.target.value))} />
+              <Label htmlFor="battery-runtime-f0">Load (kW)</Label>
+              <Input id="battery-runtime-f0" type="number" value={loadKw} onChange={(e) => setLoadKw(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Battery Bank Voltage (V DC)</Label>
-              <Input type="number" value={systemVoltageDc} onChange={(e) => setSystemVoltageDc(Number(e.target.value))} />
+              <Label htmlFor="battery-runtime-f1">Battery Bank Voltage (V DC)</Label>
+              <Input id="battery-runtime-f1" type="number" value={systemVoltageDc} onChange={(e) => setSystemVoltageDc(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Battery Bank Capacity (Ah)</Label>
-              <Input type="number" value={batteryAh} onChange={(e) => setBatteryAh(Number(e.target.value))} />
+              <Label htmlFor="battery-runtime-f2">Battery Bank Capacity (Ah)</Label>
+              <Input id="battery-runtime-f2" type="number" value={batteryAh} onChange={(e) => setBatteryAh(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Allowed Depth of Discharge (%)</Label>
-              <Input type="number" value={dod} onChange={(e) => setDod(Number(e.target.value))} />
+              <Label htmlFor="battery-runtime-f3">Allowed Depth of Discharge (%)</Label>
+              <Input id="battery-runtime-f3" type="number" value={dod} onChange={(e) => setDod(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Inverter/UPS Efficiency (%)</Label>
-              <Input type="number" value={efficiency} onChange={(e) => setEfficiency(Number(e.target.value))} />
+              <Label htmlFor="battery-runtime-f4">Inverter/UPS Efficiency (%)</Label>
+              <Input id="battery-runtime-f4" type="number" value={efficiency} onChange={(e) => setEfficiency(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Desired Backup Time (min)</Label>
-              <Input type="number" value={desiredRuntimeMin} onChange={(e) => setDesiredRuntimeMin(Number(e.target.value))} />
+              <Label htmlFor="battery-runtime-f5">Desired Backup Time (min)</Label>
+              <Input id="battery-runtime-f5" type="number" value={desiredRuntimeMin} onChange={(e) => setDesiredRuntimeMin(Number(e.target.value))} />
             </div>
           </div>
         </CardContent>

@@ -31,28 +31,28 @@ export function LightingCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Room Length (m)</Label>
-              <Input type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
+              <Label htmlFor="lighting-f0">Room Length (m)</Label>
+              <Input id="lighting-f0" type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Room Width (m)</Label>
-              <Input type="number" value={width} onChange={(e) => setWidth(Number(e.target.value))} />
+              <Label htmlFor="lighting-f1">Room Width (m)</Label>
+              <Input id="lighting-f1" type="number" value={width} onChange={(e) => setWidth(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Target Illuminance (lux)</Label>
-              <Input type="number" value={illuminance} onChange={(e) => setIlluminance(Number(e.target.value))} />
+              <Label htmlFor="lighting-f2">Target Illuminance (lux)</Label>
+              <Input id="lighting-f2" type="number" value={illuminance} onChange={(e) => setIlluminance(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Lumens per Luminaire</Label>
-              <Input type="number" value={lumensPerLuminaire} onChange={(e) => setLumensPerLuminaire(Number(e.target.value))} />
+              <Label htmlFor="lighting-f3">Lumens per Luminaire</Label>
+              <Input id="lighting-f3" type="number" value={lumensPerLuminaire} onChange={(e) => setLumensPerLuminaire(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Utilization Factor</Label>
-              <Input type="number" step="0.05" min={0.1} max={1} value={utilizationFactor} onChange={(e) => setUtilizationFactor(Number(e.target.value))} />
+              <Label htmlFor="lighting-f4">Utilization Factor</Label>
+              <Input id="lighting-f4" type="number" step="0.05" min={0.1} max={1} value={utilizationFactor} onChange={(e) => setUtilizationFactor(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Maintenance Factor</Label>
-              <Input type="number" step="0.05" min={0.1} max={1} value={maintenanceFactor} onChange={(e) => setMaintenanceFactor(Number(e.target.value))} />
+              <Label htmlFor="lighting-f5">Maintenance Factor</Label>
+              <Input id="lighting-f5" type="number" step="0.05" min={0.1} max={1} value={maintenanceFactor} onChange={(e) => setMaintenanceFactor(Number(e.target.value))} />
             </div>
           </div>
         </CardContent>

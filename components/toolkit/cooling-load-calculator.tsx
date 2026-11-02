@@ -27,16 +27,16 @@ export function CoolingLoadCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>IT Load (kW)</Label>
-              <Input type="number" value={itLoadKw} onChange={(e) => setItLoadKw(Number(e.target.value))} />
+              <Label htmlFor="cooling-load-f0">IT Load (kW)</Label>
+              <Input id="cooling-load-f0" type="number" value={itLoadKw} onChange={(e) => setItLoadKw(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Other Heat Gains (%)</Label>
-              <Input type="number" value={otherGainsPct} onChange={(e) => setOtherGainsPct(Number(e.target.value))} />
+              <Label htmlFor="cooling-load-f1">Other Heat Gains (%)</Label>
+              <Input id="cooling-load-f1" type="number" value={otherGainsPct} onChange={(e) => setOtherGainsPct(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5 col-span-2">
-              <Label>Cooling Redundancy Margin (%)</Label>
-              <Input type="number" value={redundancyPct} onChange={(e) => setRedundancyPct(Number(e.target.value))} />
+              <Label htmlFor="cooling-load-f2">Cooling Redundancy Margin (%)</Label>
+              <Input id="cooling-load-f2" type="number" value={redundancyPct} onChange={(e) => setRedundancyPct(Number(e.target.value))} />
             </div>
           </div>
         </CardContent>

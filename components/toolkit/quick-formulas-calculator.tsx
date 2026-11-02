@@ -26,16 +26,16 @@ export function QuickFormulasCalculator() {
       <CardContent className="space-y-6">
         <div className="grid sm:grid-cols-3 gap-4">
           <div className="space-y-1.5">
-            <Label>Voltage (V)</Label>
-            <Input type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
+            <Label htmlFor="quick-formulas-f0">Voltage (V)</Label>
+            <Input id="quick-formulas-f0" type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
           </div>
           <div className="space-y-1.5">
-            <Label>Current (A)</Label>
-            <Input type="number" value={current} onChange={(e) => setCurrent(Number(e.target.value))} />
+            <Label htmlFor="quick-formulas-f1">Current (A)</Label>
+            <Input id="quick-formulas-f1" type="number" value={current} onChange={(e) => setCurrent(Number(e.target.value))} />
           </div>
           <div className="space-y-1.5">
-            <Label>Power Factor</Label>
-            <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+            <Label htmlFor="quick-formulas-f2">Power Factor</Label>
+            <Input id="quick-formulas-f2" type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
           </div>
         </div>
 

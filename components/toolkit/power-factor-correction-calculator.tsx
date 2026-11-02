@@ -34,13 +34,13 @@ export function PowerFactorCorrectionCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Real Power (kW)</Label>
-              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+              <Label htmlFor="power-factor-corre-f0">Real Power (kW)</Label>
+              <Input id="power-factor-corre-f0" type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>System</Label>
+              <Label htmlFor="power-factor-corre-f1">System</Label>
               <Select value={system} onValueChange={(v) => setSystem(v as "1" | "3")}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="power-factor-corre-f1" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -50,17 +50,17 @@ export function PowerFactorCorrectionCalculator() {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Voltage (V)</Label>
-              <Input type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
+              <Label htmlFor="power-factor-corre-f2">Voltage (V)</Label>
+              <Input id="power-factor-corre-f2" type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
             </div>
             <div />
             <div className="space-y-1.5">
-              <Label>Existing Power Factor</Label>
-              <Input type="number" step="0.01" min={0.1} max={1} value={pfExisting} onChange={(e) => setPfExisting(Number(e.target.value))} />
+              <Label htmlFor="power-factor-corre-f3">Existing Power Factor</Label>
+              <Input id="power-factor-corre-f3" type="number" step="0.01" min={0.1} max={1} value={pfExisting} onChange={(e) => setPfExisting(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Target Power Factor</Label>
-              <Input type="number" step="0.01" min={0.1} max={1} value={pfTarget} onChange={(e) => setPfTarget(Number(e.target.value))} />
+              <Label htmlFor="power-factor-corre-f4">Target Power Factor</Label>
+              <Input id="power-factor-corre-f4" type="number" step="0.01" min={0.1} max={1} value={pfTarget} onChange={(e) => setPfTarget(Number(e.target.value))} />
             </div>
           </div>
         </CardContent>

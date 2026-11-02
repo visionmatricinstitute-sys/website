@@ -34,9 +34,9 @@ export function BreakerSizingCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>System</Label>
+              <Label htmlFor="breaker-sizing-f0">System</Label>
               <Select value={system} onValueChange={(v) => setSystem(v as "1" | "3")}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="breaker-sizing-f0" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -46,21 +46,21 @@ export function BreakerSizingCalculator() {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Load (kW)</Label>
-              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+              <Label htmlFor="breaker-sizing-f1">Load (kW)</Label>
+              <Input id="breaker-sizing-f1" type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Voltage (V)</Label>
-              <Input type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
+              <Label htmlFor="breaker-sizing-f2">Voltage (V)</Label>
+              <Input id="breaker-sizing-f2" type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Power Factor</Label>
-              <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+              <Label htmlFor="breaker-sizing-f3">Power Factor</Label>
+              <Input id="breaker-sizing-f3" type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Load Type</Label>
+              <Label htmlFor="breaker-sizing-f4">Load Type</Label>
               <Select value={loadType} onValueChange={(v) => setLoadType(v as "general" | "motor")}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="breaker-sizing-f4" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -71,9 +71,9 @@ export function BreakerSizingCalculator() {
             </div>
             {loadType === "motor" && (
               <div className="space-y-1.5">
-                <Label>Starting Method</Label>
+                <Label htmlFor="breaker-sizing-f5">Starting Method</Label>
                 <Select value={startMethod} onValueChange={(v) => setStartMethod(v as typeof startMethod)}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger id="breaker-sizing-f5" className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

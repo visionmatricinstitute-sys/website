@@ -34,25 +34,25 @@ export function GeneratorSizingCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Total Connected Load (kW)</Label>
-              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+              <Label htmlFor="generator-sizing-f0">Total Connected Load (kW)</Label>
+              <Input id="generator-sizing-f0" type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Load Power Factor</Label>
-              <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+              <Label htmlFor="generator-sizing-f1">Load Power Factor</Label>
+              <Input id="generator-sizing-f1" type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Load Diversity Factor</Label>
-              <Input type="number" step="0.05" value={diversity} onChange={(e) => setDiversity(Number(e.target.value))} />
+              <Label htmlFor="generator-sizing-f2">Load Diversity Factor</Label>
+              <Input id="generator-sizing-f2" type="number" step="0.05" value={diversity} onChange={(e) => setDiversity(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Largest Motor (kW)</Label>
-              <Input type="number" value={largestMotorKw} onChange={(e) => setLargestMotorKw(Number(e.target.value))} />
+              <Label htmlFor="generator-sizing-f3">Largest Motor (kW)</Label>
+              <Input id="generator-sizing-f3" type="number" value={largestMotorKw} onChange={(e) => setLargestMotorKw(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5 col-span-2">
-              <Label>Motor Starting Method</Label>
+              <Label htmlFor="generator-sizing-f4">Motor Starting Method</Label>
               <Select value={startMethod} onValueChange={(v) => setStartMethod(v as typeof startMethod)}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="generator-sizing-f4" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
