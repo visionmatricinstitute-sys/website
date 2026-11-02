@@ -39,9 +39,9 @@ export function GroundingResistanceCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5 col-span-2">
-              <Label>Electrode Type</Label>
+              <Label htmlFor="grounding-resistan-f0">Electrode Type</Label>
               <Select value={electrodeType} onValueChange={(v) => setElectrodeType(v as typeof electrodeType)}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="grounding-resistan-f0" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -52,19 +52,19 @@ export function GroundingResistanceCalculator() {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Soil Resistivity (Ω·m)</Label>
-              <Input type="number" value={resistivity} onChange={(e) => setResistivity(Number(e.target.value))} />
+              <Label htmlFor="grounding-resistan-f1">Soil Resistivity (Ω·m)</Label>
+              <Input id="grounding-resistan-f1" type="number" value={resistivity} onChange={(e) => setResistivity(Number(e.target.value))} />
             </div>
 
             {electrodeType === "rod" && (
               <>
                 <div className="space-y-1.5">
-                  <Label>Rod Length (m)</Label>
-                  <Input type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
+                  <Label htmlFor="grounding-resistan-f2">Rod Length (m)</Label>
+                  <Input id="grounding-resistan-f2" type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
                 </div>
                 <div className="space-y-1.5">
-                  <Label>Rod Diameter (mm)</Label>
-                  <Input type="number" value={diameterMm} onChange={(e) => setDiameterMm(Number(e.target.value))} />
+                  <Label htmlFor="grounding-resistan-f3">Rod Diameter (mm)</Label>
+                  <Input id="grounding-resistan-f3" type="number" value={diameterMm} onChange={(e) => setDiameterMm(Number(e.target.value))} />
                 </div>
               </>
             )}
@@ -72,16 +72,16 @@ export function GroundingResistanceCalculator() {
             {electrodeType === "strip" && (
               <>
                 <div className="space-y-1.5">
-                  <Label>Strip Length (m)</Label>
-                  <Input type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
+                  <Label htmlFor="grounding-resistan-f4">Strip Length (m)</Label>
+                  <Input id="grounding-resistan-f4" type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
                 </div>
                 <div className="space-y-1.5">
-                  <Label>Strip Width (mm)</Label>
-                  <Input type="number" value={widthMm} onChange={(e) => setWidthMm(Number(e.target.value))} />
+                  <Label htmlFor="grounding-resistan-f5">Strip Width (mm)</Label>
+                  <Input id="grounding-resistan-f5" type="number" value={widthMm} onChange={(e) => setWidthMm(Number(e.target.value))} />
                 </div>
                 <div className="space-y-1.5">
-                  <Label>Burial Depth (m)</Label>
-                  <Input type="number" step="0.1" value={depth} onChange={(e) => setDepth(Number(e.target.value))} />
+                  <Label htmlFor="grounding-resistan-f6">Burial Depth (m)</Label>
+                  <Input id="grounding-resistan-f6" type="number" step="0.1" value={depth} onChange={(e) => setDepth(Number(e.target.value))} />
                 </div>
               </>
             )}
@@ -89,12 +89,12 @@ export function GroundingResistanceCalculator() {
             {electrodeType === "ring" && (
               <>
                 <div className="space-y-1.5">
-                  <Label>Ring Radius (m)</Label>
-                  <Input type="number" value={radius} onChange={(e) => setRadius(Number(e.target.value))} />
+                  <Label htmlFor="grounding-resistan-f7">Ring Radius (m)</Label>
+                  <Input id="grounding-resistan-f7" type="number" value={radius} onChange={(e) => setRadius(Number(e.target.value))} />
                 </div>
                 <div className="space-y-1.5">
-                  <Label>Conductor Diameter (mm)</Label>
-                  <Input type="number" value={diameterMm} onChange={(e) => setDiameterMm(Number(e.target.value))} />
+                  <Label htmlFor="grounding-resistan-f8">Conductor Diameter (mm)</Label>
+                  <Input id="grounding-resistan-f8" type="number" value={diameterMm} onChange={(e) => setDiameterMm(Number(e.target.value))} />
                 </div>
               </>
             )}

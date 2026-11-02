@@ -32,25 +32,25 @@ export function TransformerSizingCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Connected Load (kW)</Label>
-              <Input type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
+              <Label htmlFor="transformer-sizing-f0">Connected Load (kW)</Label>
+              <Input id="transformer-sizing-f0" type="number" value={kw} onChange={(e) => setKw(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Load Power Factor</Label>
-              <Input type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+              <Label htmlFor="transformer-sizing-f1">Load Power Factor</Label>
+              <Input id="transformer-sizing-f1" type="number" step="0.01" value={pf} onChange={(e) => setPf(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Spare Capacity / Growth (%)</Label>
-              <Input type="number" value={spare} onChange={(e) => setSpare(Number(e.target.value))} />
+              <Label htmlFor="transformer-sizing-f2">Spare Capacity / Growth (%)</Label>
+              <Input id="transformer-sizing-f2" type="number" value={spare} onChange={(e) => setSpare(Number(e.target.value))} />
             </div>
             <div />
             <div className="space-y-1.5">
-              <Label>Primary Voltage (V)</Label>
-              <Input type="number" value={primaryV} onChange={(e) => setPrimaryV(Number(e.target.value))} />
+              <Label htmlFor="transformer-sizing-f3">Primary Voltage (V)</Label>
+              <Input id="transformer-sizing-f3" type="number" value={primaryV} onChange={(e) => setPrimaryV(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Secondary Voltage (V)</Label>
-              <Input type="number" value={secondaryV} onChange={(e) => setSecondaryV(Number(e.target.value))} />
+              <Label htmlFor="transformer-sizing-f4">Secondary Voltage (V)</Label>
+              <Input id="transformer-sizing-f4" type="number" value={secondaryV} onChange={(e) => setSecondaryV(Number(e.target.value))} />
             </div>
           </div>
         </CardContent>

@@ -27,7 +27,7 @@ export function ProgramHero() {
       <div className="absolute bottom-0 right-0 w-[380px] h-[380px] rounded-full bg-secondary/20 blur-[110px] animate-float-slower" />
 
       <div className="relative container mx-auto px-4">
-        <motion.div variants={container} initial="hidden" animate="show" className="max-w-3xl">
+        <motion.div variants={container} initial={false} animate="show" className="max-w-3xl">
           <motion.div variants={item} className="inline-flex items-center gap-2 bg-white/10 text-navy-foreground px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
             <Zap className="h-4 w-4" />
             Professional Master Program

@@ -87,7 +87,7 @@ export function ArticleShell({
 
         <motion.div
           variants={container}
-          initial="hidden"
+          initial={false}
           animate="show"
           className="relative container mx-auto px-4 max-w-3xl"
         >
@@ -106,14 +106,12 @@ export function ArticleShell({
       {heroImage && (
         <section className="bg-background">
           <div className="container mx-auto px-4 max-w-3xl -mt-10 lg:-mt-14 relative">
-            <motion.div
-              initial={{ opacity: 0, y: 24, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border"
-            >
-              <Image src={heroImage.src} alt={heroImage.alt} fill className="object-cover" priority />
-            </motion.div>
+            {/* Plain div, not motion.div: the hero image is the largest element on the page, and an
+                opacity-0 start state kept it out of Largest Contentful Paint until JavaScript had
+                loaded and hydrated (LCP was about 5.8 s on mobile). It must be visible on first paint. */}
+            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-xl ring-1 ring-border">
+              <Image src={heroImage.src} alt={heroImage.alt} fill sizes="(min-width: 768px) 768px, 100vw" className="object-cover" priority />
+            </div>
           </div>
         </section>
       )}

@@ -29,20 +29,20 @@ export function DataCenterEfficiencyCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Total Facility Energy (kWh)</Label>
-              <Input type="number" value={totalFacilityKwh} onChange={(e) => setTotalFacilityKwh(Number(e.target.value))} />
+              <Label htmlFor="data-center-effici-f0">Total Facility Energy (kWh)</Label>
+              <Input id="data-center-effici-f0" type="number" value={totalFacilityKwh} onChange={(e) => setTotalFacilityKwh(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>IT Equipment Energy (kWh)</Label>
-              <Input type="number" value={itEquipmentKwh} onChange={(e) => setItEquipmentKwh(Number(e.target.value))} />
+              <Label htmlFor="data-center-effici-f1">IT Equipment Energy (kWh)</Label>
+              <Input id="data-center-effici-f1" type="number" value={itEquipmentKwh} onChange={(e) => setItEquipmentKwh(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Water Used (litres)</Label>
-              <Input type="number" value={waterLiters} onChange={(e) => setWaterLiters(Number(e.target.value))} />
+              <Label htmlFor="data-center-effici-f2">Water Used (litres)</Label>
+              <Input id="data-center-effici-f2" type="number" value={waterLiters} onChange={(e) => setWaterLiters(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Grid Carbon Factor (kgCO₂/kWh)</Label>
-              <Input type="number" step="0.01" value={cef} onChange={(e) => setCef(Number(e.target.value))} />
+              <Label htmlFor="data-center-effici-f3">Grid Carbon Factor (kgCO₂/kWh)</Label>
+              <Input id="data-center-effici-f3" type="number" step="0.01" value={cef} onChange={(e) => setCef(Number(e.target.value))} />
             </div>
           </div>
           <div className="text-xs text-muted-foreground font-serif">

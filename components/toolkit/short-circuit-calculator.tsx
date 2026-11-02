@@ -45,20 +45,20 @@ export function ShortCircuitCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Transformer Rating (kVA)</Label>
-              <Input type="number" value={kva} onChange={(e) => setKva(Number(e.target.value))} />
+              <Label htmlFor="short-circuit-f0">Transformer Rating (kVA)</Label>
+              <Input id="short-circuit-f0" type="number" value={kva} onChange={(e) => setKva(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Transformer Impedance (%Z)</Label>
-              <Input type="number" step="0.1" value={impedance} onChange={(e) => setImpedance(Number(e.target.value))} />
+              <Label htmlFor="short-circuit-f1">Transformer Impedance (%Z)</Label>
+              <Input id="short-circuit-f1" type="number" step="0.1" value={impedance} onChange={(e) => setImpedance(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Secondary Voltage (V)</Label>
-              <Input type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
+              <Label htmlFor="short-circuit-f2">Secondary Voltage (V)</Label>
+              <Input id="short-circuit-f2" type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Fault Clearance Time (s)</Label>
-              <Input type="number" step="0.01" value={faultTime} onChange={(e) => setFaultTime(Number(e.target.value))} />
+              <Label htmlFor="short-circuit-f3">Fault Clearance Time (s)</Label>
+              <Input id="short-circuit-f3" type="number" step="0.01" value={faultTime} onChange={(e) => setFaultTime(Number(e.target.value))} />
             </div>
           </div>
 
@@ -70,17 +70,17 @@ export function ShortCircuitCalculator() {
           {includeCable && (
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label>Cable Length (m)</Label>
-                <Input type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
+                <Label htmlFor="short-circuit-f4">Cable Length (m)</Label>
+                <Input id="short-circuit-f4" type="number" value={length} onChange={(e) => setLength(Number(e.target.value))} />
               </div>
               <div className="space-y-1.5">
-                <Label>Cable Size (mm²)</Label>
-                <Input type="number" value={size} onChange={(e) => setSize(Number(e.target.value))} />
+                <Label htmlFor="short-circuit-f5">Cable Size (mm²)</Label>
+                <Input id="short-circuit-f5" type="number" value={size} onChange={(e) => setSize(Number(e.target.value))} />
               </div>
               <div className="space-y-1.5">
-                <Label>Conductor</Label>
+                <Label htmlFor="short-circuit-f6">Conductor</Label>
                 <Select value={material} onValueChange={(v) => setMaterial(v as "cu" | "al")}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger id="short-circuit-f6" className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -90,9 +90,9 @@ export function ShortCircuitCalculator() {
                 </Select>
               </div>
               <div className="space-y-1.5">
-                <Label>Insulation</Label>
+                <Label htmlFor="short-circuit-f7">Insulation</Label>
                 <Select value={insulation} onValueChange={(v) => setInsulation(v as "pvc" | "xlpe")}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger id="short-circuit-f7" className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

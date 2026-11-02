@@ -44,9 +44,9 @@ export function VoltageDropCalculator() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>System</Label>
+              <Label htmlFor="voltage-drop-f0">System</Label>
               <Select value={system} onValueChange={(v) => setSystem(v as "1" | "3")}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="voltage-drop-f0" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -56,21 +56,21 @@ export function VoltageDropCalculator() {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Line voltage (V)</Label>
-              <Input type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
+              <Label htmlFor="voltage-drop-f1">Line voltage (V)</Label>
+              <Input id="voltage-drop-f1" type="number" value={voltage} onChange={(e) => setVoltage(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Load current (A)</Label>
-              <Input type="number" value={current} onChange={(e) => setCurrent(Number(e.target.value))} />
+              <Label htmlFor="voltage-drop-f2">Load current (A)</Label>
+              <Input id="voltage-drop-f2" type="number" value={current} onChange={(e) => setCurrent(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Cable length (m, one way)</Label>
-              <Input type="number" value={lengthM} onChange={(e) => setLengthM(Number(e.target.value))} />
+              <Label htmlFor="voltage-drop-f3">Cable length (m, one way)</Label>
+              <Input id="voltage-drop-f3" type="number" value={lengthM} onChange={(e) => setLengthM(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Conductor</Label>
+              <Label htmlFor="voltage-drop-f4">Conductor</Label>
               <Select value={material} onValueChange={(v) => setMaterial(v as "cu" | "al")}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="voltage-drop-f4" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -80,9 +80,9 @@ export function VoltageDropCalculator() {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Conductor size (mm²)</Label>
+              <Label htmlFor="voltage-drop-f5">Conductor size (mm²)</Label>
               <Select value={String(size)} onValueChange={(v) => setSize(Number(v))}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="voltage-drop-f5" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -95,16 +95,16 @@ export function VoltageDropCalculator() {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Cables in parallel</Label>
-              <Input type="number" min={1} value={parallel} onChange={(e) => setParallel(Number(e.target.value))} />
+              <Label htmlFor="voltage-drop-f6">Cables in parallel</Label>
+              <Input id="voltage-drop-f6" type="number" min={1} value={parallel} onChange={(e) => setParallel(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Power factor (cos φ)</Label>
-              <Input type="number" step="0.01" min={0.1} max={1} value={pf} onChange={(e) => setPf(Number(e.target.value))} />
+              <Label htmlFor="voltage-drop-f7">Power factor (cos φ)</Label>
+              <Input id="voltage-drop-f7" type="number" step="0.01" min={0.1} max={1} value={pf} onChange={(e) => setPf(Number(e.target.value))} />
             </div>
             <div className="space-y-1.5">
-              <Label>Allowed drop (%)</Label>
-              <Input type="number" step="0.5" value={limitPct} onChange={(e) => setLimitPct(Number(e.target.value))} />
+              <Label htmlFor="voltage-drop-f8">Allowed drop (%)</Label>
+              <Input id="voltage-drop-f8" type="number" step="0.5" value={limitPct} onChange={(e) => setLimitPct(Number(e.target.value))} />
             </div>
           </div>
         </CardContent>
