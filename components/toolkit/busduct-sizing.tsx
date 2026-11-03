@@ -11,7 +11,6 @@ import { FieldLabel, StatTile, PassFailBanner, WarningList } from "./conductor-u
 import { exportPdfReport, exportExcelReport } from "./conductor-export"
 import {
   fmt,
-  roundUpToStandard,
   interpolateTable,
   BUSDUCT_RATINGS,
   BUSDUCT_AMBIENT_FACTOR,
@@ -78,25 +77,48 @@ export function BusductSizing() {
     const combined = harmonicFactor * ambientFactor * indoorOutdoorFactor
 
     const effectiveRequirement = requiredCapacity / combined
-    const selectedRating = roundUpToStandard(effectiveRequirement, BUSDUCT_RATINGS)
-    const outOfRange = selectedRating === null
-    const rating = selectedRating ?? BUSDUCT_RATINGS[BUSDUCT_RATINGS.length - 1]
+
+    const currentDensity = BUSBAR_CURRENT_DENSITY[inputs.material]
+    const X = BUSDUCT_REACTANCE_PER_KM / 1000
+    const phi = Math.acos(pf)
+    const vdVoltsFor = (ratingA: number) => {
+      const area = ratingA / currentDensity
+      const R = RESISTIVITY[inputs.material] / 1000 / area
+      return Math.sqrt(3) * designCurrent * inputs.busductLength * (R * pf + X * Math.sin(phi))
+    }
+    const k = BARE_CONDUCTOR_K[inputs.material]
+    const sMin = (inputs.scLevel * 1000 * Math.sqrt(inputs.scDuration)) / k
+
+    // Size against ALL three criteria, not capacity alone: the smallest standard rating that carries the
+    // required (derated, with spare) current, keeps voltage drop within the limit and has a busbar
+    // cross-section that withstands the fault. Each improves with rating, so the largest of the three
+    // individual minimum ratings governs. (Selecting by capacity first and only then checking the rest
+    // made the tool report FAIL for most real inputs.)
+    const firstIndex = (ok: (r: number) => boolean) => BUSDUCT_RATINGS.findIndex(ok)
+    const criteria = [
+      { name: "Current capacity", index: firstIndex((r) => r >= effectiveRequirement) },
+      {
+        name: "Voltage drop",
+        index: firstIndex((r) => (vdVoltsFor(r) / inputs.voltage) * 100 <= inputs.voltageDropLimit),
+      },
+      { name: "Short-circuit withstand", index: firstIndex((r) => r / currentDensity >= sMin) },
+    ]
+    const outOfRange = criteria.some((c) => c.index < 0)
+    const selectedIndex = outOfRange ? BUSDUCT_RATINGS.length - 1 : Math.max(...criteria.map((c) => c.index))
+    const governing = outOfRange
+      ? criteria.filter((c) => c.index < 0).map((c) => c.name).join(", ")
+      : criteria.reduce((best, c) => (c.index > best.index ? c : best), criteria[0]).name
+    const failedCriteria = criteria.filter((c) => c.index < 0).map((c) => c.name)
+    const rating = BUSDUCT_RATINGS[selectedIndex]
     const installedCapacity = rating * combined
 
     const utilizationPct = (designCurrent / installedCapacity) * 100
     const tempRise = BUSDUCT_RATED_TEMP_RISE_K * Math.pow(designCurrent / installedCapacity, 2)
 
-    const currentDensity = BUSBAR_CURRENT_DENSITY[inputs.material]
     const equivalentAreaMm2 = rating / currentDensity
-    const R = RESISTIVITY[inputs.material] / 1000 / equivalentAreaMm2
-    const X = BUSDUCT_REACTANCE_PER_KM / 1000
-    const phi = Math.acos(pf)
-    const vd = Math.sqrt(3) * designCurrent * inputs.busductLength * (R * pf + X * Math.sin(phi))
+    const vd = vdVoltsFor(rating)
     const vdPct = (vd / inputs.voltage) * 100
     const vdOk = vdPct <= inputs.voltageDropLimit
-
-    const k = BARE_CONDUCTOR_K[inputs.material]
-    const sMin = (inputs.scLevel * 1000 * Math.sqrt(inputs.scDuration)) / k
     const scOk = equivalentAreaMm2 >= sMin
 
     const neutralGuidance =
@@ -127,12 +149,23 @@ export function BusductSizing() {
       neutralGuidance,
       earthBarRating,
       overallPass,
+      governing,
+      failedCriteria,
     }
   }, [inputs])
 
   const warnings = useMemo(() => {
     const list: { level: "warn" | "danger"; message: string }[] = []
-    if (result.outOfRange) list.push({ level: "danger", message: "Required capacity exceeds the largest standard busduct rating — consider parallel runs or a higher-density design." })
+    if (result.outOfRange)
+      list.push({
+        level: "danger",
+        message: `No standard busduct rating satisfies: ${result.failedCriteria.join(", ")}. Consider parallel runs, a higher-density design, a shorter run or a faster-clearing protective device.`,
+      })
+    else if (result.governing.startsWith("Short-circuit"))
+      list.push({
+        level: "warn",
+        message: `Rating is governed by short-circuit withstand: ${fmt(inputs.scLevel, 1)} kA for ${fmt(inputs.scDuration, 2)} s needs at least ${fmt(result.sMin, 1)} mm² of busbar. Check the real clearing time; faster clearing lowers the requirement.`,
+      })
     if (result.utilizationPct > 100) list.push({ level: "danger", message: `Loading at ${fmt(result.utilizationPct, 0)}% — overloaded.` })
     else if (result.utilizationPct >= 90) list.push({ level: "warn", message: `Loading at ${fmt(result.utilizationPct, 0)}% — limited headroom.` })
     if (!result.vdOk) list.push({ level: "danger", message: `Voltage drop ${fmt(result.vdPct, 2)}% exceeds the ${fmt(inputs.voltageDropLimit, 1)}% limit.` })
@@ -365,12 +398,17 @@ export function BusductSizing() {
               <StatTile
                 label="Recommended Busduct Rating"
                 value={`${result.outOfRange ? "> " : ""}${result.rating} A`}
-                tip="Next standard rating ≥ (required capacity ÷ ambient × harmonic × indoor/outdoor factors)"
+                tip="Smallest standard rating that satisfies current capacity (required capacity ÷ derating factors), voltage drop and short-circuit withstand together"
               />
               <StatTile
                 label="Utilization"
                 value={`${fmt(result.utilizationPct, 1)}%`}
                 tone={result.utilizationPct >= 90 ? "bad" : result.utilizationPct >= 80 ? "warn" : "default"}
+              />
+              <StatTile
+                label="Governing Criterion"
+                value={result.governing}
+                tip="The requirement that sets the rating; the others are satisfied at or below it"
               />
               <StatTile label="Temperature Rise" value={`${fmt(result.tempRise, 1)} K`} tip="Rated rise × (Design Current ÷ Installed Capacity)²" />
               <StatTile label="Voltage Drop" value={`${fmt(result.vdPct, 2)}%`} tone={result.vdOk ? "good" : "bad"} />
@@ -402,7 +440,7 @@ export function BusductSizing() {
           <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
             <li>Design Current (A) = (Load × 1000) ÷ (√3 × Voltage × Power Factor)</li>
             <li>Required Capacity (A) = Design Current × (1 + Future Spare Capacity % ÷ 100)</li>
-            <li>Recommended Rating = next standard rating ≥ Required Capacity ÷ (Ambient × Harmonic × Indoor/Outdoor factors)</li>
+            <li>Recommended Rating = smallest standard rating that satisfies current capacity (Required Capacity ÷ derating factors), the voltage-drop limit and the short-circuit minimum busbar area together; the largest of the three minimums governs</li>
             <li>Temperature Rise (K) = Rated Temperature Rise × (Design Current ÷ Installed Capacity)²</li>
             <li>Voltage Drop (%) = [√3 × I × L × (R·cosφ + X·sinφ)] ÷ V × 100, using an equivalent busbar cross-section from current density</li>
             <li>Short-Circuit Withstand: minimum cross-section (mm²) = (SC Level × √SC Duration) ÷ K (bare conductor, IEC 60949)</li>

@@ -120,20 +120,43 @@ export function HtConductorSizing() {
 
     const combinedFactor = coreFactor * insulationFactor * tempFactor * soilFactor * depthFactor * groupFactor * backfillFactor
 
-    let selectedSize: number | null = null
-    let selectedIz = 0
-    for (const size of HT_SIZES_MM2) {
-      const idx = HT_SIZES_MM2.indexOf(size)
-      const iz = baseTable[idx] * combinedFactor
-      if (iz >= perRunCurrent) {
-        selectedSize = size
-        selectedIz = iz
-        break
-      }
+    const R_PER_MM2 = RESISTIVITY[inputs.conductorMaterial] / 1000 // ohm/m for 1 mm2
+    const X = 0.09 / 1000 * (inputs.frequency / 50) // ohm/m, indicative MV cable reactance
+    const phi = Math.acos(pf)
+    const vdVolts = (area: number) =>
+      Math.sqrt(3) * perRunCurrent * inputs.routeLength * ((R_PER_MM2 / area) * pf + X * Math.sin(phi))
+
+    // Adiabatic short-circuit minimum (per run, assumes fault current shares equally across parallel runs)
+    const k = SC_K_INSULATED[inputs.conductorMaterial][inputs.insulationType]
+    const faultCurrentPerRunA = (inputs.faultLevel * 1000) / N
+    const sMin = (faultCurrentPerRunA * Math.sqrt(inputs.faultDuration)) / k
+
+    // Size against ALL three criteria, not ampacity alone: the smallest standard size that carries the
+    // per-run current, keeps voltage drop within the limit and withstands the fault. Each improves
+    // monotonically with size, so the result is the largest of the three individual minimum sizes,
+    // and that one is the governing criterion. (Selecting by ampacity first and only then checking the
+    // rest made the tool report FAIL for most real inputs.)
+    const firstIndex = (ok: (i: number) => boolean) => {
+      for (let i = 0; i < HT_SIZES_MM2.length; i++) if (ok(i)) return i
+      return -1
     }
-    const outOfRange = selectedSize === null
-    const size = selectedSize ?? HT_SIZES_MM2[HT_SIZES_MM2.length - 1]
-    const iz = outOfRange ? baseTable[baseTable.length - 1] * combinedFactor : selectedIz
+    const criteria = [
+      { name: "Ampacity", index: firstIndex((i) => baseTable[i] * combinedFactor >= perRunCurrent) },
+      {
+        name: "Voltage drop",
+        index: firstIndex((i) => (vdVolts(HT_SIZES_MM2[i]) / V) * 100 <= inputs.voltageDropLimit),
+      },
+      { name: "Short-circuit withstand", index: firstIndex((i) => HT_SIZES_MM2[i] >= sMin) },
+    ]
+    const outOfRange = criteria.some((c) => c.index < 0)
+    const selectedIndex = outOfRange ? HT_SIZES_MM2.length - 1 : Math.max(...criteria.map((c) => c.index))
+    const governing = outOfRange
+      ? criteria.filter((c) => c.index < 0).map((c) => c.name).join(", ")
+      : criteria.reduce((best, c) => (c.index > best.index ? c : best), criteria[0]).name
+    const failedCriteria = criteria.filter((c) => c.index < 0).map((c) => c.name)
+
+    const size = HT_SIZES_MM2[selectedIndex]
+    const iz = baseTable[selectedIndex] * combinedFactor
 
     // recommended parallel runs so per-run current stays within the largest available size's capacity
     const largestIz = baseTable[baseTable.length - 1] * combinedFactor
@@ -141,18 +164,9 @@ export function HtConductorSizing() {
 
     const utilizationPct = (perRunCurrent / iz) * 100
 
-    // Voltage drop (three-phase, mV/A/m style using resistivity + indicative reactance)
-    const R = RESISTIVITY[inputs.conductorMaterial] / 1000 / size // ohm/m
-    const X = 0.09 / 1000 * (inputs.frequency / 50) // ohm/m, indicative MV cable reactance
-    const phi = Math.acos(pf)
-    const vd = Math.sqrt(3) * perRunCurrent * inputs.routeLength * (R * pf + X * Math.sin(phi))
+    const vd = vdVolts(size)
     const vdPct = (vd / V) * 100
     const vdOk = vdPct <= inputs.voltageDropLimit
-
-    // Adiabatic short-circuit check (per run — assumes fault current shares equally across parallel runs)
-    const k = SC_K_INSULATED[inputs.conductorMaterial][inputs.insulationType]
-    const faultCurrentPerRunA = (inputs.faultLevel * 1000) / N
-    const sMin = (faultCurrentPerRunA * Math.sqrt(inputs.faultDuration)) / k
     const scOk = size >= sMin
 
     // Indicative operating temperature under design load
@@ -184,13 +198,23 @@ export function HtConductorSizing() {
       thermalOk,
       overallPass,
       N,
+      governing,
+      failedCriteria,
     }
   }, [inputs])
 
   const warnings = useMemo(() => {
     const list: { level: "warn" | "danger"; message: string }[] = []
     if (result.outOfRange)
-      list.push({ level: "danger", message: "Design current exceeds the largest available standard HT size — increase the number of parallel runs." })
+      list.push({
+        level: "danger",
+        message: `No standard HT size satisfies: ${result.failedCriteria.join(", ")}. Increase the number of parallel runs, shorten the route or reduce the fault clearing time.`,
+      })
+    else if (result.governing.startsWith("Short-circuit"))
+      list.push({
+        level: "warn",
+        message: `Size is governed by short-circuit withstand: ${fmt(inputs.faultLevel, 1)} kA for ${fmt(inputs.faultDuration, 2)} s needs at least ${fmt(result.sMin, 1)} mm² per run. Check the real clearing time; faster clearing lowers the required size.`,
+      })
     if (result.utilizationPct > 100)
       list.push({ level: "danger", message: `Cable utilization at ${fmt(result.utilizationPct, 0)}% — overloaded. Increase size or add parallel runs.` })
     else if (result.utilizationPct >= 90)
@@ -502,9 +526,14 @@ export function HtConductorSizing() {
               <StatTile
                 label="Recommended Cable Size"
                 value={`${result.outOfRange ? "> " : ""}${result.size} mm²`}
-                tip="Smallest standard size whose derated ampacity (Iz) ≥ design current per run"
+                tip="Smallest standard size that satisfies ampacity, voltage drop and short-circuit withstand together"
               />
               <StatTile label="Current Carrying Capacity" value={`${fmt(result.iz)} A`} tip="Base ampacity × combined derating factors" />
+              <StatTile
+                label="Governing Criterion"
+                value={result.governing}
+                tip="The requirement that sets the cable size; the others are satisfied at or below this size"
+              />
               <StatTile
                 label="Utilization"
                 value={`${fmt(result.utilizationPct, 1)}%`}
@@ -544,7 +573,7 @@ export function HtConductorSizing() {
               Current Carrying Capacity Iz (A) = Base Ampacity × Core Factor × Insulation Factor × Ground/Ambient
               Temperature Factor × Soil Resistivity Factor × Depth Factor × Grouping Factor × Thermal Backfill Factor
             </li>
-            <li>Recommended Cable Size = smallest standard size where Iz ≥ Design Current per Run</li>
+            <li>Recommended Cable Size = smallest standard size that satisfies ampacity (Iz ≥ Design Current per Run), the voltage-drop limit and the short-circuit minimum cross-section together; the largest of those three minimums governs</li>
             <li>Voltage Drop (%) = [√3 × I × L × (R·cosφ + X·sinφ)] ÷ V × 100</li>
             <li>Short-Circuit Minimum Cross-Section (mm²) = (Fault Current per Run × √Fault Duration) ÷ K (IEC 60949)</li>
             <li>Estimated Operating Temperature = Reference Temp + (Insulation Max Temp − Reference Temp) × (Utilization)²</li>

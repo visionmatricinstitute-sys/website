@@ -46,14 +46,10 @@ type Inputs = {
   faultDuration: number
 }
 
-// The example load (250 kW) is chosen so the built-in demonstration lands on a cable size
-// (120 mm²) that genuinely satisfies ampacity, voltage drop, breaker coordination AND the
-// short-circuit withstand check at the default fault level/duration below — see the review in
-// docs/toolkit-review-2026-09-27.md for the worked numbers. A smaller example load (previously
-// 100 kW) rounds up to a 25 mm² cable that fails the short-circuit check by design: real cables
-// picked by ampacity alone are not automatically big enough for a given fault level, which is
-// the whole point of that check — but a first-load default that fails is a poor first impression
-// of a tool that is otherwise correct, so the default now demonstrates a design that passes.
+// The example load (250 kW) lands on a 120 mm² cable that satisfies ampacity, voltage drop, breaker
+// coordination and the short-circuit withstand check at the default fault level and duration below.
+// The sizing now checks all four criteria together, so any input that has a standard-size solution
+// shows PASS; FAIL only appears when no standard size in the table can satisfy them.
 const DEFAULT_INPUTS: Inputs = {
   projectName: "",
   cableTag: "",
@@ -99,37 +95,58 @@ export function LvConductorSizing() {
     const formationFactor = inputs.coreConfig === "single" ? FORMATION_FACTOR_LV[inputs.formation] : 1.0
     const combined = ambientFactor * groupFactor * materialFactor * installFactor * formationFactor
 
-    let selectedSize: number | null = null
-    let selectedIz = 0
-    for (let i = 0; i < CABLE_SIZES_MM2.length; i++) {
-      const iz = baseTable[i] * combined
-      if (iz >= designCurrent) {
-        selectedSize = CABLE_SIZES_MM2[i]
-        selectedIz = iz
-        break
-      }
-    }
-    const outOfRange = selectedSize === null
-    const size = selectedSize ?? CABLE_SIZES_MM2[CABLE_SIZES_MM2.length - 1]
-    const iz = outOfRange ? baseTable[baseTable.length - 1] * combined : selectedIz
-
-    const R = RESISTIVITY[inputs.material] / 1000 / size
+    const R_PER_MM2 = RESISTIVITY[inputs.material] / 1000
     const X = REACTANCE_PER_KM_LV / 1000
     const phi = Math.acos(pf)
-    const vd = isSinglePhase
-      ? 2 * designCurrent * inputs.cableLength * (R * pf + X * Math.sin(phi))
-      : Math.sqrt(3) * designCurrent * inputs.cableLength * (R * pf + X * Math.sin(phi))
-    const vdPct = (vd / inputs.systemVoltage) * 100
-    const vdOk = vdPct <= inputs.voltageDropLimit
+    const vdVolts = (area: number) => {
+      const R = R_PER_MM2 / area
+      const factor = isSinglePhase ? 2 : Math.sqrt(3)
+      return factor * designCurrent * inputs.cableLength * (R * pf + X * Math.sin(phi))
+    }
 
     const breakerRating = BREAKERS.find((b) => b >= designCurrent) ?? null
-    const protectiveDeviceOk = breakerRating !== null && breakerRating <= iz
-
     const k = SC_K_INSULATED[inputs.material][inputs.insulation]
     const faultCurrentA = inputs.faultLevel * 1000
     const sMin = (faultCurrentA * Math.sqrt(inputs.faultDuration)) / k
-    const scOk = size >= sMin
 
+    // Size the cable against ALL four criteria, not ampacity alone: the smallest standard size that
+    // (1) carries the design current, (2) coordinates with the breaker (Ib <= In <= Iz),
+    // (3) keeps voltage drop within the limit and (4) withstands the fault (adiabatic S >= Smin).
+    // Each criterion improves monotonically with size, so the answer is the largest of the four
+    // individual minimum sizes, and that one is the governing criterion. Picking by ampacity first
+    // and then only checking the rest made the tool report FAIL for most real inputs.
+    const firstIndex = (ok: (i: number) => boolean) => {
+      for (let i = 0; i < CABLE_SIZES_MM2.length; i++) if (ok(i)) return i
+      return -1
+    }
+    const idxAmpacity = firstIndex((i) => baseTable[i] * combined >= designCurrent)
+    const idxBreaker =
+      breakerRating === null ? -1 : firstIndex((i) => baseTable[i] * combined >= breakerRating)
+    const idxVoltageDrop = firstIndex(
+      (i) => (vdVolts(CABLE_SIZES_MM2[i]) / inputs.systemVoltage) * 100 <= inputs.voltageDropLimit,
+    )
+    const idxShortCircuit = firstIndex((i) => CABLE_SIZES_MM2[i] >= sMin)
+    const criteria = [
+      { name: "Ampacity", index: idxAmpacity },
+      { name: "Breaker coordination (Ib ≤ In ≤ Iz)", index: idxBreaker },
+      { name: "Voltage drop", index: idxVoltageDrop },
+      { name: "Short-circuit withstand", index: idxShortCircuit },
+    ]
+    const outOfRange = criteria.some((c) => c.index < 0)
+    const lastIndex = CABLE_SIZES_MM2.length - 1
+    const selectedIndex = outOfRange ? lastIndex : Math.max(...criteria.map((c) => c.index))
+    const governing = outOfRange
+      ? criteria.filter((c) => c.index < 0).map((c) => c.name).join(", ")
+      : criteria.reduce((best, c) => (c.index > best.index ? c : best), criteria[0]).name
+    const failedCriteria = criteria.filter((c) => c.index < 0).map((c) => c.name)
+
+    const size = CABLE_SIZES_MM2[selectedIndex]
+    const iz = baseTable[selectedIndex] * combined
+    const vd = vdVolts(size)
+    const vdPct = (vd / inputs.systemVoltage) * 100
+    const vdOk = vdPct <= inputs.voltageDropLimit
+    const protectiveDeviceOk = breakerRating !== null && breakerRating <= iz
+    const scOk = size >= sMin
     const utilizationPct = (designCurrent / iz) * 100
     const overallPass = !outOfRange && vdOk && scOk && protectiveDeviceOk && utilizationPct <= 100
 
@@ -149,12 +166,23 @@ export function LvConductorSizing() {
       scOk,
       utilizationPct,
       overallPass,
+      governing,
+      failedCriteria,
     }
   }, [inputs])
 
   const warnings = useMemo(() => {
     const list: { level: "warn" | "danger"; message: string }[] = []
-    if (result.outOfRange) list.push({ level: "danger", message: "Design current exceeds the largest standard cable size in this table — consider parallel runs or a busduct." })
+    if (result.outOfRange)
+      list.push({
+        level: "danger",
+        message: `No standard size in this table satisfies: ${result.failedCriteria.join(", ")}. Consider parallel runs, a busduct, a faster-clearing or current-limiting protective device, or splitting the load.`,
+      })
+    else if (result.governing.startsWith("Short-circuit"))
+      list.push({
+        level: "warn",
+        message: `Size is governed by short-circuit withstand: ${fmt(inputs.faultLevel, 1)} kA for ${fmt(inputs.faultDuration, 2)} s needs at least ${fmt(result.sMin, 1)} mm². A faster-clearing or current-limiting protective device lowers the required size; check the real clearing time.`,
+      })
     if (result.utilizationPct > 100) list.push({ level: "danger", message: `Cable utilization at ${fmt(result.utilizationPct, 0)}% — overloaded.` })
     else if (result.utilizationPct >= 90) list.push({ level: "warn", message: `Cable utilization at ${fmt(result.utilizationPct, 0)}% — limited headroom.` })
     if (!result.vdOk) list.push({ level: "danger", message: `Voltage drop ${fmt(result.vdPct, 2)}% exceeds the ${fmt(inputs.voltageDropLimit, 1)}% limit.` })
@@ -200,6 +228,7 @@ export function LvConductorSizing() {
             ["Voltage Drop", `${fmt(result.vdPct, 2)} %`],
             ["Recommended Breaker Rating", result.breakerRating ? `${result.breakerRating} A` : "> 630 A"],
             ["Short-Circuit Min. Cross-Section", `${fmt(result.sMin, 1)} mm²`],
+            ["Governing Criterion", result.governing],
             ["Overall Compliance", result.overallPass ? "PASS" : "FAIL"],
           ],
         },
@@ -247,6 +276,7 @@ export function LvConductorSizing() {
           ["Voltage Drop (%)", result.vdPct],
           ["Recommended Breaker Rating (A)", result.breakerRating ?? ""],
           ["Short-Circuit Min Cross-Section (mm²)", result.sMin],
+          ["Governing Criterion", result.governing],
           ["Overall Compliance", result.overallPass ? "PASS" : "FAIL"],
         ],
       },
@@ -427,9 +457,14 @@ export function LvConductorSizing() {
               <StatTile
                 label="Final Recommended Cable Size"
                 value={`${result.outOfRange ? "> " : ""}${result.size} mm²`}
-                tip="Smallest standard size whose derated ampacity (Iz) ≥ design current"
+                tip="Smallest standard size that satisfies ampacity, breaker coordination, voltage drop and short-circuit withstand together"
               />
               <StatTile label="Current Carrying Capacity" value={`${fmt(result.iz)} A`} />
+              <StatTile
+                label="Governing Criterion"
+                value={result.governing}
+                tip="The requirement that sets the cable size; the other three are satisfied at or below this size"
+              />
               <StatTile
                 label="Utilization"
                 value={`${fmt(result.utilizationPct, 1)}%`}
@@ -469,7 +504,7 @@ export function LvConductorSizing() {
             <li>Demand Load (kW) = Connected Load × Diversity Factor</li>
             <li>Design Current (A) = (Demand Load × 1000) ÷ (V × PF) for 1φ, or ÷ (√3 × V × PF) for 3φ</li>
             <li>Current Carrying Capacity Iz (A) = Base Ampacity × Ambient Factor × Grouping Factor × Material Factor × Installation Factor × Formation Factor</li>
-            <li>Final Recommended Cable Size = smallest standard size where Iz ≥ Design Current</li>
+            <li>Final Recommended Cable Size = smallest standard size that satisfies ampacity (Iz ≥ Ib), breaker coordination (In ≤ Iz), the voltage-drop limit and the short-circuit minimum cross-section together; the largest of those four minimums governs</li>
             <li>Voltage Drop (%) = [k × I × L × (R·cosφ + X·sinφ)] ÷ V × 100 (k = 2 for 1φ, √3 for 3φ)</li>
             <li>Short-Circuit Minimum Cross-Section (mm²) = (Fault Current × √Fault Duration) ÷ K (IEC 60364-5-54)</li>
             <li>Protective Device Compatibility: Ib (design current) ≤ In (breaker rating) ≤ Iz (cable capacity)</li>
