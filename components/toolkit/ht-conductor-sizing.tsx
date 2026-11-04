@@ -155,6 +155,11 @@ export function HtConductorSizing() {
       : criteria.reduce((best, c) => (c.index > best.index ? c : best), criteria[0]).name
     const failedCriteria = criteria.filter((c) => c.index < 0).map((c) => c.name)
 
+    // Show the two requirements separately so a short-circuit-driven size is explained, not mysterious.
+    const loadIndexes = [criteria[0].index, criteria[1].index]
+    const loadSizeMm2 = loadIndexes.some((i) => i < 0) ? null : HT_SIZES_MM2[Math.max(...loadIndexes)]
+    const shortCircuitSizeMm2 = criteria[2].index < 0 ? null : HT_SIZES_MM2[criteria[2].index]
+
     const size = HT_SIZES_MM2[selectedIndex]
     const iz = baseTable[selectedIndex] * combinedFactor
 
@@ -200,6 +205,8 @@ export function HtConductorSizing() {
       N,
       governing,
       failedCriteria,
+      loadSizeMm2,
+      shortCircuitSizeMm2,
     }
   }, [inputs])
 
@@ -213,7 +220,7 @@ export function HtConductorSizing() {
     else if (result.governing.startsWith("Short-circuit"))
       list.push({
         level: "warn",
-        message: `Size is governed by short-circuit withstand: ${fmt(inputs.faultLevel, 1)} kA for ${fmt(inputs.faultDuration, 2)} s needs at least ${fmt(result.sMin, 1)} mm² per run. Check the real clearing time; faster clearing lowers the required size.`,
+        message: `The load alone needs ${result.loadSizeMm2} mm², but ${fmt(inputs.faultLevel, 1)} kA for ${fmt(inputs.faultDuration, 2)} s needs at least ${fmt(result.sMin, 1)} mm² per run, so ${result.size} mm² is recommended. Enter the real fault level and the real clearing time of the protection (relay plus breaker): faster clearing lowers the requirement.`,
       })
     if (result.utilizationPct > 100)
       list.push({ level: "danger", message: `Cable utilization at ${fmt(result.utilizationPct, 0)}% — overloaded. Increase size or add parallel runs.` })
@@ -529,6 +536,16 @@ export function HtConductorSizing() {
                 tip="Smallest standard size that satisfies ampacity, voltage drop and short-circuit withstand together"
               />
               <StatTile label="Current Carrying Capacity" value={`${fmt(result.iz)} A`} tip="Base ampacity × combined derating factors" />
+              <StatTile
+                label="Size for the Load"
+                value={result.loadSizeMm2 === null ? "None fits" : `${result.loadSizeMm2} mm²`}
+                tip="Smallest standard size that satisfies ampacity and voltage drop (ignores short-circuit)"
+              />
+              <StatTile
+                label="Size for Short-Circuit"
+                value={result.shortCircuitSizeMm2 === null ? "None fits" : `${result.shortCircuitSizeMm2} mm²`}
+                tip="Smallest standard size with S ≥ (Fault Current per Run × √Fault Duration) ÷ K. Depends on the fault level and clearing time you enter"
+              />
               <StatTile
                 label="Governing Criterion"
                 value={result.governing}

@@ -25,6 +25,16 @@ import {
   FORMATION_FACTOR_LV,
 } from "./conductor-standards"
 
+// Indicative total clearing times, used only to pre-fill the fault duration. Replace with the real
+// clearing time (or let-through energy) from the protective device data for a final design.
+type ProtectiveDevice = "mccb" | "delayed" | "relay" | "custom"
+const PROTECTIVE_DEVICES: { value: ProtectiveDevice; label: string; seconds: number | null }[] = [
+  { value: "mccb", label: "MCB / MCCB, instantaneous (about 0.02 s)", seconds: 0.02 },
+  { value: "delayed", label: "Fuse or MCCB with short-time delay (about 0.1 s)", seconds: 0.1 },
+  { value: "relay", label: "ACB / relay-protected feeder (about 0.5 s)", seconds: 0.5 },
+  { value: "custom", label: "Custom clearing time", seconds: null },
+]
+
 type Inputs = {
   projectName: string
   cableTag: string
@@ -44,12 +54,17 @@ type Inputs = {
   voltageDropLimit: number
   faultLevel: number
   faultDuration: number
+  protectiveDevice: ProtectiveDevice
+  letThroughKa2s: number
 }
 
 // The example load (250 kW) lands on a 120 mm² cable that satisfies ampacity, voltage drop, breaker
 // coordination and the short-circuit withstand check at the default fault level and duration below.
 // The sizing now checks all four criteria together, so any input that has a standard-size solution
 // shows PASS; FAIL only appears when no standard size in the table can satisfy them.
+// The default clearing time is 0.02 s (an instantaneous MCB/MCCB). The previous 0.5 s default (a relay-
+// protected feeder) made the short-circuit check require 99 to 150 mm² for any load, so every result
+// was 120 mm² or larger.
 const DEFAULT_INPUTS: Inputs = {
   projectName: "",
   cableTag: "",
@@ -68,7 +83,9 @@ const DEFAULT_INPUTS: Inputs = {
   grouping: 1,
   voltageDropLimit: 5,
   faultLevel: 20,
-  faultDuration: 0.5,
+  faultDuration: 0.02,
+  protectiveDevice: "mccb",
+  letThroughKa2s: 0,
 }
 
 export function LvConductorSizing() {
@@ -107,7 +124,11 @@ export function LvConductorSizing() {
     const breakerRating = BREAKERS.find((b) => b >= designCurrent) ?? null
     const k = SC_K_INSULATED[inputs.material][inputs.insulation]
     const faultCurrentA = inputs.faultLevel * 1000
-    const sMin = (faultCurrentA * Math.sqrt(inputs.faultDuration)) / k
+    // Fault energy: the breaker's let-through I²t when the user supplies it (kA²s from the manufacturer's
+    // curves), otherwise the conservative I² × t with no current limiting.
+    const faultEnergy =
+      inputs.letThroughKa2s > 0 ? inputs.letThroughKa2s * 1e6 : faultCurrentA * faultCurrentA * inputs.faultDuration
+    const sMin = Math.sqrt(faultEnergy) / k
 
     // Size the cable against ALL four criteria, not ampacity alone: the smallest standard size that
     // (1) carries the design current, (2) coordinates with the breaker (Ib <= In <= Iz),
@@ -140,6 +161,11 @@ export function LvConductorSizing() {
       : criteria.reduce((best, c) => (c.index > best.index ? c : best), criteria[0]).name
     const failedCriteria = criteria.filter((c) => c.index < 0).map((c) => c.name)
 
+    // Show the two requirements separately so a short-circuit-driven size is explained, not mysterious.
+    const loadIndexes = [idxAmpacity, idxBreaker, idxVoltageDrop]
+    const loadSizeMm2 = loadIndexes.some((i) => i < 0) ? null : CABLE_SIZES_MM2[Math.max(...loadIndexes)]
+    const shortCircuitSizeMm2 = idxShortCircuit < 0 ? null : CABLE_SIZES_MM2[idxShortCircuit]
+
     const size = CABLE_SIZES_MM2[selectedIndex]
     const iz = baseTable[selectedIndex] * combined
     const vd = vdVolts(size)
@@ -168,6 +194,8 @@ export function LvConductorSizing() {
       overallPass,
       governing,
       failedCriteria,
+      loadSizeMm2,
+      shortCircuitSizeMm2,
     }
   }, [inputs])
 
@@ -181,7 +209,7 @@ export function LvConductorSizing() {
     else if (result.governing.startsWith("Short-circuit"))
       list.push({
         level: "warn",
-        message: `Size is governed by short-circuit withstand: ${fmt(inputs.faultLevel, 1)} kA for ${fmt(inputs.faultDuration, 2)} s needs at least ${fmt(result.sMin, 1)} mm². A faster-clearing or current-limiting protective device lowers the required size; check the real clearing time.`,
+        message: `The load alone needs ${result.loadSizeMm2} mm², but ${fmt(inputs.faultLevel, 1)} kA for ${fmt(inputs.faultDuration, 2)} s needs at least ${fmt(result.sMin, 1)} mm², so ${result.size} mm² is recommended. Enter the real fault level at this cable's origin, and for a breaker that clears in under about 0.1 s enter its let-through I²t (kA²s) from the manufacturer's curves: a current-limiting breaker lets through far less than fault current squared times time, and the requirement drops sharply.`,
       })
     if (result.utilizationPct > 100) list.push({ level: "danger", message: `Cable utilization at ${fmt(result.utilizationPct, 0)}% — overloaded.` })
     else if (result.utilizationPct >= 90) list.push({ level: "warn", message: `Cable utilization at ${fmt(result.utilizationPct, 0)}% — limited headroom.` })
@@ -215,6 +243,8 @@ export function LvConductorSizing() {
             ["Grouping", `${inputs.grouping}`],
             ["Voltage Drop Limit", `${inputs.voltageDropLimit} %`],
             ["Fault Level / Duration", `${inputs.faultLevel} kA / ${inputs.faultDuration} s`],
+            ["Protective Device", PROTECTIVE_DEVICES.find((d) => d.value === inputs.protectiveDevice)?.label ?? inputs.protectiveDevice],
+            ["Breaker Let-Through I²t", inputs.letThroughKa2s > 0 ? `${inputs.letThroughKa2s} kA²s` : "not entered (conservative I² × t used)"],
           ],
         },
         {
@@ -228,6 +258,8 @@ export function LvConductorSizing() {
             ["Voltage Drop", `${fmt(result.vdPct, 2)} %`],
             ["Recommended Breaker Rating", result.breakerRating ? `${result.breakerRating} A` : "> 630 A"],
             ["Short-Circuit Min. Cross-Section", `${fmt(result.sMin, 1)} mm²`],
+            ["Size for the Load", result.loadSizeMm2 === null ? "None fits" : `${result.loadSizeMm2} mm²`],
+            ["Size for Short-Circuit", result.shortCircuitSizeMm2 === null ? "None fits" : `${result.shortCircuitSizeMm2} mm²`],
             ["Governing Criterion", result.governing],
             ["Overall Compliance", result.overallPass ? "PASS" : "FAIL"],
           ],
@@ -262,6 +294,8 @@ export function LvConductorSizing() {
           ["Voltage Drop Limit (%)", inputs.voltageDropLimit],
           ["Fault Level (kA)", inputs.faultLevel],
           ["Fault Duration (s)", inputs.faultDuration],
+          ["Protective Device", inputs.protectiveDevice],
+          ["Breaker Let-Through I²t (kA²s)", inputs.letThroughKa2s],
         ],
       },
       {
@@ -276,6 +310,8 @@ export function LvConductorSizing() {
           ["Voltage Drop (%)", result.vdPct],
           ["Recommended Breaker Rating (A)", result.breakerRating ?? ""],
           ["Short-Circuit Min Cross-Section (mm²)", result.sMin],
+          ["Size for the Load (mm²)", result.loadSizeMm2 ?? ""],
+          ["Size for Short-Circuit (mm²)", result.shortCircuitSizeMm2 ?? ""],
           ["Governing Criterion", result.governing],
           ["Overall Compliance", result.overallPass ? "PASS" : "FAIL"],
         ],
@@ -439,8 +475,52 @@ export function LvConductorSizing() {
                 <Input type="number" value={inputs.faultLevel} onChange={(e) => update("faultLevel", Number(e.target.value))} />
               </div>
               <div className="space-y-1.5">
-                <FieldLabel tip="Time for the protective device to clear the fault.">Fault Duration (s)</FieldLabel>
-                <Input type="number" step="0.1" value={inputs.faultDuration} onChange={(e) => update("faultDuration", Number(e.target.value))} />
+                <FieldLabel tip="Type of protective device upstream of this cable. It pre-fills the clearing time below with an indicative value; a fast-acting breaker clears a fault far sooner than a relay-protected feeder, which is why the short-circuit size depends so strongly on it.">
+                  Protective Device
+                </FieldLabel>
+                <Select
+                  value={inputs.protectiveDevice}
+                  onValueChange={(v) => {
+                    const device = PROTECTIVE_DEVICES.find((d) => d.value === v)
+                    setInputs((prev) => ({
+                      ...prev,
+                      protectiveDevice: v as ProtectiveDevice,
+                      faultDuration: device?.seconds ?? prev.faultDuration,
+                    }))
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PROTECTIVE_DEVICES.map((d) => (
+                      <SelectItem key={d.value} value={d.value}>
+                        {d.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1.5">
+                <FieldLabel tip="Time for the protective device to clear the fault. Editing it switches the device to Custom. Under about 0.1 s the adiabatic check is only a conservative guide; use the device's let-through energy (I²t) for a final design.">Fault Duration (s)</FieldLabel>
+                <Input
+                  type="number"
+                  step="0.01"
+                  value={inputs.faultDuration}
+                  onChange={(e) => setInputs((prev) => ({ ...prev, faultDuration: Number(e.target.value), protectiveDevice: "custom" }))}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <FieldLabel tip="Optional. The protective device's let-through energy at the fault level above, from the manufacturer's let-through curves (kA²s). A current-limiting breaker lets through far less than fault current squared times clearing time, so entering it gives a realistic short-circuit size. Leave 0 to use the conservative I² × t.">
+                  Breaker Let-Through I²t (kA²s, optional)
+                </FieldLabel>
+                <Input
+                  type="number"
+                  min={0}
+                  step="0.1"
+                  value={inputs.letThroughKa2s}
+                  onChange={(e) => update("letThroughKa2s", Number(e.target.value))}
+                />
               </div>
             </div>
           </CardContent>
@@ -460,6 +540,16 @@ export function LvConductorSizing() {
                 tip="Smallest standard size that satisfies ampacity, breaker coordination, voltage drop and short-circuit withstand together"
               />
               <StatTile label="Current Carrying Capacity" value={`${fmt(result.iz)} A`} />
+              <StatTile
+                label="Size for the Load"
+                value={result.loadSizeMm2 === null ? "None fits" : `${result.loadSizeMm2} mm²`}
+                tip="Smallest standard size that satisfies ampacity, breaker coordination and voltage drop (ignores short-circuit)"
+              />
+              <StatTile
+                label="Size for Short-Circuit"
+                value={result.shortCircuitSizeMm2 === null ? "None fits" : `${result.shortCircuitSizeMm2} mm²`}
+                tip="Smallest standard size with S ≥ (Fault Current × √Fault Duration) ÷ K. Depends on the fault level and clearing time you enter"
+              />
               <StatTile
                 label="Governing Criterion"
                 value={result.governing}
@@ -481,7 +571,7 @@ export function LvConductorSizing() {
                 label="Short Circuit Check"
                 value={`${fmt(result.sMin, 1)} mm² req.`}
                 tone={result.scOk ? "good" : "bad"}
-                tip="S = (Fault Current × √Fault Duration) ÷ K"
+                tip="S = √(fault energy) ÷ K, where fault energy = breaker let-through I²t if entered, otherwise (Fault Current)² × Fault Duration"
               />
             </div>
             <PassFailBanner pass={result.overallPass} />
@@ -506,7 +596,7 @@ export function LvConductorSizing() {
             <li>Current Carrying Capacity Iz (A) = Base Ampacity × Ambient Factor × Grouping Factor × Material Factor × Installation Factor × Formation Factor</li>
             <li>Final Recommended Cable Size = smallest standard size that satisfies ampacity (Iz ≥ Ib), breaker coordination (In ≤ Iz), the voltage-drop limit and the short-circuit minimum cross-section together; the largest of those four minimums governs</li>
             <li>Voltage Drop (%) = [k × I × L × (R·cosφ + X·sinφ)] ÷ V × 100 (k = 2 for 1φ, √3 for 3φ)</li>
-            <li>Short-Circuit Minimum Cross-Section (mm²) = (Fault Current × √Fault Duration) ÷ K (IEC 60364-5-54)</li>
+            <li>Short-Circuit Minimum Cross-Section (mm²) = √(fault energy) ÷ K (IEC 60364), with fault energy = breaker let-through I²t when entered, otherwise (Fault Current)² × Fault Duration</li>
             <li>Protective Device Compatibility: Ib (design current) ≤ In (breaker rating) ≤ Iz (cable capacity)</li>
           </ol>
           <div className="mt-6 text-xs text-muted-foreground bg-muted/40 rounded-lg p-4 leading-relaxed">
